@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import useInView from '../hooks/useInView';
 import CanvasBg from './CanvasBg';
 
 const testimonials = [
@@ -25,10 +26,17 @@ const testimonials = [
 ];
 
 function TestimonialCard({ testimonial }) {
+  const initials = testimonial.name.split(' ').map(w => w[0]).join('');
+
   return (
     <div className="tcard">
-      <div className="tcard-quote-mark">"</div>
-      <p className="tcard-quote">{testimonial.quote}</p>
+      <div className="tcard-top">
+        <span className="tcard-initials">{initials}</span>
+        <span className="tcard-quote-mark">"</span>
+      </div>
+      <div className="tcard-quote-wrap">
+        <p className="tcard-quote">{testimonial.quote}</p>
+      </div>
       <div className="tcard-author">
         <span className="tcard-name">{testimonial.name}</span>
         <span className="tcard-title">{testimonial.title}</span>
@@ -38,6 +46,7 @@ function TestimonialCard({ testimonial }) {
 }
 
 export default function Testimonials() {
+  const [sectionRef, inView] = useInView({ once: true, rootMargin: '-80px' });
   const trackRef = useRef(null);
 
   useEffect(() => {
@@ -64,14 +73,25 @@ export default function Testimonials() {
   const doubled = [...testimonials, ...testimonials];
 
   return (
-    <section id="testimonials" className="testimonials-section snap-section" aria-label="Testimonials">
+    <section id="testimonials" ref={sectionRef} className="testimonials-section snap-section section-alt" aria-label="Testimonials">
       <CanvasBg theme="system" />
       <div className="container" style={{ position: 'relative', zIndex: 1, marginBottom: 48 }}>
-        <span className="section-label">Testimonials</span>
-        <h2 className="section-title testimonials-title">Kind words.</h2>
+        <div className={`section-label-fade ${inView ? 'is-visible' : ''}`} style={{ transitionDelay: '0s' }}>
+          <span className="section-label">Testimonials</span>
+        </div>
+        <h2
+          className={`section-title testimonials-title title-fade-blur ${inView ? 'is-visible' : ''}`}
+          style={{ transitionDelay: '0.1s' }}
+        >
+          <span className="section-title-outline">What people</span>{' '}
+          <span className="section-title-fill">say.</span>
+        </h2>
       </div>
 
-      <div className="tcards-track-wrap">
+      <div
+        className={`tcards-track-wrap wrap-fade ${inView ? 'is-visible' : ''}`}
+        style={{ transitionDelay: '0.2s' }}
+      >
         <div className="tcards-track" ref={trackRef}>
           {doubled.map((t, i) => (
             <TestimonialCard key={`${t.name}-${i}`} testimonial={t} />
@@ -95,62 +115,86 @@ export default function Testimonials() {
           width: 100%;
           overflow: hidden;
           padding-bottom: var(--section-gap);
+          margin-top: 48px;
         }
 
         .tcards-track {
           display: flex;
-          gap: 24px;
+          gap: 20px;
           will-change: transform;
-          padding-left: 24px;
+          padding-left: 20px;
         }
 
         .tcard {
           flex-shrink: 0;
-          width: 360px;
-          border: 2px solid var(--border-light);
-          padding: 36px 32px;
+          width: 300px;
           display: flex;
           flex-direction: column;
-          gap: 16px;
-          transition: border-color 0.4s ease, background 0.4s ease, transform 0.4s ease;
+          transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
           cursor: default;
-          background: var(--bg);
+          background: #ffffff;
+          border-radius: 18px;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
         }
 
         .tcard:hover {
-          border-color: var(--primary);
-          background: rgba(17, 17, 17, 0.01);
-          transform: translateY(-4px);
+          transform: translateY(-6px) scale(1.01);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.06), 0 20px 48px rgba(0,0,0,0.1);
+        }
+
+        .tcard-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 18px 22px 0;
+        }
+
+        .tcard-initials {
+          font-family: var(--font-heading);
+          font-size: 15px;
+          font-weight: 800;
+          color: #000;
+          letter-spacing: 1px;
+          background: #f0f0f0;
+          padding: 4px 10px;
+          border-radius: 6px;
         }
 
         .tcard-quote-mark {
           font-family: var(--font-heading);
-          font-size: 44px;
+          font-size: 42px;
           line-height: 1;
-          color: var(--primary);
-          opacity: 0.12;
-          height: 28px;
+          color: #000;
+          opacity: 0.07;
+          font-weight: 700;
+        }
+
+        .tcard-quote-wrap {
+          padding: 12px 22px 0;
         }
 
         .tcard-quote {
-          font-family: var(--font-body);
+          font-family: var(--font-sans);
           font-size: 13px;
-          line-height: 1.7;
+          line-height: 1.65;
           color: var(--secondary);
-          flex: 1;
         }
 
         .tcard-author {
           display: flex;
           flex-direction: column;
           gap: 2px;
-          padding-top: 12px;
+          padding: 14px 22px 18px;
+          margin-top: 12px;
           border-top: 1px solid var(--border-light);
+          background: #fafafa;
         }
 
         .tcard-name {
           font-family: var(--font-heading);
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 700;
           color: var(--primary-bold);
           letter-spacing: -0.2px;
@@ -162,8 +206,28 @@ export default function Testimonials() {
           color: var(--muted);
         }
 
+        @media (max-width: 1024px) {
+          .tcard { width: 300px; }
+        }
+
         @media (max-width: 768px) {
-          .tcard { width: 280px; padding: 28px 24px; }
+          .tcard { width: 260px; }
+          .tcard-quote { font-size: 12px; }
+          .tcard-top { padding: 14px 18px 0; }
+          .tcard-quote-wrap { padding: 10px 18px 0; }
+          .tcard-author { padding: 12px 18px 16px; }
+        }
+
+        @media (max-width: 480px) {
+          .testimonials-section { padding-top: 60px; }
+          .tcard { width: 220px; }
+          .tcard-quote { font-size: 11px; }
+          .tcard-top { padding: 12px 14px 0; }
+          .tcard-quote-wrap { padding: 8px 14px 0; }
+          .tcard-author { padding: 10px 14px 14px; }
+          .tcard-quote-mark { font-size: 32px; }
+          .tcard-name { font-size: 12px; }
+          .tcard-title { font-size: 10px; }
         }
       `}</style>
     </section>

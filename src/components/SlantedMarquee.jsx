@@ -51,10 +51,11 @@ export default function SlantedMarquee() {
           width: 100%;
           overflow: hidden;
           transform: skewY(-3deg);
-          padding: 44px 0;
-          background: var(--primary-bold);
-          margin: 40px 0;
+          padding: 48px 0;
+          background: linear-gradient(135deg, var(--primary-bold) 0%, #1a1a1a 50%, var(--primary-bold) 100%);
+          margin: 60px 0;
           position: relative;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
         }
 
         .marquee-fade {
@@ -65,8 +66,8 @@ export default function SlantedMarquee() {
           background: linear-gradient(
             to right,
             var(--primary-bold) 0%,
-            transparent 10%,
-            transparent 90%,
+            transparent 8%,
+            transparent 92%,
             var(--primary-bold) 100%
           );
         }
@@ -85,47 +86,57 @@ export default function SlantedMarquee() {
         .marquee-char {
           display: inline-block;
           font-family: var(--font-heading);
-          font-size: clamp(20px, 3vw, 36px);
-          font-weight: 700;
-          color: var(--bg);
-          opacity: 0.2;
-          letter-spacing: -0.5px;
+          font-size: clamp(20px, 3vw, 40px);
+          font-weight: 800;
+          color: rgba(255,255,255,0.15);
+          letter-spacing: -1px;
           animation: char-glow 3s ease-in-out infinite;
           animation-delay: calc(var(--char-idx) * 0.05s);
-          transition: opacity 0.3s ease, color 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          font-feature-settings: "ss01";
         }
 
         .marquee-char:hover {
-          opacity: 1;
-          color: var(--text-muted);
+          color: #ffffff;
+          filter: drop-shadow(0 0 12px rgba(255,255,255,0.5));
+          transform: scale(1.15);
         }
 
         @keyframes char-glow {
           0%, 100% {
-            opacity: 0.2;
-            text-shadow: none;
+            color: rgba(255,255,255,0.15);
+            filter: drop-shadow(0 0 0 rgba(255,255,255,0.2));
           }
           25% {
-            opacity: 0.55;
-            text-shadow: 0 0 12px rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.4);
+            filter: drop-shadow(0 0 12px rgba(255,255,255,0.4));
           }
           50% {
-            opacity: 0.3;
-            text-shadow: none;
+            color: rgba(255,255,255,0.2);
+            filter: drop-shadow(0 0 0 rgba(255,255,255,0.2));
           }
           75% {
-            opacity: 0.45;
-            text-shadow: 0 0 8px rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.35);
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
           }
         }
 
         @media (max-width: 768px) {
           .slanted-marquee {
-            padding: 28px 0;
+            padding: 32px 0;
+            margin: 40px 0;
+          }
+          .marquee-char {
+            font-size: 16px;
+          }
+        }
+        @media (max-width: 480px) {
+          .slanted-marquee {
+            padding: 20px 0;
             margin: 24px 0;
           }
           .marquee-char {
-            font-size: 14px;
+            font-size: 12px;
           }
         }
       `}</style>

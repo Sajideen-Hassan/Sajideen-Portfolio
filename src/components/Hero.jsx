@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect } from 'react';
-import { m, useInView, useScroll, useTransform } from 'framer-motion';
 import { personal, roles } from '../data/portfolio';
 import CanvasBg from './CanvasBg';
 
@@ -101,12 +100,49 @@ function MagneticField({ containerRef }) {
 export default function Hero() {
   const sectionRef = useRef(null);
   const textRef = useRef(null);
-  const inView = useInView(sectionRef, { once: true });
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
-  const contentY = useTransform(scrollYProgress, [0, 0.8], ['0%', '-12%']);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const [parallaxStyle, setParallaxStyle] = useState({});
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const rect = el.getBoundingClientRect();
+      const progress = Math.max(0, Math.min(1, -rect.top / rect.height));
+      const t = Math.min(progress / 0.8, 1);
+      setParallaxStyle({
+        transform: `translateY(${t * -12}%)`,
+        opacity: 1 - t,
+      });
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const [roleIndex, setRoleIndex] = useState(0);
+  const [fillPct, setFillPct] = useState(0);
+  const isDraggingRef = useRef(false);
+  const nameRowRef = useRef(null);
+
+  const handleDragStart = (e) => {
+    isDraggingRef.current = true;
+    if (nameRowRef.current) {
+      const rect = nameRowRef.current.getBoundingClientRect();
+      const pct = ((e.clientX - rect.left) / rect.width) * 100;
+      setFillPct(Math.min(100, Math.max(0, pct)));
+    }
+  };
+
+  const handleDragMove = (e) => {
+    if (!isDraggingRef.current || !nameRowRef.current) return;
+    const rect = nameRowRef.current.getBoundingClientRect();
+    const pct = ((e.clientX - rect.left) / rect.width) * 100;
+    setFillPct(Math.min(100, Math.max(0, pct)));
+  };
+
+  const handleDragEnd = () => {
+    isDraggingRef.current = false;
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -115,73 +151,68 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
-  const containerVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } },
-  };
-
-  const wordVariants = {
-    hidden: { y: 120, rotate: 3 },
-    visible: {
-      y: 0, rotate: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
-    },
-  };
+  const nameWords = personal.name.split(' ');
 
   return (
     <section id="hero" ref={sectionRef} className="hero-section" aria-label="Hero">
       <CanvasBg theme="system" />
       <MagneticField containerRef={sectionRef} />
 
-      <m.div className="hero-inner" style={{ y: contentY, opacity: contentOpacity }}>
-        <m.div
-          className="hero-top"
-          initial={{ opacity: 0, y: -10 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
+      <div className="hero-inner" style={parallaxStyle}>
+        <div className="hero-top">
           <span className="hero-availability">
             <span className="hero-dot" />
-            Available
+            Open for collaborations
           </span>
-          <span className="hero-location">{personal.location}</span>
-        </m.div>
+          <span className="hero-location">🌍 {personal.location}</span>
+        </div>
 
-        <m.div
-          ref={textRef}
-          className="hero-text"
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-        >
-          <div className="hero-name-row">
-            {personal.name.split(' ').map((word, i) => (
-              <div key={i} className="reveal-text">
-                <m.span className="reveal-text-inner hero-name-word" variants={wordVariants}>
-                  {word}
-                </m.span>
+        <div ref={textRef} className="hero-text">
+          <div
+            className="hero-name-row"
+            ref={nameRowRef}
+            onMouseDown={handleDragStart}
+            onMouseMove={handleDragMove}
+            onMouseUp={handleDragEnd}
+            onMouseLeave={handleDragEnd}
+          >
+            <div className="hero-name-outline" aria-hidden="true">
+              {nameWords.map((word, i) => (
+                <div key={i} className="reveal-text">
+                  <span
+                    className="reveal-text-inner hero-name-word"
+                    style={{ animationDelay: `${0.28 + i * 0.08}s` }}
+                  >
+                    {word}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="hero-name-fill-wrap" style={{ width: `${fillPct}%` }}>
+              <div className="hero-name-fill-inner">
+                {nameWords.map((word, i) => (
+                  <span key={i} className="hero-name-word hero-name-word-fill">{word}</span>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
           <div className="hero-role-row">
             <div className="reveal-text">
-              <m.span className="reveal-text-inner hero-role-text" variants={wordVariants}>
+              <span
+                className="reveal-text-inner hero-role-text"
+                style={{ animationDelay: `${0.28 + nameWords.length * 0.08}s` }}
+              >
                 {roles[roleIndex]}
-              </m.span>
+              </span>
             </div>
           </div>
-        </m.div>
+        </div>
 
-        <m.div
-          className="hero-bottom"
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 1.2 }}
-        >
+        <div className="hero-bottom">
           <span className="hero-scroll">Scroll to explore</span>
           <span className="hero-num">— 01</span>
-        </m.div>
-      </m.div>
+        </div>
+      </div>
 
       <style>{`
         .hero-section {
@@ -229,17 +260,6 @@ export default function Hero() {
           will-change: transform;
         }
 
-        .hero-top {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          font-family: var(--font-mono);
-          font-size: 12px;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-          color: var(--secondary);
-        }
-
         .hero-availability { display: flex; align-items: center; gap: 8px; }
         .hero-dot {
           width: 6px; height: 6px;
@@ -251,37 +271,78 @@ export default function Hero() {
         @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
         .hero-text { position: relative; cursor: default; }
-        .hero-name-row { display: flex; flex-wrap: wrap; gap: 0; }
+        .hero-name-row {
+          display: flex;
+          flex-wrap: nowrap;
+          gap: 0;
+          position: relative;
+          cursor: ew-resize;
+          user-select: none;
+          -webkit-user-select: none;
+        }
+        .hero-name-outline { display: flex; flex-wrap: nowrap; }
+        .hero-name-fill-wrap {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          pointer-events: none;
+          z-index: 2;
+        }
+        .hero-name-fill-inner { display: flex; flex-wrap: nowrap; }
 
         .hero-name-word {
           font-family: var(--font-heading);
-          font-size: clamp(60px, 12vw, 160px);
-          font-weight: 700;
+          font-size: clamp(52px, 7vw, 110px);
+          font-weight: 800;
           line-height: 1;
-          letter-spacing: -4px;
-          color: var(--primary-bold);
+          letter-spacing: -3px;
+          color: transparent;
+          -webkit-text-stroke: 2px #000000;
+          text-stroke: 2px #000000;
+          paint-order: stroke fill;
           margin-right: 0.15em;
+          white-space: nowrap;
+        }
+
+        .hero-name-word-fill {
+          color: #000000;
+          -webkit-text-stroke: 0;
+          text-stroke: 0;
+          paint-order: stroke fill;
         }
 
         .hero-role-row { margin-top: 16px; }
         .hero-role-text {
           font-family: var(--font-sans);
           font-size: clamp(16px, 2vw, 22px);
-          font-weight: 400;
-          color: var(--secondary-light);
+          font-weight: 500;
+          color: #666666;
           letter-spacing: -0.2px;
         }
 
-        .hero-bottom {
-          display: flex; align-items: center; justify-content: space-between;
-          font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px;
-          text-transform: uppercase; color: var(--muted);
+        @media (max-width: 1024px) {
+          .hero-section { padding: 0 32px; }
         }
 
         @media (max-width: 768px) {
           .hero-section { padding: 0 24px; }
-          .hero-name-word { letter-spacing: -2px; }
+          .hero-name-word { letter-spacing: -2px; font-size: clamp(34px, 7vw, 64px); }
+          .hero-role-text { font-size: clamp(14px, 3vw, 18px); }
           .magnetic-field { display: none; }
+          .hero-top { font-size: 10px; }
+        }
+
+        @media (max-width: 480px) {
+          .hero-section { padding: 0 16px; min-height: 85vh; }
+          .hero-name-word { letter-spacing: -1px; font-size: clamp(26px, 6vw, 36px); }
+          .hero-role-row { margin-top: 4px; }
+          .hero-role-text { font-size: clamp(13px, 3vw, 16px); }
+          .hero-inner { gap: 16px; padding-top: 80px; padding-bottom: 40px; justify-content: center; }
+          .hero-bottom { font-size: 10px; flex-direction: column; gap: 4px; align-items: flex-start; }
+          .hero-top { font-size: 9px; }
         }
       `}</style>
     </section>

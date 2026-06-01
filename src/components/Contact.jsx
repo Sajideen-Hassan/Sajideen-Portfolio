@@ -1,11 +1,10 @@
 import { useRef } from 'react';
-import { m, useInView } from 'framer-motion';
+import useInView from '../hooks/useInView';
 import { personal } from '../data/portfolio';
 import CanvasBg from './CanvasBg';
 
 export default function Contact() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const [ref, inView] = useInView({ once: true, rootMargin: '-80px' });
 
   const links = [
     { label: 'Email', value: personal.email, href: `mailto:${personal.email}` },
@@ -20,52 +19,35 @@ export default function Contact() {
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="contact-grid">
           <div className="contact-side">
-            <m.div
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.4 }}
-            >
+            <div className={`bio-fade ${inView ? 'is-visible' : ''}`} style={{ transitionDelay: '0s' }}>
               <span className="contact-tag">Contact</span>
-            </m.div>
+            </div>
 
-            <m.h2
-              className="contact-heading"
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            <h2
+              className={`contact-heading title-fade ${inView ? 'is-visible' : ''}`}
+              style={{ transitionDelay: '0.1s' }}
             >
-              Let's create<br />something great.
-            </m.h2>
+              <span className="contact-outline">Let's</span>{' '}
+              <span className="contact-fill">build</span><br />
+              <span className="contact-outline">something</span>{' '}
+              <span className="contact-fill">amazing.</span>
+            </h2>
 
-            <m.p
-              className="contact-desc"
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.25 }}
+            <p
+              className={`contact-desc bio-fade ${inView ? 'is-visible' : ''}`}
+              style={{ transitionDelay: '0.25s' }}
             >
-              Have a project, idea, or just want to connect? Drop me a message.
-            </m.p>
+              Have a project or idea? Let's talk.
+            </p>
 
-            <m.a
-              href={`mailto:${personal.email}`}
-              className="contact-cta"
-              data-cursor
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              <span className="cta-text">Send a message</span>
-              <span className="cta-arrow">→</span>
-            </m.a>
           </div>
 
           <div className="contact-channels">
             {links.map((link, i) => (
-              <m.div
+              <div
                 key={link.label}
-                initial={{ opacity: 0, x: 30 }}
-                animate={inView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.3 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className={`channel-fade ${inView ? 'is-visible' : ''}`}
+                style={{ transitionDelay: `${0.3 + i * 0.1}s` }}
               >
                 {link.href ? (
                   <a href={link.href} target="_blank" rel="noopener noreferrer" className="channel-row" data-cursor>
@@ -79,7 +61,7 @@ export default function Contact() {
                     <span className="channel-row-value">{link.value}</span>
                   </div>
                 )}
-              </m.div>
+              </div>
             ))}
           </div>
         </div>
@@ -121,10 +103,19 @@ export default function Contact() {
         .contact-heading {
           font-family: var(--font-heading);
           font-size: clamp(44px, 7vw, 90px);
-          font-weight: 700;
+          font-weight: 800;
           letter-spacing: -2.5px;
           line-height: 1;
+        }
+        .contact-outline {
+          color: transparent;
+          -webkit-text-stroke: 2px var(--bg);
+          text-stroke: 2px var(--bg);
+          paint-order: stroke fill;
+        }
+        .contact-fill {
           color: var(--bg);
+          -webkit-text-stroke: 0;
         }
 
         .contact-desc {
@@ -132,6 +123,7 @@ export default function Contact() {
           line-height: 1.7;
           opacity: 0.45;
           max-width: 360px;
+          margin-bottom: 48px;
         }
 
         .contact-cta {
@@ -178,12 +170,24 @@ export default function Contact() {
           display: flex;
           align-items: center;
           gap: 20px;
-          padding: 22px 0;
-          border-bottom: 1px solid rgba(255,255,255,0.06);
+          padding: 24px 0;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
           text-decoration: none;
           color: var(--bg);
-          transition: opacity 0.3s ease, gap 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
           cursor: pointer;
+          position: relative;
+        }
+
+        .channel-row::before {
+          content: '';
+          position: absolute;
+          bottom: -1px;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: #ffffff;
+          transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .channel-row:last-child {
@@ -191,8 +195,12 @@ export default function Contact() {
         }
 
         .channel-row:hover {
-          opacity: 0.6;
           gap: 28px;
+          padding-left: 8px;
+        }
+
+        .channel-row:hover::before {
+          width: 100%;
         }
 
         .channel-row-label {
@@ -200,50 +208,52 @@ export default function Contact() {
           font-size: 10px;
           letter-spacing: 2px;
           text-transform: uppercase;
-          opacity: 0.3;
+          opacity: 0.5;
           min-width: 68px;
+          font-weight: 600;
         }
 
         .channel-row-value {
           font-family: var(--font-body);
-          font-size: 15px;
-          font-weight: 500;
+          font-size: 16px;
+          font-weight: 600;
           flex: 1;
+          letter-spacing: -0.2px;
         }
 
         .channel-row-icon {
-          font-size: 12px;
+          font-size: 14px;
           opacity: 0;
-          transition: opacity 0.3s ease, transform 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          font-weight: 600;
         }
 
         .channel-row:hover .channel-row-icon {
           opacity: 1;
-          transform: translateX(2px) translateY(-2px);
+          transform: translateX(4px) translateY(-4px);
+        }
+
+        @media (max-width: 1024px) {
+          .contact-grid { gap: 48px; }
         }
 
         @media (max-width: 768px) {
-          .contact-section {
-            padding: 32px 0 16px;
-          }
+          .contact-section { padding: 32px 0 16px; }
+          .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+          .contact-heading { letter-spacing: -1.5px; font-size: clamp(36px, 8vw, 52px); }
+          .channel-row-label { min-width: 56px; }
+          .channel-row-value { font-size: 13px; }
+          .channel-row { padding: 18px 0; }
+        }
 
-          .contact-grid {
-            grid-template-columns: 1fr;
-            gap: 32px;
-          }
-
-          .contact-heading {
-            letter-spacing: -1.5px;
-          }
-
-          .contact-cta {
-            width: 100%;
-            justify-content: space-between;
-          }
-
-          .channel-row-label {
-            min-width: 56px;
-          }
+        @media (max-width: 480px) {
+          .contact-section { padding: 24px 0 12px; }
+          .contact-grid { gap: 24px; }
+          .contact-heading { font-size: clamp(28px, 7vw, 36px); letter-spacing: -1px; }
+          .contact-desc { font-size: 12px; margin-bottom: 32px; }
+          .channel-row { padding: 14px 0; gap: 12px; flex-wrap: wrap; }
+          .channel-row-label { min-width: auto; font-size: 9px; }
+          .channel-row-value { font-size: 12px; min-width: 0; }
         }
       `}</style>
     </section>

@@ -24,6 +24,7 @@ export default function CustomCursor() {
       raf = requestAnimationFrame(animate);
     };
 
+    const elements = document.querySelectorAll('a, button, [data-cursor]');
     const onEnter = () => {
       ring.classList.add('cursor-hover');
       dot.classList.add('cursor-hover');
@@ -34,7 +35,7 @@ export default function CustomCursor() {
     };
 
     document.addEventListener('mousemove', onMove, { passive: true });
-    document.querySelectorAll('a, button, [data-cursor]').forEach(el => {
+    elements.forEach(el => {
       el.addEventListener('mouseenter', onEnter);
       el.addEventListener('mouseleave', onLeave);
     });
@@ -43,6 +44,10 @@ export default function CustomCursor() {
 
     return () => {
       document.removeEventListener('mousemove', onMove);
+      elements.forEach(el => {
+        el.removeEventListener('mouseenter', onEnter);
+        el.removeEventListener('mouseleave', onLeave);
+      });
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);

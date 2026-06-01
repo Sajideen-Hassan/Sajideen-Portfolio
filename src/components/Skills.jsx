@@ -1,7 +1,6 @@
-import { useRef, useState } from 'react';
-import { m, useInView } from 'framer-motion';
+import { useState } from 'react';
+import useInView from '../hooks/useInView';
 import { skills } from '../data/portfolio';
-import { KineticText } from './TextAnimations';
 import CanvasBg from './CanvasBg';
 
 const categoryIcons = {
@@ -13,48 +12,37 @@ const categoryIcons = {
 };
 
 export default function Skills() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const [ref, inView] = useInView({ once: true, rootMargin: '-80px' });
   const [activeCategory, setActiveCategory] = useState(null);
 
   return (
     <section id="skills" ref={ref} className="skills-section snap-section" aria-label="Skills">
       <CanvasBg theme="ripple" />
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <m.div
-          initial={{ opacity: 0, scale: 0.92 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <m.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4, delay: 0.1 }}
-          >
+        <div className={`section-fade ${inView ? 'is-visible' : ''}`} style={{ transitionDelay: '0s' }}>
+          <div className={`label-fade ${inView ? 'is-visible' : ''}`} style={{ transitionDelay: '0.1s' }}>
             <span className="section-label">Capabilities</span>
-          </m.div>
+          </div>
 
-          <m.h2
-            className="section-title skills-title"
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.15 }}
+          <h2
+            className={`section-title skills-title title-fade ${inView ? 'is-visible' : ''}`}
+            style={{ transitionDelay: '0.15s' }}
           >
-            <KineticText text="Tech stack." inView={inView} baseDelay={0.3} />
-          </m.h2>
-        </m.div>
+            <span className="section-title-outline">Tech</span>{' '}
+            <span className="section-title-fill">Stack.</span>
+          </h2>
+        </div>
 
-        <div className="skills-grid">
+        <div
+          className={`skills-grid grid-fade ${inView ? 'is-visible' : ''}`}
+        >
           {skills.map((group, gIdx) => (
-            <m.div
+            <div
               key={group.category}
-              className={`skills-card ${activeCategory === gIdx ? 'is-active' : ''}`}
+              className={`skills-card card-fade ${activeCategory === gIdx ? 'is-active' : ''} ${inView ? 'is-visible' : ''}`}
+              style={{ transitionDelay: `${0.2 + 0.12 * gIdx}s` }}
               onMouseEnter={() => setActiveCategory(gIdx)}
               onMouseLeave={() => setActiveCategory(null)}
-              initial={{ opacity: 0, scale: 0.88, y: 30 }}
-              animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.12 * gIdx + 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="skills-card-header">
                 <span className="skills-card-icon">{categoryIcons[group.category] || '⎔'}</span>
@@ -62,19 +50,16 @@ export default function Skills() {
               </div>
               <div className="skills-card-items">
                 {group.items.map((item, i) => (
-                  <m.span
+                  <span
                     key={item}
-                    className="skills-chip"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={inView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ duration: 0.3, delay: 0.12 * gIdx + 0.3 + i * 0.04 }}
-                    whileHover={{ scale: 1.05, background: 'var(--primary)', color: 'var(--bg)', borderColor: 'var(--primary)' }}
+                    className={`skills-chip chip-fade ${inView ? 'is-visible' : ''}`}
+                    style={{ transitionDelay: `${0.12 * gIdx + 0.3 + i * 0.04}s` }}
                   >
                     {item}
-                  </m.span>
+                  </span>
                 ))}
               </div>
-            </m.div>
+            </div>
           ))}
         </div>
       </div>
@@ -94,17 +79,58 @@ export default function Skills() {
         }
 
         .skills-card {
-          border: 2px solid var(--border-light);
+          border: 1px solid #e0e0e0;
           padding: 32px 28px;
-          transition: border-color 0.4s ease, background 0.4s ease, transform 0.4s ease;
+          background: #ffffff;
+          transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
           cursor: default;
+          position: relative;
+          overflow: hidden;
+          border-radius: 12px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .skills-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.05) 100%);
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.5s ease;
+        }
+
+        .skills-card::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border: 2px solid transparent;
+          background: linear-gradient(135deg, #000000 0%, rgba(0,0,0,0.3) 100%) border-box;
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.5s ease;
+          border-radius: 12px;
         }
 
         .skills-card:hover,
         .skills-card.is-active {
-          border-color: var(--primary);
-          background: rgba(17, 17, 17, 0.02);
-          transform: translateY(-2px);
+          transform: translateY(-8px) scale(1.02);
+          box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+          border-color: #000000;
+          background: #ffffff;
+        }
+
+        .skills-card:hover::before,
+        .skills-card.is-active::before {
+          opacity: 1;
+        }
+
+        .skills-card:hover::after,
+        .skills-card.is-active::after {
+          opacity: 1;
         }
 
         .skills-card-header {
@@ -140,20 +166,41 @@ export default function Skills() {
         .skills-chip {
           font-family: var(--font-sans);
           font-size: 13px;
-          color: var(--secondary);
-          border: 1px solid var(--border-light);
-          padding: 5px 14px;
+          color: #333333;
+          border: 1px solid #d0d0d0;
+          padding: 6px 16px;
           cursor: default;
-          transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          border-radius: 20px;
+          background: #fafafa;
+          font-weight: 500;
+          letter-spacing: 0.3px;
+        }
+
+        .skills-chip:hover {
+          background: #000000;
+          color: #ffffff;
+          border-color: #000000;
+          transform: translateY(-2px) scale(1.08);
+          box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
         @media (max-width: 1024px) {
-          .skills-grid { grid-template-columns: repeat(2, 1fr); }
+          .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
         }
 
         @media (max-width: 640px) {
-          .skills-grid { grid-template-columns: 1fr; }
+          .skills-grid { grid-template-columns: 1fr; gap: 16px; }
           .skills-card { padding: 24px 20px; }
+          .skills-card-category { font-size: 18px; }
+        }
+
+        @media (max-width: 480px) {
+          .skills-card { padding: 20px 16px; }
+          .skills-card-header { gap: 8px; margin-bottom: 16px; padding-bottom: 12px; }
+          .skills-card-category { font-size: 16px; }
+          .skills-chip { font-size: 11px; padding: 4px 10px; }
+          .skills-card-icon { font-size: 16px; width: 20px; }
         }
       `}</style>
     </section>

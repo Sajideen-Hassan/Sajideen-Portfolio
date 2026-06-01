@@ -1,12 +1,12 @@
 export const personal = {
   name: "Sajideen Hassan",
-  title: "Full Stack Software Engineer",
-  tagline: "Building Modern Web, AI & Scalable Systems",
-  bio: "I design and engineer high-performance applications, intelligent automation systems, and modern digital platforms with a focus on scalability, speed, and clean architecture.",
+  title: "Web & AI Developer",
+  tagline: "Building Clean Web Apps & AI Tools",
+  bio: "I build fast web apps, smart AI tools, and modern digital platforms. I focus on speed, clean code, and simple design that works well.",
   photo: profilePhoto,
   email: "sajideenhassan12@gmail.com",
   location: "Pakistan",
-  cvUrl: "/Sajideen_CV.pdf",
+  cvUrl: "/Sajideen-Resume.docx",
   social: {
     github: "https://github.com/Sajideen-Hassan",
     linkedin: "https://www.linkedin.com/in/sajideen-hassan",
@@ -14,11 +14,11 @@ export const personal = {
 };
 
 export const roles = [
-  "Full Stack Software Engineer",
-  "React & Next.js Specialist",
-  "Node.js Backend Architect",
-  "AI Systems Engineer",
-  "Scalable Platform Builder",
+  "Web & AI Developer",
+  "React & Next.js Expert",
+  "Node.js Backend Developer",
+  "AI Tools Builder",
+  "Full Stack Creator",
 ];
 
 export const skills = [
@@ -44,18 +44,18 @@ export const skills = [
   },
 ];
 
-import asCover from '../assets/AS_coverImage.png';
-import brotchunCover from '../assets/Brotchun_coverImage.png';
-import imgGenCover from '../assets/Image_generator.png';
-import ivCover from '../assets/IV_coverImage.png';
-import n8nCover from '../assets/n8n_workflow_01.png';
+import asCover from '../assets/AS_coverImage.webp';
+import brotchunCover from '../assets/Brotchun_coverImage.webp';
+import imgGenCover from '../assets/Image_generator.webp';
+import ivCover from '../assets/IV_coverImage.webp';
+import n8nCover from '../assets/n8n_workflow_01.webp';
 import profilePhoto from '../assets/SajideenHassanprofile.jpg';
 
 export const projects = [
   {
     id: 1,
     title: "AuraSpeech",
-    description: "AI-powered voice transcription and analytics platform with real-time processing, speaker diarization, and intelligent search across thousands of hours of audio.",
+    description: "AI tool that turns speech into text, finds who is speaking, and lets you search through audio files quickly.",
     tags: ["Next.js", "Python", "OpenAI", "MongoDB", "WebSockets"],
     github: "https://github.com/sajideen",
     website: "https://github.com/sajideen",
@@ -64,7 +64,7 @@ export const projects = [
   {
     id: 2,
     title: "Inventory Management System",
-    description: "Real-time inventory tracking and order management system with predictive analytics, barcode scanning, and multi-warehouse support.",
+    description: "Track stock and manage orders in real time. Supports barcode scanning and works across multiple warehouses.",
     tags: ["React", "Node.js", "PostgreSQL", "Redis", "Docker"],
     github: "https://github.com/sajideen",
     website: "https://github.com/sajideen",
@@ -73,7 +73,7 @@ export const projects = [
   {
     id: 3,
     title: "Brotchun",
-    description: "Full-stack social content platform with AI-driven recommendations, real-time messaging, and creator analytics dashboard.",
+    description: "A social platform where creators share content, chat in real time, and get smart recommendations powered by AI.",
     tags: ["Next.js", "TypeScript", "MongoDB", "AWS", "GraphQL"],
     github: "https://github.com/sajideen",
     website: "https://github.com/sajideen",
@@ -82,7 +82,7 @@ export const projects = [
   {
     id: 4,
     title: "N8N Workflow Marketplace",
-    description: "A marketplace for n8n workflow templates with automated deployment, version control, and community ratings.",
+    description: "A marketplace to find and share n8n workflow templates. Includes auto setup, version tracking, and user ratings.",
     tags: ["React", "Node.js", "PostgreSQL", "n8n", "Stripe"],
     github: "https://github.com/sajideen",
     website: "https://github.com/sajideen",
@@ -91,7 +91,7 @@ export const projects = [
   {
     id: 5,
     title: "Image Generator",
-    description: "AI-powered image generation platform with prompt-based creation, style transfer, and batch processing capabilities.",
+    description: "Create images with AI using text prompts. Supports different styles and can process multiple images at once.",
     tags: ["React", "Python", "AI", "OpenAI", "Node.js"],
     github: "https://github.com/sajideen",
     website: "https://github.com/sajideen",
@@ -104,14 +104,14 @@ export const experience = [
     role: "Associate Software Engineer",
     company: "TechTideCo",
     period: "Nov 2025 - Present",
-    description: "Built scalable MERN stack applications with focus on performance and clean architecture. Developed RESTful APIs using Node.js, Express, and MongoDB for reliable backend systems. Created responsive React interfaces to improve user experience across devices. Maintained modular GitHub codebases and contributed through peer code reviews. Worked in Agile teams with active participation in sprint planning and delivery cycles.",
+    description: "Built web apps using React, Node.js, and MongoDB. Created fast APIs and clean interfaces. Worked in a team using Agile methods and helped review code.",
     tech: ["MERN", "Node.js", "Express", "MongoDB", "React", "REST APIs", "GitHub", "Agile"],
   },
   {
     role: "Software Engineer Intern",
     company: "TechTideCo",
     period: "Aug 2025 - Nov 2025",
-    description: "Supported development of full stack applications in a production environment. Built and integrated REST APIs with secure authentication flows. Connected frontend interfaces with backend services for smooth data handling. Identified and resolved performance issues to improve application efficiency.",
+    description: "Helped build web apps in a real production setting. Built APIs with login systems and connected them to the frontend. Fixed performance issues to make apps run faster.",
     tech: ["Full Stack", "REST APIs", "Auth", "Frontend", "Backend", "Performance"],
   },
   {

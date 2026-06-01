@@ -1,5 +1,4 @@
 import { useRef, useEffect, useState } from 'react';
-import { m, useInView, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { personal } from '../data/portfolio';
 import { ElasticText } from './TextAnimations';
@@ -8,12 +7,35 @@ import CanvasBg from './CanvasBg';
 export default function About() {
   const sectionRef = useRef(null);
   const imageRef = useRef(null);
-  const inView = useInView(sectionRef, { once: true, margin: '-80px' });
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
-  const imgParallax = useTransform(scrollYProgress, [0, 1], ['-8%', '8%']);
-  const driftX = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const [inView, setInView] = useState(false);
+  const [imgParallax, setImgParallax] = useState(0);
   const [headingInView, setHeadingInView] = useState(false);
   const headingRef = useRef(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.unobserve(el); } },
+      { rootMargin: '-80px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const rect = el.getBoundingClientRect();
+      const wh = window.innerHeight;
+      const progress = Math.max(0, Math.min(1, (wh - rect.top) / (wh + rect.height)));
+      setImgParallax(-8 + 16 * progress);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     const el = headingRef.current;
@@ -26,72 +48,56 @@ export default function About() {
     return () => observer.disconnect();
   }, []);
 
+  const words = personal.tagline.split(' ');
+  const midIdx = Math.ceil(words.length / 2);
+  const aboutFirst = words.slice(0, midIdx).join(' ');
+  const aboutRest = words.slice(midIdx).join(' ');
+
   return (
-    <section id="about" ref={sectionRef} className="about-section snap-section" aria-label="About">
+    <section id="about" ref={sectionRef} className="about-section snap-section section-alt" aria-label="About">
       <CanvasBg theme="calm" />
-      <div className="drift-layer">
-        <m.div className="drift-line" style={{ top: '15%', x: driftX }}>
-          SOFTWARE ENGINEER • FULL STACK • AI SYSTEMS • REACT • NODE.JS •
-        </m.div>
-      </div>
 
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <m.div
-          className="about-spread"
-          initial={{ opacity: 0, scale: 0.92 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
+        <div className={`about-spread spread-fade ${inView ? 'is-visible' : ''}`}>
           <div className="about-image-col">
-            <div className={`about-frame ${inView ? 'is-revealed' : ''}`}>
-              <m.div
-                ref={imageRef}
-                className="about-image-wrap"
-                whileHover={{ scale: 1.03 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <m.img
-                  src={personal.photo}
-                  alt={personal.name}
-                  className="about-image"
-                  style={{ y: imgParallax }}
-                />
-                <div className="about-image-border" />
-              </m.div>
+            <div
+              ref={imageRef}
+              className="about-image-wrap"
+            >
+              <img
+                src={personal.photo}
+                alt={personal.name}
+                className="about-image"
+                loading="lazy"
+                style={{ transform: `translateY(${imgParallax}%)` }}
+              />
             </div>
           </div>
 
           <div className="about-text-col">
-            <m.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4 }}
-            >
+            <div className={`bio-fade ${inView ? 'is-visible' : ''}`} style={{ transitionDelay: '0s' }}>
               <span className="section-label">About</span>
-            </m.div>
+            </div>
 
             <h2 ref={headingRef} className="about-heading">
-              <ElasticText text={personal.tagline} inView={headingInView} baseDelay={0.1} />
+              <span className="section-title-outline">
+                <ElasticText text={aboutFirst} inView={headingInView} baseDelay={0.1} />
+              </span>{' '}
+              <span className="section-title-fill">
+                <ElasticText text={aboutRest} inView={headingInView} baseDelay={0.1 + aboutFirst.length * 0.035} />
+              </span>
             </h2>
 
-            <m.p
-              className="about-bio"
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.5 }}
+            <p
+              className={`about-bio bio-fade ${inView ? 'is-visible' : ''}`}
+              style={{ transitionDelay: '0.5s' }}
             >
               {personal.bio}
-            </m.p>
+            </p>
 
-            <m.div
-              className="about-stats"
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.65 }}
+            <div
+              className={`about-stats bio-fade ${inView ? 'is-visible' : ''}`}
+              style={{ transitionDelay: '0.65s' }}
             >
               <div className="about-stat">
                 <span className="about-stat-num">2</span>
@@ -107,71 +113,50 @@ export default function About() {
                 </span>
                 <span className="about-stat-label">Available</span>
               </div>
-            </m.div>
+            </div>
 
-            <m.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.8 }}
-            >
+            <div className={`bio-fade ${inView ? 'is-visible' : ''}`} style={{ transitionDelay: '0.8s' }}>
               <Link to="/details" className="about-cta" data-cursor>
                 <span className="about-cta-border" />
                 <span className="about-cta-text">View more</span>
                 <span className="about-cta-arrow">→</span>
               </Link>
-            </m.div>
+            </div>
           </div>
-        </m.div>
+        </div>
       </div>
 
       <style>{`
         .about-section {
-          padding-top: 0;
           overflow: hidden;
           position: relative;
         }
 
         .about-spread {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 60px;
+          grid-template-columns: auto 1fr;
+          gap: 32px;
           align-items: center;
         }
 
         .about-image-col { position: relative; }
 
-        .about-frame {
-          position: relative;
-          clip-path: inset(0 0 0 0);
-          transition: clip-path 1.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .about-frame:not(.is-revealed) {
-          clip-path: inset(0 100% 0 0);
-        }
-
         .about-image-wrap {
           position: relative;
           overflow: hidden;
           cursor: crosshair;
+          border-radius: 20px;
         }
 
         .about-image {
           width: 100%;
-          height: 420px;
+          max-width: 320px;
+          height: 340px;
           object-fit: contain;
           object-position: center;
           display: block;
           will-change: transform;
-          background: var(--bg);
-        }
-
-        .about-image-border {
-          position: absolute;
-          inset: 0;
-          border: 2px solid var(--border);
-          pointer-events: none;
+          border-radius: 20px;
         }
 
         .about-text-col {
@@ -182,11 +167,14 @@ export default function About() {
 
         .about-heading {
           font-family: var(--font-heading);
-          font-size: clamp(20px, 3vw, 32px);
-          font-weight: 700;
+          font-size: clamp(24px, 4vw, 44px);
+          font-weight: 800;
           line-height: 1.2;
-          letter-spacing: -0.2px;
-          color: var(--primary-bold);
+          letter-spacing: -0.5px;
+          color: transparent;
+          -webkit-text-stroke: 1.2px #000000;
+          text-stroke: 1.2px #000000;
+          paint-order: stroke fill;
         }
 
         .about-bio {
@@ -198,22 +186,27 @@ export default function About() {
 
         .about-stats {
           display: flex;
-          gap: 36px;
-          padding-top: 20px;
+          gap: 48px;
+          padding-top: 28px;
           border-top: 1px solid var(--border);
         }
 
         .about-stat {
           display: flex;
           flex-direction: column;
-          gap: 2px;
+          gap: 6px;
+          transition: transform 0.3s ease;
+        }
+
+        .about-stat:hover {
+          transform: translateY(-4px);
         }
 
         .about-stat-num {
           font-family: var(--font-heading);
-          font-size: 24px;
+          font-size: 32px;
           font-weight: 700;
-          color: var(--primary-bold);
+          color: #000000;
           line-height: 1;
         }
 
@@ -221,8 +214,9 @@ export default function About() {
           font-family: var(--font-mono);
           font-size: 9px;
           color: var(--muted);
-          letter-spacing: 1px;
+          letter-spacing: 1.5px;
           text-transform: uppercase;
+          font-weight: 600;
         }
 
         .about-status-dot {
@@ -241,46 +235,73 @@ export default function About() {
           align-items: center;
           gap: 12px;
           text-decoration: none;
-          padding: 12px 0;
+          padding: 14px 0;
           position: relative;
-          transition: gap 0.3s ease;
+          transition: gap 0.3s ease, color 0.3s ease;
+          font-weight: 600;
         }
 
-        .about-cta:hover { gap: 20px; }
+        .about-cta:hover { gap: 24px; }
 
         .about-cta-border {
           position: absolute;
           left: 0; bottom: 0;
-          width: 100%; height: 1px;
-          background: var(--border);
-          transition: height 0.3s ease, background 0.3s ease;
+          width: 100%; height: 2px;
+          background: #000000;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          opacity: 0.5;
         }
 
         .about-cta:hover .about-cta-border {
-          height: 2px;
-          background: var(--primary);
+          height: 3px;
+          opacity: 1;
         }
 
         .about-cta-text {
           font-family: var(--font-sans);
           font-size: 13px;
-          font-weight: 500;
-          color: var(--primary-bold);
-          letter-spacing: 0.3px;
+          font-weight: 600;
+          color: #000000;
+          letter-spacing: 0.5px;
         }
 
         .about-cta-arrow {
-          font-size: 16px;
-          color: var(--primary);
-          transition: transform 0.3s ease;
+          font-size: 18px;
+          color: #000000;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .about-cta:hover .about-cta-arrow { transform: translateX(4px); }
+        .about-cta:hover .about-cta-arrow { 
+          transform: translateX(6px) rotate(45deg);
+        }
+
+        @media (max-width: 1024px) {
+          .about-spread { gap: 28px; }
+          .about-image { max-width: 280px; height: 280px; }
+          .about-bio { max-width: 100%; }
+        }
+
+        @media (max-width: 1024px) {
+          .about-image { max-width: 280px; height: 280px; }
+        }
 
         @media (max-width: 768px) {
-          .about-spread { grid-template-columns: 1fr; gap: 40px; }
-          .about-image { height: 400px; }
+          .about-spread { grid-template-columns: 1fr; gap: 32px; }
+          .about-image-wrap { max-width: 220px; }
+          .about-image { max-width: 220px; height: 240px; }
           .about-stats { gap: 24px; flex-wrap: wrap; }
+          .about-bio { max-width: 100%; }
+          .about-image-col { order: -1; }
+        }
+
+        @media (max-width: 480px) {
+          .about-spread { gap: 24px; }
+          .about-image { max-width: 180px; height: 200px; }
+          .about-heading { font-size: clamp(18px, 5vw, 22px); }
+          .about-bio { font-size: 12px; }
+          .about-stats { gap: 16px; }
+          .about-stat-num { font-size: 20px; }
+          .about-stat-label { font-size: 8px; }
         }
       `}</style>
     </section>

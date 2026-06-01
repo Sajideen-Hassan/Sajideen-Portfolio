@@ -1,27 +1,21 @@
 import { useRef, useState, useEffect } from 'react';
-import { m, useInView, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { experience, education, personal } from '../data/portfolio';
 import { WaveText, KineticText } from '../components/TextAnimations';
 import CanvasBg from '../components/CanvasBg';
 import GlobalBackground from '../components/GlobalBackground';
+import useInView from '../hooks/useInView';
 
 function ExpRow({ item, index }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-100px' });
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const rowX = useTransform(scrollYProgress, [0, 1], [index % 2 === 0 ? -40 : 40, 0]);
+  const [ref, inView] = useInView({ once: true, rootMargin: '-100px' });
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <m.div
+    <div
       ref={ref}
-      className={`exp-row ${expanded ? 'is-expanded' : ''}`}
-      style={{ x: rowX }}
+      className={`exp-row item-fade ${expanded ? 'is-expanded' : ''} ${inView ? 'is-visible' : ''}`}
+      style={{ transitionDelay: `${index * 0.1}s` }}
       onClick={() => setExpanded(!expanded)}
-      initial={{ opacity: 0 }}
-      animate={inView ? { opacity: 1 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
       data-cursor
     >
       <div className="exp-row-left">
@@ -33,35 +27,29 @@ function ExpRow({ item, index }) {
           <span className="exp-row-company">{item.company}</span>
           <span className="exp-row-toggle">{expanded ? '−' : '+'}</span>
         </div>
-        <m.div
-          className="exp-row-details"
-          initial={{ height: 0, opacity: 0 }}
-          animate={expanded ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <span className="exp-row-period">{item.period}</span>
-          <h3 className="exp-row-role">{item.role}</h3>
-          <p className="exp-row-desc">{item.description}</p>
-          <div className="exp-row-tech">
-            {item.tech.map(t => <span key={t} className="exp-row-chip">{t}</span>)}
+        {expanded && (
+          <div className="exp-row-details" style={{ animation: 'drawer-in 0.4s cubic-bezier(0.16,1,0.3,1) both' }}>
+            <span className="exp-row-period">{item.period}</span>
+            <h3 className="exp-row-role">{item.role}</h3>
+            <p className="exp-row-desc">{item.description}</p>
+            <div className="exp-row-tech">
+              {item.tech.map(t => <span key={t} className="exp-row-chip">{t}</span>)}
+            </div>
           </div>
-        </m.div>
+        )}
       </div>
-    </m.div>
+    </div>
   );
 }
 
 function EduDot({ item, index }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-60px' });
+  const [ref, inView] = useInView({ once: true, rootMargin: '-60px' });
 
   return (
-    <m.div
+    <div
       ref={ref}
-      className="edu-dot-item"
-      initial={{ opacity: 0, x: -20 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+      className={`edu-dot-item item-fade ${inView ? 'is-visible' : ''}`}
+      style={{ transitionDelay: `${index * 0.15}s` }}
     >
       <div className="edu-dot-marker">
         <div className="edu-dot-inner" />
@@ -76,35 +64,29 @@ function EduDot({ item, index }) {
         {item.major && <p className="edu-dot-major">Major: {item.major}</p>}
         {item.minor && <p className="edu-dot-minor">Minor: {item.minor}</p>}
       </div>
-    </m.div>
+    </div>
   );
 }
 
 export default function Details() {
-  const headerRef = useRef(null);
-  const headerInView = useInView(headerRef, { once: true });
   const [expInView, setExpInView] = useState(false);
   const [eduInView, setEduInView] = useState(false);
-  const [projInView, setProjInView] = useState(false);
   const expHeaderRef = useRef(null);
   const eduHeaderRef = useRef(null);
-  const projHeaderRef = useRef(null);
 
   useEffect(() => {
     const expEl = expHeaderRef.current;
     const eduEl = eduHeaderRef.current;
+    if (!expEl && !eduEl) return;
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.target === expEl && entry.isIntersecting) setExpInView(true);
         if (entry.target === eduEl && entry.isIntersecting) setEduInView(true);
-        if (entry.target === projEl && entry.isIntersecting) setProjInView(true);
       },
       { threshold: 0.3 }
     );
-    const projEl = projHeaderRef.current;
     if (expEl) obs.observe(expEl);
     if (eduEl) obs.observe(eduEl);
-    if (projEl) obs.observe(projEl);
     return () => obs.disconnect();
   }, []);
 
@@ -121,30 +103,21 @@ export default function Details() {
         </div>
       </div>
 
-      <div className="container" ref={headerRef}>
-        <div className="details-hero">
-          <m.div className="section-label" initial={{ opacity: 0, y: 20 }} animate={headerInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}>
-            Career Journey
-          </m.div>
-          <m.h1 className="details-title" initial={{ opacity: 0, y: 40 }} animate={headerInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}>
-            Built on<br /><span className="details-title-accent">experience.</span>
-          </m.h1>
-          <m.p className="details-sub" initial={{ opacity: 0 }} animate={headerInView ? { opacity: 1 } : {}} transition={{ delay: 0.3 }}>
-            Professional milestones, education, and continuous growth.
-          </m.p>
-        </div>
-      </div>
-
       {/* Experience */}
       <section id="experience" className="exp-section" aria-label="Professional Experience">
         <CanvasBg theme="timeline" />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <m.div ref={expHeaderRef} className="exp-section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+          <div ref={expHeaderRef} className={`exp-section-header header-fade ${expInView ? 'is-visible' : ''}`} style={{ transitionDelay: '0s' }}>
             <span className="section-label">Experience</span>
             <h2 className="exp-section-title">
-              <WaveText text="Career timeline" inView={expInView} baseDelay={0.1} />
+              <span className="section-title-outline">
+                <WaveText text="Career" inView={expInView} baseDelay={0.1} />
+              </span>{' '}
+              <span className="section-title-fill">
+                <WaveText text="timeline" inView={expInView} baseDelay={0.1 + "Career".length * 0.04} />
+              </span>
             </h2>
-          </m.div>
+          </div>
           <div className="exp-rows">
             {experience.map((item, i) => (
               <ExpRow key={`${item.company}-${i}`} item={item} index={i} />
@@ -154,15 +127,20 @@ export default function Details() {
       </section>
 
       {/* Education */}
-      <section id="education" className="edu-section" aria-label="Education">
+      <section id="education" className="edu-section section-alt" aria-label="Education">
         <CanvasBg theme="float" />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <m.div ref={eduHeaderRef} className="edu-section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+          <div ref={eduHeaderRef} className={`edu-section-header header-fade ${eduInView ? 'is-visible' : ''}`} style={{ transitionDelay: '0s' }}>
             <span className="section-label">Education</span>
             <h2 className="edu-section-title">
-              <KineticText text="Academic path" inView={eduInView} baseDelay={0.1} />
+              <span className="section-title-outline">
+                <KineticText text="Academic" inView={eduInView} baseDelay={0.1} />
+              </span>{' '}
+              <span className="section-title-fill">
+                <KineticText text="path" inView={eduInView} baseDelay={0.1 + "Academic".length * 0.03} />
+              </span>
             </h2>
-          </m.div>
+          </div>
           <div className="edu-dots">
             {education.map((item, i) => (
               <EduDot key={`${item.institution}-${i}`} item={item} index={i} />
@@ -451,13 +429,37 @@ export default function Details() {
         .btn-secondary { font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--primary); text-decoration: none; padding: 12px 0; border-bottom: 1px solid var(--border); transition: border-color 0.3s ease, gap 0.3s ease; display: inline-flex; align-items: center; gap: 4px; }
         .btn-secondary:hover { border-color: var(--primary); gap: 8px; }
 
+        @media (max-width: 1024px) {
+          .exp-section-title { font-size: clamp(28px, 5vw, 44px); }
+          .edu-section-title { font-size: clamp(28px, 5vw, 44px); }
+        }
+
         @media (max-width: 768px) {
-          .details-title { letter-spacing: -2px; }
-          .exp-row { padding: 24px 0; }
-          .exp-row-details .exp-row-role { font-size: 20px; }
-          .edu-dot-degree { font-size: 17px; }
-          .proj-item-title { font-size: 18px; }
-          .details-cta { flex-direction: column; align-items: flex-start; padding: 32px 0; }
+          .details-title { letter-spacing: -2px; font-size: clamp(36px, 8vw, 48px); }
+          .exp-row { padding: 20px 0; gap: 16px; }
+          .exp-row-details .exp-row-role { font-size: 18px; }
+          .exp-row-company { font-size: clamp(16px, 3vw, 22px); }
+          .exp-row-desc { font-size: 12px; }
+          .edu-dot-degree { font-size: 16px; }
+          .edu-dot-org { font-size: 12px; }
+          .proj-item-title { font-size: 16px; }
+          .details-cta { flex-direction: column; align-items: flex-start; padding: 24px 0; gap: 20px; }
+          .details-cta-text { font-size: 22px; }
+          .btn-primary { padding: 10px 24px; font-size: 12px; }
+        }
+
+        @media (max-width: 480px) {
+          .details-page { padding-top: 48px; }
+          .exp-section { padding: 60px 0; }
+          .exp-section-header { margin-bottom: 32px; }
+          .edu-section { padding: 60px 0; }
+          .edu-section-header { margin-bottom: 32px; }
+          .exp-row { padding: 16px 0; }
+          .exp-row-role { font-size: 18px; }
+          .exp-row-details .exp-row-role { font-size: 16px; }
+          .edu-dot-degree { font-size: 14px; }
+          .edu-dot-item { margin-bottom: 24px; gap: 12px; }
+          .details-nav-tag { display: none; }
         }
       `}</style>
     </main>

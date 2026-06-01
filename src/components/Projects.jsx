@@ -1,56 +1,64 @@
 import { useRef, useState, useEffect } from 'react';
-import { m, useInView, useScroll, useTransform } from 'framer-motion';
+import useInView from '../hooks/useInView';
 import { projects } from '../data/portfolio';
 import { WaveText } from './TextAnimations';
 import CanvasBg from './CanvasBg';
 
 export default function Projects() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const driftOffset = useTransform(scrollYProgress, [0, 1], [60, -60]);
+  const [ref, inView] = useInView({ once: true, rootMargin: '-80px' });
   const listRef = useRef(null);
   const [hoveredProject, setHoveredProject] = useState(null);
   const [imagePos, setImagePos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const handleMouseMove = (e) => {
     setImagePos({ x: e.clientX, y: e.clientY });
   };
 
+  const handleProjectClick = (project) => {
+    if (window.innerWidth <= 768) {
+      setSelectedProject(selectedProject?.id === project.id ? null : project);
+    }
+  };
+
   useEffect(() => {
+    const section = ref.current;
     const list = listRef.current;
-    if (!list) return;
-    const unsubscribe = driftOffset.on('change', (v) => {
+    if (!section || !list) return;
+
+    const onScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const wh = window.innerHeight;
+      const progress = Math.max(0, Math.min(1, (wh - rect.top) / (wh + rect.height)));
+      const v = 60 - 120 * progress;
       const rows = list.querySelectorAll('.project-row');
       rows.forEach((row, i) => {
         const offset = v * (1 - i * 0.15);
         row.style.setProperty('--drift-x', `${offset}px`);
       });
-    });
-    return () => unsubscribe();
-  }, [driftOffset]);
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
     <section id="projects" ref={ref} className="projects-section snap-section" aria-label="Projects">
       <CanvasBg theme="spotlight" focusX={isHovering ? imagePos.x : undefined} focusY={isHovering ? imagePos.y : undefined} />
       <div className="container">
-        <m.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        >
+        <div className={`section-label-fade ${inView ? 'is-visible' : ''}`} style={{ transitionDelay: '0.1s' }}>
           <span className="section-label">Selected Work</span>
-        </m.div>
+        </div>
 
-        <m.h2
-          className="section-title"
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        <h2
+          className={`section-title title-fade ${inView ? 'is-visible' : ''}`}
+          style={{ transitionDelay: '0.2s' }}
         >
-          Projects.
-        </m.h2>
+          <span className="section-title-outline">Proj</span>
+          <span className="section-title-fill">ects.</span>
+        </h2>
 
         <div
           ref={listRef}
@@ -58,14 +66,13 @@ export default function Projects() {
           onMouseMove={handleMouseMove}
         >
           {projects.map((project, idx) => (
-            <m.div
+            <div
               key={project.id}
-              className="project-row"
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 * idx + 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className={`project-row row-fade ${selectedProject?.id === project.id ? 'is-tapped' : ''} ${inView ? 'is-visible' : ''}`}
+              style={{ transitionDelay: `${0.2 + 0.1 * idx}s` }}
               onMouseEnter={() => { setHoveredProject(project); setIsHovering(true); }}
               onMouseLeave={() => { setHoveredProject(null); setIsHovering(false); }}
+              onClick={() => handleProjectClick(project)}
               data-cursor
             >
               <span className="project-index">0{idx + 1}</span>
@@ -73,19 +80,25 @@ export default function Projects() {
                 <WaveText text={project.title} inView={inView} baseDelay={0.2 + idx * 0.08} />
               </h3>
               <span className="project-arrow">→</span>
-            </m.div>
+            </div>
           ))}
         </div>
       </div>
 
-      <m.div
+      <div
         className={`project-floating-image ${isHovering ? 'is-visible' : ''}`}
         style={{ left: imagePos.x + 30, top: imagePos.y - 120 }}
       >
         {hoveredProject && (
-          <img src={hoveredProject.coverImage} alt={hoveredProject.title} />
+          <img src={hoveredProject.coverImage} alt={hoveredProject.title} loading="lazy" />
         )}
-      </m.div>
+      </div>
+
+      {selectedProject && (
+        <div className="project-mobile-preview" onClick={() => setSelectedProject(null)}>
+          <img src={selectedProject.coverImage} alt={selectedProject.title} loading="lazy" width="340" height="260" />
+        </div>
+      )}
 
       <style>{`
         .projects-section {
@@ -142,8 +155,6 @@ export default function Projects() {
 
         .project-floating-image {
           position: fixed;
-          width: 340px;
-          height: 260px;
           z-index: 100;
           pointer-events: none;
           opacity: 0;
@@ -159,16 +170,52 @@ export default function Projects() {
         }
 
         .project-floating-image img {
-          width: 100%; height: 100%;
-          object-fit: contain;
+          max-width: 340px;
+          max-height: 260px;
+          width: auto;
+          height: auto;
           border-radius: 0;
           box-shadow: 0 20px 60px rgba(0,0,0,0.15);
         }
 
+        @media (max-width: 1024px) {
+          .project-row { gap: 16px; }
+          .project-index { min-width: 32px; font-size: 11px; }
+        }
+
+        .project-mobile-preview {
+          display: none;
+          position: fixed;
+          inset: 0;
+          z-index: 200;
+          background: rgba(0,0,0,0.7);
+          align-items: center;
+          justify-content: center;
+          padding: 40px;
+        }
+
+        .project-mobile-preview img {
+          max-width: 90%;
+          max-height: 70%;
+          width: auto;
+          height: auto;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
         @media (max-width: 768px) {
           .project-floating-image { display: none; }
-          .project-row { padding: 24px 0; }
-          .project-name { font-size: clamp(20px, 6vw, 32px); }
+          .project-row { padding: 20px 0; gap: 12px; }
+          .project-name { font-size: clamp(18px, 5vw, 28px); }
+          .project-index { min-width: 28px; font-size: 10px; }
+          .project-mobile-preview { display: flex; }
+        }
+
+        @media (max-width: 480px) {
+          .projects-section { padding-top: 60px; padding-bottom: 60px; }
+          .project-row { padding: 16px 0; flex-wrap: wrap; gap: 8px; }
+          .project-name { font-size: clamp(16px, 5vw, 22px); letter-spacing: -0.5px; }
+          .project-index { min-width: 24px; font-size: 9px; }
+          .project-arrow { font-size: 16px; }
         }
       `}</style>
     </section>
