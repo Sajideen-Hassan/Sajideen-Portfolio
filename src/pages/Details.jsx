@@ -1,0 +1,465 @@
+import { useRef, useState, useEffect } from 'react';
+import { m, useInView, useScroll, useTransform } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { experience, education, personal } from '../data/portfolio';
+import { WaveText, KineticText } from '../components/TextAnimations';
+import CanvasBg from '../components/CanvasBg';
+import GlobalBackground from '../components/GlobalBackground';
+
+function ExpRow({ item, index }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-100px' });
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
+  const rowX = useTransform(scrollYProgress, [0, 1], [index % 2 === 0 ? -40 : 40, 0]);
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <m.div
+      ref={ref}
+      className={`exp-row ${expanded ? 'is-expanded' : ''}`}
+      style={{ x: rowX }}
+      onClick={() => setExpanded(!expanded)}
+      initial={{ opacity: 0 }}
+      animate={inView ? { opacity: 1 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      data-cursor
+    >
+      <div className="exp-row-left">
+        <span className="exp-row-num">0{index + 1}</span>
+        <div className="exp-row-line" />
+      </div>
+      <div className="exp-row-body">
+        <div className="exp-row-meta">
+          <span className="exp-row-company">{item.company}</span>
+          <span className="exp-row-toggle">{expanded ? '−' : '+'}</span>
+        </div>
+        <m.div
+          className="exp-row-details"
+          initial={{ height: 0, opacity: 0 }}
+          animate={expanded ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className="exp-row-period">{item.period}</span>
+          <h3 className="exp-row-role">{item.role}</h3>
+          <p className="exp-row-desc">{item.description}</p>
+          <div className="exp-row-tech">
+            {item.tech.map(t => <span key={t} className="exp-row-chip">{t}</span>)}
+          </div>
+        </m.div>
+      </div>
+    </m.div>
+  );
+}
+
+function EduDot({ item, index }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-60px' });
+
+  return (
+    <m.div
+      ref={ref}
+      className="edu-dot-item"
+      initial={{ opacity: 0, x: -20 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <div className="edu-dot-marker">
+        <div className="edu-dot-inner" />
+      </div>
+      <div className="edu-dot-content">
+        <div className="edu-dot-meta">
+          <span className="edu-dot-period">{item.period}</span>
+          {item.grade && <span className="edu-dot-grade">{item.grade}</span>}
+        </div>
+        <h3 className="edu-dot-degree">{item.degree}</h3>
+        <p className="edu-dot-org">{item.institution}</p>
+        {item.major && <p className="edu-dot-major">Major: {item.major}</p>}
+        {item.minor && <p className="edu-dot-minor">Minor: {item.minor}</p>}
+      </div>
+    </m.div>
+  );
+}
+
+export default function Details() {
+  const headerRef = useRef(null);
+  const headerInView = useInView(headerRef, { once: true });
+  const [expInView, setExpInView] = useState(false);
+  const [eduInView, setEduInView] = useState(false);
+  const [projInView, setProjInView] = useState(false);
+  const expHeaderRef = useRef(null);
+  const eduHeaderRef = useRef(null);
+  const projHeaderRef = useRef(null);
+
+  useEffect(() => {
+    const expEl = expHeaderRef.current;
+    const eduEl = eduHeaderRef.current;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.target === expEl && entry.isIntersecting) setExpInView(true);
+        if (entry.target === eduEl && entry.isIntersecting) setEduInView(true);
+        if (entry.target === projEl && entry.isIntersecting) setProjInView(true);
+      },
+      { threshold: 0.3 }
+    );
+    const projEl = projHeaderRef.current;
+    if (expEl) obs.observe(expEl);
+    if (eduEl) obs.observe(eduEl);
+    if (projEl) obs.observe(projEl);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <main className="details-page" aria-label="Experience and Education">
+      <GlobalBackground />
+      <div className="details-nav">
+        <div className="container nav-inner">
+          <Link to="/" className="back-link" data-cursor>
+            <span className="back-arrow">←</span>
+            <span className="back-label">Back</span>
+          </Link>
+          <span className="details-nav-tag">Experience & Education</span>
+        </div>
+      </div>
+
+      <div className="container" ref={headerRef}>
+        <div className="details-hero">
+          <m.div className="section-label" initial={{ opacity: 0, y: 20 }} animate={headerInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}>
+            Career Journey
+          </m.div>
+          <m.h1 className="details-title" initial={{ opacity: 0, y: 40 }} animate={headerInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}>
+            Built on<br /><span className="details-title-accent">experience.</span>
+          </m.h1>
+          <m.p className="details-sub" initial={{ opacity: 0 }} animate={headerInView ? { opacity: 1 } : {}} transition={{ delay: 0.3 }}>
+            Professional milestones, education, and continuous growth.
+          </m.p>
+        </div>
+      </div>
+
+      {/* Experience */}
+      <section id="experience" className="exp-section" aria-label="Professional Experience">
+        <CanvasBg theme="timeline" />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+          <m.div ref={expHeaderRef} className="exp-section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+            <span className="section-label">Experience</span>
+            <h2 className="exp-section-title">
+              <WaveText text="Career timeline" inView={expInView} baseDelay={0.1} />
+            </h2>
+          </m.div>
+          <div className="exp-rows">
+            {experience.map((item, i) => (
+              <ExpRow key={`${item.company}-${i}`} item={item} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Education */}
+      <section id="education" className="edu-section" aria-label="Education">
+        <CanvasBg theme="float" />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+          <m.div ref={eduHeaderRef} className="edu-section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+            <span className="section-label">Education</span>
+            <h2 className="edu-section-title">
+              <KineticText text="Academic path" inView={eduInView} baseDelay={0.1} />
+            </h2>
+          </m.div>
+          <div className="edu-dots">
+            {education.map((item, i) => (
+              <EduDot key={`${item.institution}-${i}`} item={item} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+
+
+
+      <style>{`
+        .details-page { min-height: 100vh; background: var(--bg); padding-top: 64px; }
+
+        .details-nav { border-bottom: 1px solid var(--border); position: sticky; top: 64px; background: var(--bg); z-index: 40; }
+        .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+        .back-link { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--secondary); transition: color 0.3s ease, gap 0.3s ease; }
+        .back-link:hover { color: var(--primary); gap: 12px; }
+        .back-arrow { font-size: 16px; }
+        .back-label { font-family: var(--font-sans); font-size: 13px; font-weight: 500; }
+        .details-nav-tag { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+        .details-hero { padding: 80px 0; }
+        .details-title { font-family: var(--font-heading); font-size: clamp(48px, 8vw, 100px); font-weight: 700; letter-spacing: -3px; line-height: 1; color: var(--primary); margin-bottom: 24px; }
+        .details-title-accent { color: var(--primary-bold); }
+        .details-sub { font-size: 16px; color: var(--secondary-light); max-width: 440px; line-height: 1.7; }
+
+        /* ===== EXPERIENCE ===== */
+        .exp-section { padding: 100px 0; border-top: 1px solid var(--border); }
+        .exp-section-header { margin-bottom: 56px; }
+        .exp-section-title { font-family: var(--font-heading); font-size: clamp(32px, 5vw, 64px); font-weight: 700; color: var(--primary-bold); letter-spacing: -1px; line-height: 1.1; }
+
+        .exp-rows { display: flex; flex-direction: column; gap: 0; }
+
+        .exp-row {
+          display: flex;
+          gap: 24px;
+          padding: 32px 0;
+          border-bottom: 1px solid var(--border-light);
+          cursor: pointer;
+          transition: border-color 0.3s ease;
+          will-change: transform;
+        }
+
+        .exp-row:hover { border-color: var(--border); }
+        .exp-row.is-expanded { border-color: var(--primary); }
+
+        .exp-row-left {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          min-width: 32px;
+        }
+
+        .exp-row-num {
+          font-family: var(--font-mono);
+          font-size: 11px;
+          color: var(--muted);
+          flex-shrink: 0;
+        }
+
+        .exp-row-line {
+          width: 1px;
+          flex: 1;
+          background: var(--border-light);
+          min-height: 20px;
+        }
+
+        .exp-row-body { flex: 1; }
+
+        .exp-row-meta {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .exp-row-period {
+          font-family: var(--font-mono);
+          font-size: 11px;
+          color: var(--muted);
+          letter-spacing: 0.3px;
+        }
+
+        .exp-row-company {
+          font-family: var(--font-heading);
+          font-size: clamp(18px, 2.5vw, 28px);
+          color: var(--primary);
+          font-weight: 700;
+          letter-spacing: -0.3px;
+        }
+
+        .exp-row-toggle {
+          margin-left: auto;
+          font-size: 16px;
+          color: var(--muted);
+          font-weight: 300;
+          transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .exp-row:hover .exp-row-toggle {
+          color: var(--primary);
+          transform: rotate(90deg);
+        }
+
+        .exp-row-role {
+          font-family: var(--font-heading);
+          font-size: clamp(22px, 3vw, 36px);
+          font-weight: 700;
+          color: var(--primary-bold);
+          letter-spacing: -0.5px;
+          line-height: 1.15;
+        }
+
+        .exp-row-details { overflow: hidden; }
+
+        .exp-row-desc {
+          font-size: 14px;
+          color: var(--secondary-light);
+          line-height: 1.7;
+          max-width: 600px;
+          margin-top: 16px;
+        }
+
+        .exp-row-tech {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-top: 16px;
+        }
+
+        .exp-row-chip {
+          font-family: var(--font-mono);
+          font-size: 11px;
+          color: var(--primary);
+          border: 1px solid var(--border-light);
+          padding: 4px 12px;
+          transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .exp-row-chip:hover {
+          background: var(--primary);
+          color: var(--bg);
+        }
+
+        /* ===== EDUCATION ===== */
+        .edu-section { padding: 100px 0; border-top: 1px solid var(--border); }
+        .edu-section-header { margin-bottom: 56px; }
+        .edu-section-title { font-family: var(--font-heading); font-size: clamp(32px, 5vw, 64px); font-weight: 700; color: var(--primary-bold); letter-spacing: -1px; line-height: 1.1; }
+
+        .edu-dots { position: relative; padding-left: 28px; }
+        .edu-dots::before {
+          content: '';
+          position: absolute;
+          left: 8px;
+          top: 8px;
+          bottom: 8px;
+          width: 1px;
+          background: var(--border-light);
+        }
+
+        .edu-dot-item {
+          position: relative;
+          margin-bottom: 36px;
+          display: flex;
+          gap: 20px;
+          align-items: flex-start;
+        }
+
+        .edu-dot-item:last-child { margin-bottom: 0; }
+
+        .edu-dot-marker {
+          position: absolute;
+          left: -24px;
+          top: 4px;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background: var(--bg);
+          border: 1.5px solid var(--primary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.3s ease, transform 0.3s ease;
+          z-index: 2;
+        }
+
+        .edu-dot-item:hover .edu-dot-marker {
+          background: var(--primary);
+          transform: scale(1.2);
+        }
+
+        .edu-dot-inner {
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: var(--bg);
+        }
+
+        .edu-dot-content { flex: 1; }
+
+        .edu-dot-meta {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 6px;
+        }
+
+        .edu-dot-period {
+          font-family: var(--font-mono);
+          font-size: 11px;
+          color: var(--muted);
+          letter-spacing: 0.3px;
+        }
+
+        .edu-dot-grade {
+          font-family: var(--font-mono);
+          font-size: 10px;
+          color: var(--secondary);
+          border: 1px solid var(--border-light);
+          padding: 1px 8px;
+        }
+
+        .edu-dot-degree {
+          font-family: var(--font-heading);
+          font-size: 20px;
+          font-weight: 700;
+          color: var(--primary-bold);
+          margin-bottom: 2px;
+          letter-spacing: -0.2px;
+        }
+
+        .edu-dot-org {
+          font-size: 13px;
+          color: var(--secondary);
+          font-weight: 500;
+        }
+
+        .edu-dot-major, .edu-dot-minor {
+          font-size: 12px;
+          color: var(--muted);
+          margin-top: 2px;
+          font-family: var(--font-mono);
+        }
+
+        .exp-row-details .exp-row-period {
+          font-family: var(--font-mono);
+          font-size: 11px;
+          color: var(--muted);
+          letter-spacing: 0.3px;
+          display: inline-block;
+          margin-bottom: 6px;
+        }
+
+        .exp-row-details .exp-row-role {
+          font-family: var(--font-heading);
+          font-size: clamp(22px, 3vw, 36px);
+          font-weight: 700;
+          color: var(--primary-bold);
+          letter-spacing: -0.5px;
+          line-height: 1.15;
+          margin-bottom: 12px;
+        }
+
+        /* ===== PROJECTS ===== */
+        .proj-section { padding: 100px 0; border-top: 1px solid var(--border); }
+        .proj-section-header { margin-bottom: 56px; }
+        .proj-section-title { font-family: var(--font-heading); font-size: clamp(32px, 5vw, 64px); font-weight: 700; color: var(--primary-bold); letter-spacing: -1px; line-height: 1.1; }
+
+        .proj-items { display: flex; flex-direction: column; gap: 0; }
+        .proj-item { padding: 28px 0; border-bottom: 1px solid var(--border-light); }
+        .proj-item:last-child { border-bottom: none; }
+        .proj-item-title { font-family: var(--font-heading); font-size: 22px; font-weight: 700; color: var(--primary-bold); margin-bottom: 4px; }
+        .proj-item-subject { font-size: 13px; color: var(--secondary); margin-bottom: 2px; }
+        .proj-item-meta { font-size: 13px; color: var(--muted); }
+        .proj-item-period { font-family: var(--font-mono); font-size: 11px; color: var(--muted); display: inline-block; margin-top: 8px; letter-spacing: 0.3px; }
+
+        /* ===== CTA ===== */
+        .details-cta { margin: 80px 0; padding: 48px 0; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+        .details-cta-text { font-family: var(--font-heading); font-size: 28px; font-weight: 700; color: var(--primary-bold); letter-spacing: -0.5px; }
+        .details-cta-btns { display: flex; gap: 24px; flex-wrap: wrap; }
+
+        .btn-primary { font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--bg); background: var(--primary); text-decoration: none; padding: 12px 28px; transition: background 0.3s ease, transform 0.3s ease; display: inline-block; }
+        .btn-primary:hover { background: var(--primary-bold); transform: translateY(-1px); }
+        .btn-secondary { font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--primary); text-decoration: none; padding: 12px 0; border-bottom: 1px solid var(--border); transition: border-color 0.3s ease, gap 0.3s ease; display: inline-flex; align-items: center; gap: 4px; }
+        .btn-secondary:hover { border-color: var(--primary); gap: 8px; }
+
+        @media (max-width: 768px) {
+          .details-title { letter-spacing: -2px; }
+          .exp-row { padding: 24px 0; }
+          .exp-row-details .exp-row-role { font-size: 20px; }
+          .edu-dot-degree { font-size: 17px; }
+          .proj-item-title { font-size: 18px; }
+          .details-cta { flex-direction: column; align-items: flex-start; padding: 32px 0; }
+        }
+      `}</style>
+    </main>
+  );
+}
