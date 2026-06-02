@@ -337,11 +337,25 @@ export default function Hero() {
 
         @media (max-width: 480px) {
           .hero-section { padding: 0 16px; min-height: 85vh; }
-          .hero-name-word { letter-spacing: -1px; font-size: clamp(26px, 6vw, 36px); }
-          .hero-role-row { margin-top: 4px; }
-          .hero-role-text { font-size: clamp(13px, 3vw, 16px); }
-          .hero-inner { gap: 16px; padding-top: 80px; padding-bottom: 40px; justify-content: center; }
-          .hero-bottom { font-size: 10px; flex-direction: column; gap: 4px; align-items: flex-start; }
+          .hero-name-word { letter-spacing: -1px; font-size: clamp(32px, 8vw, 46px); }
+          .hero-role-row { margin-top: 10px; }
+          .hero-role-text { font-size: clamp(15px, 3.5vw, 19px); }
+          .hero-inner { gap: 20px; padding-top: 88px; padding-bottom: 72px; justify-content: center; }
+          .hero-bottom { font-size: 11px; flex-direction: column; gap: 6px; align-items: flex-start; }
+          .hero-top { font-size: 10px; }
+        }
+
+        @media (max-width: 430px) {
+          .hero-section { padding: 0 14px; }
+          .hero-inner { padding-top: 80px; padding-bottom: 60px; gap: 18px; }
+        }
+
+        @media (max-width: 360px) {
+          .hero-section { padding: 0 12px; min-height: 80vh; }
+          .hero-name-word { font-size: clamp(26px, 6vw, 32px); -webkit-text-stroke: 1.5px #000000; text-stroke: 1.5px #000000; }
+          .hero-role-text { font-size: clamp(13px, 3vw, 15px); }
+          .hero-inner { gap: 14px; padding-top: 64px; padding-bottom: 40px; }
+          .hero-bottom { font-size: 10px; }
           .hero-top { font-size: 9px; }
         }
       `}</style>

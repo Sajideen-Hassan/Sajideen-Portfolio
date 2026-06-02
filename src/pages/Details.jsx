@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { experience, education, personal } from '../data/portfolio';
+import { experience, education } from '../data/portfolio';
 import { WaveText, KineticText } from '../components/TextAnimations';
 import CanvasBg from '../components/CanvasBg';
 import GlobalBackground from '../components/GlobalBackground';
@@ -163,11 +163,6 @@ export default function Details() {
         .back-arrow { font-size: 16px; }
         .back-label { font-family: var(--font-sans); font-size: 13px; font-weight: 500; }
         .details-nav-tag { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
-
-        .details-hero { padding: 80px 0; }
-        .details-title { font-family: var(--font-heading); font-size: clamp(48px, 8vw, 100px); font-weight: 700; letter-spacing: -3px; line-height: 1; color: var(--primary); margin-bottom: 24px; }
-        .details-title-accent { color: var(--primary-bold); }
-        .details-sub { font-size: 16px; color: var(--secondary-light); max-width: 440px; line-height: 1.7; }
 
         /* ===== EXPERIENCE ===== */
         .exp-section { padding: 100px 0; border-top: 1px solid var(--border); }
@@ -406,29 +401,6 @@ export default function Details() {
           margin-bottom: 12px;
         }
 
-        /* ===== PROJECTS ===== */
-        .proj-section { padding: 100px 0; border-top: 1px solid var(--border); }
-        .proj-section-header { margin-bottom: 56px; }
-        .proj-section-title { font-family: var(--font-heading); font-size: clamp(32px, 5vw, 64px); font-weight: 700; color: var(--primary-bold); letter-spacing: -1px; line-height: 1.1; }
-
-        .proj-items { display: flex; flex-direction: column; gap: 0; }
-        .proj-item { padding: 28px 0; border-bottom: 1px solid var(--border-light); }
-        .proj-item:last-child { border-bottom: none; }
-        .proj-item-title { font-family: var(--font-heading); font-size: 22px; font-weight: 700; color: var(--primary-bold); margin-bottom: 4px; }
-        .proj-item-subject { font-size: 13px; color: var(--secondary); margin-bottom: 2px; }
-        .proj-item-meta { font-size: 13px; color: var(--muted); }
-        .proj-item-period { font-family: var(--font-mono); font-size: 11px; color: var(--muted); display: inline-block; margin-top: 8px; letter-spacing: 0.3px; }
-
-        /* ===== CTA ===== */
-        .details-cta { margin: 80px 0; padding: 48px 0; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
-        .details-cta-text { font-family: var(--font-heading); font-size: 28px; font-weight: 700; color: var(--primary-bold); letter-spacing: -0.5px; }
-        .details-cta-btns { display: flex; gap: 24px; flex-wrap: wrap; }
-
-        .btn-primary { font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--bg); background: var(--primary); text-decoration: none; padding: 12px 28px; transition: background 0.3s ease, transform 0.3s ease; display: inline-block; }
-        .btn-primary:hover { background: var(--primary-bold); transform: translateY(-1px); }
-        .btn-secondary { font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--primary); text-decoration: none; padding: 12px 0; border-bottom: 1px solid var(--border); transition: border-color 0.3s ease, gap 0.3s ease; display: inline-flex; align-items: center; gap: 4px; }
-        .btn-secondary:hover { border-color: var(--primary); gap: 8px; }
-
         @media (max-width: 1024px) {
           .exp-section-title { font-size: clamp(28px, 5vw, 44px); }
           .edu-section-title { font-size: clamp(28px, 5vw, 44px); }
@@ -460,6 +432,35 @@ export default function Details() {
           .edu-dot-degree { font-size: 14px; }
           .edu-dot-item { margin-bottom: 24px; gap: 12px; }
           .details-nav-tag { display: none; }
+          .exp-row-period { font-size: 10px; }
+          .edu-dot-period { font-size: 10px; }
+          .edu-dot-org { font-size: 11px; }
+        }
+
+        @media (max-width: 430px) {
+          .exp-section { padding: 50px 0; }
+          .edu-section { padding: 50px 0; }
+          .exp-row { padding: 14px 0; }
+        }
+
+        @media (max-width: 360px) {
+          .details-page { padding-top: 40px; }
+          .exp-section { padding: 40px 0; }
+          .exp-section-header { margin-bottom: 24px; }
+          .edu-section { padding: 40px 0; }
+          .edu-section-header { margin-bottom: 24px; }
+          .exp-row { padding: 12px 0; gap: 12px; }
+          .exp-row-company { font-size: 15px; }
+          .exp-row-role { font-size: 15px; }
+          .exp-row-details .exp-row-role { font-size: 14px; }
+          .exp-row-desc { font-size: 12px; }
+          .edu-dot-degree { font-size: 13px; }
+          .edu-dot-item { margin-bottom: 20px; gap: 10px; }
+          .edu-dot-org { font-size: 12px; }
+          .exp-row-period { font-size: 9px; }
+          .edu-dot-period { font-size: 9px; }
+          .edu-dots { padding-left: 24px; }
+          .edu-dot-marker { width: 12px; height: 12px; left: -20px; }
         }
       `}</style>
     </main>

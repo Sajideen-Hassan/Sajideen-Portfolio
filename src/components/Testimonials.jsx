@@ -228,6 +228,18 @@ export default function Testimonials() {
           .tcard-quote-mark { font-size: 32px; }
           .tcard-name { font-size: 12px; }
           .tcard-title { font-size: 10px; }
+          .tcards-track { padding-left: 14px; gap: 14px; }
+        }
+
+        @media (max-width: 360px) {
+          .tcard { width: 180px; }
+          .tcard-quote { font-size: 11px; }
+          .tcard-top { padding: 10px 10px 0; }
+          .tcard-quote-wrap { padding: 6px 10px 0; }
+          .tcard-author { padding: 8px 10px 12px; }
+          .tcard-name { font-size: 11px; }
+          .tcard-title { font-size: 9px; }
+          .tcards-track { padding-left: 10px; gap: 10px; }
         }
       `}</style>
     </section>

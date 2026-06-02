@@ -90,7 +90,7 @@ export default function Projects() {
         style={{ left: imagePos.x + 30, top: imagePos.y - 120 }}
       >
         {hoveredProject && (
-          <img src={hoveredProject.coverImage} alt={hoveredProject.title} loading="lazy" />
+          <img src={hoveredProject.coverImage} alt={hoveredProject.title} loading="lazy" width="340" height="260" />
         )}
       </div>
 
@@ -216,6 +216,13 @@ export default function Projects() {
           .project-name { font-size: clamp(16px, 5vw, 22px); letter-spacing: -0.5px; }
           .project-index { min-width: 24px; font-size: 9px; }
           .project-arrow { font-size: 16px; }
+        }
+
+        @media (max-width: 360px) {
+          .project-row { padding: 12px 0; gap: 6px; }
+          .project-name { font-size: clamp(14px, 4vw, 16px); }
+          .project-index { min-width: 20px; font-size: 8px; }
+          .project-arrow { font-size: 14px; }
         }
       `}</style>
     </section>

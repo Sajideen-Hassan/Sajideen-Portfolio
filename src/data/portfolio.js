@@ -6,7 +6,7 @@ export const personal = {
   photo: profilePhoto,
   email: "sajideenhassan12@gmail.com",
   location: "Pakistan",
-  cvUrl: "/Sajideen-Resume.docx",
+  cvUrl: "/Sajideen-Resume.pdf",
   social: {
     github: "https://github.com/Sajideen-Hassan",
     linkedin: "https://www.linkedin.com/in/sajideen-hassan",
@@ -151,12 +151,3 @@ export const education = [
   },
 ];
 
-export const academicProjects = [
-  {
-    title: "TechTide Corporate Website",
-    subject: "Computer Science",
-    level: "Matriculation",
-    institution: "Army Public School & Colleges System",
-    period: "2019-2021",
-  },
-];

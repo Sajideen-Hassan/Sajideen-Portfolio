@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import useInView from '../hooks/useInView';
 import { personal } from '../data/portfolio';
 import CanvasBg from './CanvasBg';
@@ -126,40 +125,6 @@ export default function Contact() {
           margin-bottom: 48px;
         }
 
-        .contact-cta {
-          display: inline-flex;
-          align-items: center;
-          gap: 12px;
-          padding: 16px 28px;
-          border: 1px solid rgba(255,255,255,0.15);
-          text-decoration: none;
-          color: var(--bg);
-          transition: gap 0.3s ease, background 0.3s ease, border-color 0.3s ease;
-          align-self: flex-start;
-          margin-top: 8px;
-        }
-
-        .contact-cta:hover {
-          gap: 20px;
-          background: rgba(255,255,255,0.06);
-          border-color: rgba(255,255,255,0.25);
-        }
-
-        .cta-text {
-          font-family: var(--font-body);
-          font-size: 14px;
-          font-weight: 500;
-        }
-
-        .cta-arrow {
-          font-size: 16px;
-          transition: transform 0.3s ease;
-        }
-
-        .contact-cta:hover .cta-arrow {
-          transform: translateX(4px);
-        }
-
         .contact-channels {
           display: flex;
           flex-direction: column;
@@ -254,6 +219,15 @@ export default function Contact() {
           .channel-row { padding: 14px 0; gap: 12px; flex-wrap: wrap; }
           .channel-row-label { min-width: auto; font-size: 9px; }
           .channel-row-value { font-size: 12px; min-width: 0; }
+        }
+
+        @media (max-width: 360px) {
+          .contact-section { padding: 20px 0 10px; }
+          .contact-heading { font-size: clamp(22px, 6vw, 28px); letter-spacing: -0.5px; }
+          .contact-desc { font-size: 11px; margin-bottom: 24px; }
+          .channel-row { padding: 12px 0; gap: 8px; }
+          .channel-row-label { font-size: 9px; }
+          .channel-row-value { font-size: 12px; }
         }
       `}</style>
     </section>

@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { personal } from '../data/portfolio';
-import { ElasticText } from './TextAnimations';
 import CanvasBg from './CanvasBg';
 
 export default function About() {
@@ -9,7 +8,6 @@ export default function About() {
   const imageRef = useRef(null);
   const [inView, setInView] = useState(false);
   const [imgParallax, setImgParallax] = useState(0);
-  const [headingInView, setHeadingInView] = useState(false);
   const headingRef = useRef(null);
 
   useEffect(() => {
@@ -37,17 +35,6 @@ export default function About() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
-    const el = headingRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setHeadingInView(true); },
-      { threshold: 0.3 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   const words = personal.tagline.split(' ');
   const midIdx = Math.ceil(words.length / 2);
   const aboutFirst = words.slice(0, midIdx).join(' ');
@@ -69,6 +56,8 @@ export default function About() {
                 alt={personal.name}
                 className="about-image"
                 loading="lazy"
+                width="320"
+                height="340"
                 style={{ transform: `translateY(${imgParallax}%)` }}
               />
             </div>
@@ -81,10 +70,8 @@ export default function About() {
 
             <h2 ref={headingRef} className="about-heading">
               <span className="section-title-outline">
-                <ElasticText text={aboutFirst} inView={headingInView} baseDelay={0.1} />
-              </span>{' '}
-              <span className="section-title-fill">
-                <ElasticText text={aboutRest} inView={headingInView} baseDelay={0.1 + aboutFirst.length * 0.035} />
+{aboutFirst}</span>{' '}
+              <span className="section-title-fill">{aboutRest}
               </span>
             </h2>
 
@@ -281,10 +268,6 @@ export default function About() {
           .about-bio { max-width: 100%; }
         }
 
-        @media (max-width: 1024px) {
-          .about-image { max-width: 280px; height: 280px; }
-        }
-
         @media (max-width: 768px) {
           .about-spread { grid-template-columns: 1fr; gap: 32px; }
           .about-image-wrap { max-width: 220px; }
@@ -301,6 +284,23 @@ export default function About() {
           .about-bio { font-size: 12px; }
           .about-stats { gap: 16px; }
           .about-stat-num { font-size: 20px; }
+          .about-stat-label { font-size: 8px; }
+        }
+
+        @media (max-width: 430px) {
+          .about-image { max-width: 160px; height: 180px; }
+          .about-heading { font-size: clamp(16px, 4.5vw, 20px); }
+          .about-stats { gap: 14px; }
+          .about-stat-num { font-size: 18px; }
+        }
+
+        @media (max-width: 360px) {
+          .about-image { max-width: 140px; height: 160px; }
+          .about-image-wrap { max-width: 140px; }
+          .about-heading { font-size: clamp(15px, 4vw, 18px); }
+          .about-bio { font-size: 12px; }
+          .about-stats { gap: 12px; }
+          .about-stat-num { font-size: 16px; }
           .about-stat-label { font-size: 8px; }
         }
       `}</style>

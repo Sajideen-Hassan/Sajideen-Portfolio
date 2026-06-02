@@ -202,6 +202,20 @@ export default function Skills() {
           .skills-chip { font-size: 11px; padding: 4px 10px; }
           .skills-card-icon { font-size: 16px; width: 20px; }
         }
+
+        @media (max-width: 430px) {
+          .skills-card { padding: 18px 14px; }
+          .skills-chip { font-size: 10px; padding: 4px 9px; }
+        }
+
+        @media (max-width: 360px) {
+          .skills-card { padding: 16px 12px; }
+          .skills-card-header { gap: 6px; margin-bottom: 12px; padding-bottom: 10px; }
+          .skills-card-category { font-size: 14px; }
+          .skills-chip { font-size: 11px; padding: 4px 9px; min-height: 30px; }
+          .skills-card-icon { font-size: 14px; width: 18px; }
+          .skills-grid { gap: 12px; }
+        }
       `}</style>
     </section>
   );

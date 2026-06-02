@@ -86,7 +86,10 @@ export default function Footer() {
           background: none;
           border: none;
           cursor: pointer;
-          padding: 6px 12px;
+          padding: 10px 12px;
+          min-height: 44px;
+          display: inline-flex;
+          align-items: center;
           position: relative;
           transition: color 0.3s ease;
           letter-spacing: 0.3px;
@@ -127,13 +130,13 @@ export default function Footer() {
           .footer { padding: 20px 0; }
           .footer-name { font-size: 16px; }
           .footer-nav { gap: 10px; }
-          .footer-link { font-size: 10px; padding: 4px 8px; }
+          .footer-link { font-size: 11px; padding: 8px 10px; }
         }
 
         @media (max-width: 360px) {
           .footer { padding: 16px 0; }
           .footer-name { font-size: 14px; }
-          .footer-link { font-size: 9px; padding: 4px 6px; }
+          .footer-link { font-size: 10px; padding: 8px 8px; }
         }
       `}</style>
     </footer>
