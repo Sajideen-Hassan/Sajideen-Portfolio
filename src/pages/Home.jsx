@@ -1,12 +1,6 @@
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
-import About from '../components/About';
-import SlantedMarquee from '../components/SlantedMarquee';
-import Skills from '../components/Skills';
-import Testimonials from '../components/Testimonials';
-import Projects from '../components/Projects';
-import Contact from '../components/Contact';
-import Footer from '../components/Footer';
+import LazySection from '../components/LazySection';
 import GlobalBackground from '../components/GlobalBackground';
 
 export default function Home() {
@@ -15,13 +9,13 @@ export default function Home() {
       <GlobalBackground />
       <Navbar />
       <Hero />
-      <About />
-      <SlantedMarquee />
-      <Skills />
-      <Projects />
-      <Testimonials />
-      <Contact />
-      <Footer />
+      <LazySection load={() => import('../components/About')} timeout={200} />
+      <LazySection load={() => import('../components/SlantedMarquee')} rootMargin="300px" />
+      <LazySection load={() => import('../components/Skills')} rootMargin="300px" />
+      <LazySection load={() => import('../components/Projects')} rootMargin="300px" />
+      <LazySection load={() => import('../components/Testimonials')} rootMargin="300px" />
+      <LazySection load={() => import('../components/Contact')} rootMargin="300px" />
+      <LazySection load={() => import('../components/Footer')} rootMargin="300px" />
     </main>
   );
 }

@@ -49,7 +49,7 @@ import brotchunCover from '../assets/Brotchun_coverImage.webp';
 import imgGenCover from '../assets/Image_generator.webp';
 import ivCover from '../assets/IV_coverImage.webp';
 import n8nCover from '../assets/n8n_workflow_01.webp';
-import profilePhoto from '../assets/SajideenHassanprofile.jpg';
+import profilePhoto from '../assets/SajideenHassanprofile.webp';
 
 export const projects = [
   {

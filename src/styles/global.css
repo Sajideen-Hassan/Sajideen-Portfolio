@@ -184,6 +184,7 @@ section.projects-section::before {
   text-transform: uppercase;
   color: var(--secondary);
   animation: top-fade-in 0.6s ease 0.3s both;
+  will-change: transform, opacity;
 }
 
 @keyframes top-fade-in {
@@ -196,6 +197,7 @@ section.projects-section::before {
   font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px;
   text-transform: uppercase; color: var(--muted);
   animation: bottom-fade-in 0.6s ease 1.2s both;
+  will-change: transform, opacity;
 }
 
 @keyframes bottom-fade-in {
@@ -213,40 +215,40 @@ section.projects-section::before {
 }
 
 /* Entrance animation classes */
-.section-fade { opacity: 0; transform: scale(0.92); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+.section-fade { opacity: 0; transform: scale(0.92); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); will-change: transform, opacity; }
 .section-fade.is-visible { opacity: 1; transform: scale(1); }
-.label-fade { opacity: 0; transform: translateY(10px); transition: all 0.4s ease; }
+.label-fade { opacity: 0; transform: translateY(10px); transition: all 0.4s ease; will-change: transform, opacity; }
 .label-fade.is-visible { opacity: 1; transform: translateY(0); }
-.title-fade { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
+.title-fade { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; will-change: transform, opacity; }
 .title-fade.is-visible { opacity: 1; transform: translateY(0); }
-.title-fade-blur { opacity: 0; transform: translateY(30px); filter: blur(6px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
+.title-fade-blur { opacity: 0; transform: translateY(30px); filter: blur(6px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); will-change: transform, opacity, filter; }
 .title-fade-blur.is-visible { opacity: 1; transform: translateY(0); filter: blur(0); }
-.section-label-fade { opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.16,1,0.3,1); }
+.section-label-fade { opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.16,1,0.3,1); will-change: transform, opacity; }
 .section-label-fade.is-visible { opacity: 1; transform: translateY(0); }
-.bio-fade { opacity: 0; transition: all 0.5s ease; }
+.bio-fade { opacity: 0; transition: all 0.5s ease; will-change: transform, opacity; }
 .bio-fade.is-visible { opacity: 1; transform: translateY(0); }
 .bio-fade:not(.is-visible) { transform: translateY(15px); }
-.spread-fade { opacity: 0; transform: scale(0.92); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+.spread-fade { opacity: 0; transform: scale(0.92); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); will-change: transform, opacity; }
 .spread-fade.is-visible { opacity: 1; transform: scale(1); }
-.about-image-wrap { transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+.about-image-wrap { transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); will-change: transform; }
 .about-image-wrap:hover { transform: scale(1.03); }
-.grid-fade { opacity: 0; transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.15s; }
+.grid-fade { opacity: 0; transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.15s; will-change: opacity; }
 .grid-fade.is-visible { opacity: 1; }
-.card-fade { opacity: 0; transform: scale(0.85) translateY(40px); filter: blur(4px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
+.card-fade { opacity: 0; transform: scale(0.85) translateY(40px); filter: blur(4px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); will-change: transform, opacity, filter; }
 .card-fade.is-visible { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-.chip-fade { opacity: 0; transform: scale(0.8); transition: all 0.3s cubic-bezier(0.16,1,0.3,1); }
+.chip-fade { opacity: 0; transform: scale(0.8); transition: all 0.3s cubic-bezier(0.16,1,0.3,1); will-change: transform, opacity; }
 .chip-fade.is-visible { opacity: 1; transform: scale(1); }
 .chip-fade:hover { transform: scale(1.05); background: var(--primary); color: var(--bg); border-color: var(--primary); }
-.row-fade { opacity: 0; transform: translateY(30px); transition: all 0.6s cubic-bezier(0.16,1,0.3,1); }
+.row-fade { opacity: 0; transform: translateY(30px); transition: all 0.6s cubic-bezier(0.16,1,0.3,1); will-change: transform, opacity; }
 .row-fade.is-visible { opacity: 1; transform: translateY(0); }
-.wrap-fade { opacity: 0; transform: scale(0.95); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+.wrap-fade { opacity: 0; transform: scale(0.95); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); will-change: transform, opacity; }
 .wrap-fade.is-visible { opacity: 1; transform: scale(1); }
-.header-fade { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
+.header-fade { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; will-change: transform, opacity; }
 .header-fade.is-visible { opacity: 1; transform: translateY(0); }
-.item-fade { opacity: 0; transition: all 0.5s ease; }
+.item-fade { opacity: 0; transition: all 0.5s ease; will-change: transform, opacity; }
 .item-fade.is-visible { opacity: 1; }
 .item-fade:not(.is-visible) { transform: translateX(-20px); }
-.channel-fade { opacity: 0; transform: translateX(30px); transition: all 0.5s cubic-bezier(0.16,1,0.3,1); }
+.channel-fade { opacity: 0; transform: translateX(30px); transition: all 0.5s cubic-bezier(0.16,1,0.3,1); will-change: transform, opacity; }
 .channel-fade.is-visible { opacity: 1; transform: translateX(0); }
 
 @keyframes drawer-in {
