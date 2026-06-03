@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -19,9 +21,9 @@
   --border-hover: #DDDDDD;
   --border-light: rgba(17, 17, 17, 0.08);
 
-  --font-heading: 'Satoshi', sans-serif;
+  --font-heading: 'HelveticaNowDisplay-Medium', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'HelveticaNowDisplayW01-Rg', 'Helvetica Neue', Arial, sans-serif;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   --max-w: 1200px;
@@ -36,7 +38,7 @@ html {
 body {
   background-color: var(--bg);
   color: var(--primary);
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.6;
   overflow-x: hidden;
@@ -133,7 +135,7 @@ section.projects-section::before {
 .section-title {
   font-family: var(--font-heading);
   font-size: clamp(40px, 6vw, 80px);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.05;
   letter-spacing: -1px;
   color: transparent;

@@ -25,7 +25,7 @@ export default function SlantedMarquee() {
   }, []);
 
   const text = "FULL STACK • REACT • NODE.JS • AI • TYPESCRIPT • NEXT.JS • ";
-  const doubled = Array.from({ length: 4 }, (_, i) => text);
+  const doubled = Array.from({ length: 4 }, () => text);
 
   return (
     <div className="slanted-marquee" aria-hidden="true">

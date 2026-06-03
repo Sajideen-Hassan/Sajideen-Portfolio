@@ -22,7 +22,8 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    setMenuOpen(false);
+    const id = setTimeout(() => setMenuOpen(false), 0);
+    return () => clearTimeout(id);
   }, [location]);
 
   useEffect(() => {

@@ -11,11 +11,11 @@ const navLinks = [
 export default function Footer() {
   const handleNav = (href) => {
     const [path, id] = href.includes('#') ? href.split('#') : [href, null];
-    if (!id) { window.location.href = href; return; }
+    if (!id) { window.location.assign(href); return; }
     if (window.location.pathname === path) {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     } else {
-      window.location.href = href;
+      window.location.assign(href);
     }
   };
 

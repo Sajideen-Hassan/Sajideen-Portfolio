@@ -1,7 +1,6 @@
 function charStyle(inView, baseDelay, i, delayPerChar, from, to, duration, ease) {
   const delay = baseDelay + i * delayPerChar;
   const visible = inView ? to : from;
-  const hidden = inView ? from : to;
   return {
     opacity: visible.opacity,
     transform: visible.transform || '',

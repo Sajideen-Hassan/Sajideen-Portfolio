@@ -4,13 +4,11 @@ import CanvasBg from './CanvasBg';
 
 function MagneticField({ containerRef }) {
   const shapesRef = useRef([]);
-  const mouseRef = useRef({ x: 0, y: 0 });
   const rafRef = useRef(null);
   const targetsRef = useRef([]);
 
-  const intensities = [0.03, 0.05, 0.02, 0.06, 0.04, 0.035, 0.045, 0.025];
-
   useEffect(() => {
+    const intensities = [0.03, 0.05, 0.02, 0.06, 0.04, 0.035, 0.045, 0.025];
     const shapes = shapesRef.current;
     if (!shapes.length) return;
 
@@ -47,7 +45,7 @@ function MagneticField({ containerRef }) {
       window.removeEventListener('mousemove', onMouseMove);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [containerRef]);
 
   return (
     <div className="magnetic-field" aria-hidden="true">
@@ -296,7 +294,7 @@ export default function Hero() {
         .hero-name-word {
           font-family: var(--font-heading);
           font-size: clamp(52px, 7vw, 110px);
-          font-weight: 800;
+          font-weight: 700;
           line-height: 1;
           letter-spacing: -3px;
           color: transparent;

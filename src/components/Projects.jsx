@@ -3,6 +3,7 @@ import useInView from '../hooks/useInView';
 import { projects } from '../data/portfolio';
 import { WaveText } from './TextAnimations';
 import CanvasBg from './CanvasBg';
+import BlurImage from './BlurImage';
 
 export default function Projects() {
   const [ref, inView] = useInView({ once: true, rootMargin: '-80px' });
@@ -42,7 +43,7 @@ export default function Projects() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [ref]);
 
   return (
     <section id="projects" ref={ref} className="projects-section snap-section" aria-label="Projects">
@@ -90,13 +91,13 @@ export default function Projects() {
         style={{ left: imagePos.x + 30, top: imagePos.y - 120 }}
       >
         {hoveredProject && (
-          <img src={hoveredProject.coverImage} alt={hoveredProject.title} loading="lazy" width="340" height="260" />
+          <BlurImage src={hoveredProject.coverImage} alt={hoveredProject.title} width={340} height={260} />
         )}
       </div>
 
       {selectedProject && (
         <div className="project-mobile-preview" onClick={() => setSelectedProject(null)}>
-          <img src={selectedProject.coverImage} alt={selectedProject.title} loading="lazy" width="340" height="260" />
+          <BlurImage src={selectedProject.coverImage} alt={selectedProject.title} width={340} height={260} />
         </div>
       )}
 

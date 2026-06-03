@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { personal } from '../data/portfolio';
 import CanvasBg from './CanvasBg';
+import BlurImage from './BlurImage';
 
 export default function About() {
   const sectionRef = useRef(null);
@@ -51,13 +52,12 @@ export default function About() {
               ref={imageRef}
               className="about-image-wrap"
             >
-              <img
+              <BlurImage
                 src={personal.photo}
                 alt={personal.name}
-                className="about-image"
-                loading="lazy"
-                width="320"
-                height="340"
+                imgClass="about-image"
+                width={320}
+                height={340}
                 style={{ transform: `translateY(${imgParallax}%)` }}
               />
             </div>
