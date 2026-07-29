@@ -1,0 +1,181 @@
+@import "tailwindcss";
+
+:root {
+  --bg-void: #0A0B0D;
+  --bg-surface: #14171B;
+  --bg-surface-raised: #1C2024;
+  --border-hairline: #262B30;
+  --text-primary: #F4F1EA;
+  --text-secondary: #9CA3AA;
+  --signal: #FF7A33;
+  --data: #2AD9C2;
+  --status-positive: #34D399;
+  
+  /* Fallback scrollbar variables */
+  scrollbar-color: var(--border-hairline) var(--bg-void);
+  scrollbar-width: thin;
+}
+
+@theme {
+  --color-bg-void: var(--bg-void);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-surface-raised: var(--bg-surface-raised);
+  --color-border-hairline: var(--border-hairline);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-signal: var(--signal);
+  --color-data: var(--data);
+  --color-status-positive: var(--status-positive);
+
+  --font-display: var(--font-bricolage), system-ui, sans-serif;
+  --font-sans: var(--font-geist), system-ui, sans-serif;
+  --font-mono: var(--font-ibm-plex), monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background-color: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-geist), system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar for Webkit */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-hairline);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-surface-raised);
+}
+
+/* Selection style */
+::selection {
+  background-color: rgba(255, 122, 51, 0.2);
+  color: var(--signal);
+}
+
+/* Base custom focus state */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 4px;
+}
+
+/* Magnetic / Active states */
+.magnetic-btn {
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Grid overlay background to reinforce "Mission Control" console */
+.console-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(38, 43, 48, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(38, 43, 48, 0.15) 1px, transparent 1px);
+}
+
+/* Lenis CSS */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* Hero & About — Animation Support Utilities                  */
+/* ─────────────────────────────────────────────────────────── */
+
+/* GPU-accelerated char spans injected by JS */
+.hero-char,
+.about-word {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+}
+
+/* Orb float drift keyframes */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50%       { transform: translateY(-20px) translateX(12px); }
+}
+
+@keyframes float-med {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50%       { transform: translateY(16px) translateX(-10px); }
+}
+
+/* Scroll indicator arrow bounce */
+@keyframes arrow-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(6px); }
+}
+
+.arrow-bounce {
+  animation: arrow-bounce 1.4s ease-in-out infinite;
+}
+
+/* Section divider line draw utility */
+.line-draw {
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+/* Stat counter — prevent layout shift during count-up */
+.stat-count {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Strength card top-accent hover */
+.strength-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at top,
+    rgba(255, 122, 51, 0.03) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.strength-card:hover::before {
+  opacity: 1;
+}
+
