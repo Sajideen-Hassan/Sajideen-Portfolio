@@ -1,239 +1,193 @@
-"use client";
+"use client"
 
-import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { portfolioData, calculateExperience } from "@/data/portfolio";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { useEffect, useRef } from "react"
+import gsap from "gsap"
+import { content } from "@/data/content"
+import HeroCanvas from "@/components/HeroCanvas"
+import { useMagnetic } from "@/hooks/useMagnetic"
 
-const TRUST_LOGOS = [
-  { name: "TechTideCo", initials: "TT" },
-  { name: "ISPR", initials: "IS" },
-  { name: "LGU", initials: "LG" },
-  { name: "IT Club", initials: "IT" },
-];
+function MagneticLink({
+  children,
+  className = "",
+  ...props
+}: React.AnchorHTMLAttributes<HTMLAnchorElement> & { children: React.ReactNode }) {
+  const { ref, onPointerMove, onPointerLeave } = useMagnetic<HTMLAnchorElement>()
+  return (
+    <a
+      ref={ref}
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
+      data-magnetic
+      className={className}
+      {...props}
+    >
+      {children}
+    </a>
+  )
+}
 
 export default function Hero() {
-  const { personalInfo } = portfolioData;
-
-  const sectionRef = useRef<HTMLElement>(null);
-  const taglineRef = useRef<HTMLParagraphElement>(null);
-  const trustedRef = useRef<HTMLDivElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
-
-  const yearsExp = calculateExperience().replace("+ Years", "").replace(" Years", "");
+  const sectionRef = useRef<HTMLElement>(null)
+  const tagRef = useRef<HTMLSpanElement>(null)
+  const headlineRef = useRef<HTMLHeadingElement>(null)
+  const subRef = useRef<HTMLParagraphElement>(null)
+  const ctaRef = useRef<HTMLDivElement>(null)
+  const metricsRef = useRef<HTMLDivElement>(null)
+  const glowRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } })
 
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      tl.fromTo(tagRef.current, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 })
 
-    const headingEl = headingRef.current;
-    if (!headingEl) return;
-    const headingText = headingEl.textContent ?? "";
-    const headingWords = headingText.split(" ");
-    headingEl.innerHTML = headingWords
-      .map((word, wi) => {
-        const chars = Array.from(word)
-          .map(
-            (ch) =>
-              `<span class="hero-char" style="display:inline-block;will-change:transform,opacity,filter;">${ch}</span>`
-          )
-          .join("");
-        return `<span style="display:inline-block;overflow:hidden;margin-right:${wi < headingWords.length - 1 ? "0.25em" : "0"};">${chars}</span>`;
+      const words = headlineRef.current?.querySelectorAll(".hero-word")
+      if (words?.length) {
+        tl.fromTo(
+          words,
+          { y: 80, opacity: 0, rotateX: -15 },
+          { y: 0, opacity: 1, rotateX: 0, duration: 0.9, stagger: 0.05, ease: "power4.out" },
+          "-=0.3"
+        )
+      }
+
+      tl.fromTo(subRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, "-=0.4")
+
+      const ctas = ctaRef.current?.querySelectorAll("[data-cta]")
+      if (ctas?.length) {
+        tl.fromTo(ctas, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.1 }, "-=0.3")
+      }
+
+      tl.fromTo(metricsRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, "-=0.1")
+
+      gsap.to(glowRef.current, {
+        scale: 1.15,
+        opacity: 0.08,
+        duration: 4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
       })
-      .join("");
+    }, sectionRef)
 
-    const chars = headingEl.querySelectorAll<HTMLElement>(".hero-char");
+    return () => ctx.revert()
+  }, [])
 
-    if (prefersReduced) {
-      gsap.set(
-        [taglineRef.current, trustedRef.current, ctaRef.current, chars, scrollIndicatorRef.current, statsRef.current],
-        { opacity: 1, y: 0, filter: "blur(0px)" }
-      );
-      return;
-    }
-
-    gsap.set(chars, { y: "110%", opacity: 0, filter: "blur(8px)" });
-    gsap.set(
-      [taglineRef.current, trustedRef.current, ctaRef.current, scrollIndicatorRef.current, statsRef.current],
-      { y: 24, opacity: 0 }
-    );
-
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-    tl.to(taglineRef.current, { y: 0, opacity: 1, duration: 0.7 }, 0.2);
-
-    tl.to(
-      chars,
-      {
-        y: "0%",
-        opacity: 1,
-        filter: "blur(0px)",
-        duration: 1.0,
-        stagger: 0.025,
-        ease: "power4.out",
-      },
-      0.5
-    );
-
-    tl.to(ctaRef.current, { y: 0, opacity: 1, duration: 0.6 }, 1.1);
-
-    tl.to(trustedRef.current, { y: 0, opacity: 1, duration: 0.7 }, 1.35);
-
-    tl.to(statsRef.current, { y: 0, opacity: 1, duration: 0.6 }, 1.6);
-
-    tl.to(scrollIndicatorRef.current, { y: 0, opacity: 1, duration: 0.5 }, 1.9);
-
-    ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      end: "bottom top",
-      scrub: 1.5,
-      onUpdate: (self) => {
-        const p = self.progress;
-        gsap.set(headingEl, {
-          scale: 1 - p * 0.08,
-          filter: `blur(${p * 4}px)`,
-          opacity: 1 - p * 0.6,
-        });
-      },
-    });
-
-    return () => {
-      tl.kill();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
-  }, []);
-
-  useEffect(() => {
-    const el = scrollIndicatorRef.current;
-    if (!el) return;
-    const loop = gsap.to(el.querySelector(".arrow-bounce"), {
-      y: 6,
-      duration: 1.2,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-    });
-    return () => { loop.kill(); };
-  }, []);
-
-  const totalProjects = portfolioData.projects.length;
+  const words = content.personal.name.split(" ")
 
   return (
     <section
       id="hero"
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-bg-void"
-      aria-label="Hero section"
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-bg-base pt-40 pb-32"
     >
-      <div className="console-grid absolute inset-0 opacity-[0.08] pointer-events-none" aria-hidden="true" />
-
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border-hairline to-transparent opacity-60" aria-hidden="true" />
-      <div className="absolute bottom-20 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border-hairline/40 to-transparent" aria-hidden="true" />
-
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-10 pt-28 pb-24 flex flex-col items-center text-center">
-
-        <p
-          ref={taglineRef}
-          className="font-sans text-sm sm:text-base text-text-secondary/80 tracking-wide max-w-xl leading-relaxed mb-10 opacity-0"
-        >
-          {personalInfo.summary}
-        </p>
-
-        <h1
-          ref={headingRef}
-          className="font-display font-extrabold tracking-[-0.015em] text-text-primary leading-[1.0] mb-12
-            text-[2.8rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-[8rem]"
-          aria-label={personalInfo.name}
-        >
-          {personalInfo.name}
-        </h1>
-
-        <div ref={ctaRef} className="opacity-0 mb-12">
-          <a
-            href="#projects"
-            className="group inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full
-              bg-signal text-bg-void font-semibold text-sm tracking-wider uppercase
-              hover:bg-signal/90 transition-all duration-300
-              hover:-translate-y-0.5 shadow-[0_4px_24px_rgba(255,122,51,0.2)]
-              hover:shadow-[0_8px_32px_rgba(255,122,51,0.3)]
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal focus-visible:ring-offset-2 focus-visible:ring-offset-bg-void"
-          >
-            Start a Project
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </a>
-        </div>
-
-        <div
-          ref={trustedRef}
-          className="flex items-center gap-5 opacity-0"
-        >
-          <span className="font-mono text-[10px] tracking-[0.15em] text-text-secondary/50 uppercase shrink-0">
-            trusted by
-          </span>
-          <div className="flex items-center gap-3">
-            {TRUST_LOGOS.map((logo) => (
-              <div
-                key={logo.name}
-                className="w-10 h-10 rounded-full bg-bg-surface-raised border border-border-hairline flex items-center justify-center"
-                title={logo.name}
-              >
-                <span className="font-mono text-[9px] font-bold text-text-secondary tracking-wider">
-                  {logo.initials}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-      </div>
+      <HeroCanvas />
 
       <div
-        ref={statsRef}
-        className="absolute bottom-20 left-0 right-0 z-10 opacity-0"
-      >
-        <div className="max-w-6xl mx-auto px-6 sm:px-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-px border border-border-hairline/40 rounded-xl overflow-hidden bg-border-hairline/20">
-            {[
-              { label: "Years Active", value: yearsExp, suffix: "+" },
-              { label: "Projects Shipped", value: String(totalProjects), suffix: "" },
-              { label: "Teams Led", value: "5", suffix: "+" },
-              { label: "Open to Work", value: "Yes", suffix: "" },
-            ].map((stat) => (
-              <div
-                key={stat.label}
-                className="flex flex-col items-center justify-center py-5 px-4 bg-bg-surface/50 backdrop-blur-sm"
+        ref={glowRef}
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(0,255,135,0.12) 0%, rgba(0,225,255,0.06) 40%, transparent 70%)",
+        }}
+      />
+
+      <div className="absolute inset-0 bg-gradient-to-b from-bg-base/0 via-bg-base/0 to-bg-base pointer-events-none" />
+
+      <div className="relative z-10 w-full max-w-[1680px] mx-auto px-[clamp(20px,5vw,80px)]">
+        <div className="grid grid-cols-12 gap-x-[clamp(16px,2vw,32px)]">
+          <div className="col-span-12 lg:col-span-7">
+            <span
+              ref={tagRef}
+              className="font-mono text-[0.85rem] text-accent-primary uppercase tracking-[0.1em] block mb-8"
+            >
+              {content.personal.role}
+            </span>
+
+            <h1
+              ref={headlineRef}
+              className="font-display text-[clamp(3rem,9vw,9.5rem)] font-extrabold text-text-primary tracking-[-0.04em] leading-[0.92] mb-6"
+            >
+              {words.map((word, i) => (
+                <span key={i} className="hero-word inline-block mr-[0.15em]">
+                  {word}
+                </span>
+              ))}
+            </h1>
+
+            <p
+              ref={subRef}
+              className="font-sans text-[clamp(1.1rem,1.3vw,1.35rem)] text-text-secondary leading-[1.6] max-w-2xl mb-10"
+            >
+              Bridging strategic executive leadership with advanced software architecture.
+            </p>
+
+            <div ref={ctaRef} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-12">
+              <MagneticLink
+                href="#projects"
+                data-cta
+                onClick={(e: React.MouseEvent) => {
+                  e.preventDefault()
+                  const el = document.getElementById("projects")
+                  if (el) {
+                    const lenis = (window as unknown as { __lenis?: { scrollTo: (target: HTMLElement | string, opts?: Record<string, unknown>) => void } }).__lenis
+                    if (lenis) lenis.scrollTo(el, { offset: -80 })
+                    else el.scrollIntoView({ behavior: "smooth" })
+                  }
+                }}
+                className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-full bg-accent-primary text-bg-base font-semibold text-sm tracking-wide overflow-hidden transition-all hover:bg-accent-primary/90"
+                data-cursor="magnetic"
               >
-                <span className="font-display text-3xl font-extrabold text-text-primary">
-                  {stat.value}
-                  {stat.suffix && <span className="text-signal">{stat.suffix}</span>}
+                <span className="relative z-10">Explore Work</span>
+                <span className="relative z-10 group-hover:translate-x-1 transition-transform">
+                  &rarr;
                 </span>
-                <span className="font-mono text-[10px] text-text-secondary tracking-widest mt-1 uppercase">
-                  {stat.label}
-                </span>
+              </MagneticLink>
+
+              <MagneticLink
+                href={`mailto:${content.personal.email}`}
+                data-cta
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-border-strong text-text-primary hover:bg-bg-surface-1 transition-all text-sm"
+                data-cursor="magnetic"
+              >
+                Schedule Strategy Call
+              </MagneticLink>
+            </div>
+
+            <div
+              ref={metricsRef}
+              className="flex flex-wrap gap-8 sm:gap-12"
+            >
+              {content.metrics.map((m) => (
+                <div key={m.label}>
+                  <span className="font-display text-[clamp(1.5rem,2vw,1.75rem)] font-bold text-text-primary block">
+                    {m.value}
+                  </span>
+                  <span className="font-mono text-[0.75rem] text-text-muted uppercase tracking-[0.05em]">
+                    {m.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="hidden lg:block lg:col-span-5 relative">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-[400px] h-[400px] rounded-full border border-border-subtle relative">
+                <div className="absolute inset-4 rounded-full border border-border-subtle" />
+                <div className="absolute inset-[30%] rounded-full bg-accent-primary/5 animate-pulse" />
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
 
-      <div
-        ref={scrollIndicatorRef}
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 opacity-0"
-        aria-hidden="true"
-      >
-        <span className="font-mono text-[9px] tracking-[0.2em] text-text-secondary/50 uppercase">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+        <span className="font-mono text-[8px] tracking-[0.3em] text-text-dim uppercase">
           Scroll
         </span>
-        <div className="arrow-bounce text-text-secondary/40">
-          <ArrowDown className="w-4 h-4" />
-        </div>
+        <div className="w-[1px] h-8 bg-gradient-to-b from-text-muted/30 to-transparent" />
       </div>
     </section>
-  );
+  )
 }

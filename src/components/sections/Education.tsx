@@ -1,79 +1,191 @@
-"use client";
+"use client"
 
-import React from "react";
-import { portfolioData } from "@/data/portfolio";
-import { GraduationCap, ArrowRight, Award } from "lucide-react";
+import { useEffect, useRef, useState } from "react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { content } from "@/data/content"
 
 export default function Education() {
-  const education = portfolioData.education;
+  const sectionRef = useRef<HTMLElement>(null)
+  const indexRef = useRef<HTMLSpanElement>(null)
+  const headerRef = useRef<HTMLHeadingElement>(null)
+  const rowsRef = useRef<(HTMLDivElement | null)[]>([])
+  const dividersRef = useRef<(HTMLDivElement | null)[]>([])
+  const [hoveredRow, setHoveredRow] = useState<number | null>(null)
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+
+    if (!content.education.length) return
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        indexRef.current,
+        { y: 24, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: indexRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        }
+      )
+
+      gsap.fromTo(
+        headerRef.current,
+        { y: 24, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          delay: 0.05,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        }
+      )
+
+      dividersRef.current.forEach((divider) => {
+        if (!divider) return
+        gsap.fromTo(
+          divider,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            duration: 1.2,
+            ease: "power3.inOut",
+            scrollTrigger: {
+              trigger: divider,
+              start: "top 85%",
+              toggleActions: "play once",
+            },
+          }
+        )
+      })
+
+      rowsRef.current.forEach((row, i) => {
+        if (!row) return
+        gsap.fromTo(
+          row,
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            delay: i * 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: row,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        )
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
+  if (!content.education.length) return null
 
   return (
     <section
       id="education"
-      className="py-32 relative bg-bg-void border-t border-border-hairline overflow-hidden"
+      ref={sectionRef}
+      className="py-[120px] border-t border-border-subtle"
     >
-      <div className="absolute inset-0 console-grid opacity-15 pointer-events-none" />
+      <div className="max-w-[1680px] mx-auto px-[clamp(20px,5vw,80px)]">
+        <span
+          ref={indexRef}
+          className="font-mono text-[0.85rem] text-text-muted block mb-4"
+        >
+          05 // ACADEMIC FOUNDATION
+        </span>
 
-      <div className="max-w-4xl mx-auto px-6 relative z-10">
-        
-        {/* Section Header */}
-        <div className="flex flex-col gap-2 mb-16 items-center text-center">
-          <span className="font-mono text-xs text-signal tracking-widest">// 06 // ACADEMIC_MILESTONES.LOG</span>
-          <h2 className="font-display text-3xl font-extrabold text-text-primary">
-            EDUCATION MATRIX
-          </h2>
-        </div>
+        <h2
+          ref={headerRef}
+          className="font-display text-[clamp(2rem,3vw,3rem)] font-bold text-text-primary mb-16"
+        >
+          Education
+        </h2>
 
-        {/* Stepper layout */}
-        <div className="relative pl-6 md:pl-12 border-l border-border-hairline/80 space-y-12">
-          {education.map((edu, idx) => (
-            <div key={idx} className="relative group">
-              
-              {/* Stepper Dot node */}
-              <span className="absolute -left-6 md:-left-12 top-1.5 -translate-x-[7.5px] w-4.5 h-4.5 rounded-full border border-border-hairline bg-bg-surface-raised flex items-center justify-center group-hover:border-signal transition-colors duration-300">
-                <GraduationCap className="w-2.5 h-2.5 text-text-secondary group-hover:text-signal transition-colors" />
-              </span>
-
-              {/* Card Container */}
-              <div className="p-6 rounded-lg border border-border-hairline bg-bg-surface hover:border-signal/20 hover:bg-bg-surface-raised/40 transition-all duration-300 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                
-                <div className="space-y-2">
-                  <span className="font-mono text-[9px] text-data uppercase tracking-widest block">
-                    STAGE_0{idx + 1} // {edu.period}
-                  </span>
-                  
-                  <h3 className="font-display text-lg font-bold text-text-primary group-hover:text-signal transition-colors">
+        <div>
+          {content.education.map((edu, i) => (
+            <div key={i}>
+              {i > 0 && (
+                <div
+                  ref={(el) => {
+                    dividersRef.current[i] = el
+                  }}
+                  className="h-[1px] bg-border-subtle origin-left"
+                  style={{ transform: "scaleX(0)" }}
+                />
+              )}
+              <div
+                ref={(el) => {
+                  rowsRef.current[i] = el
+                }}
+                onMouseEnter={() => setHoveredRow(i)}
+                onMouseLeave={() => setHoveredRow(null)}
+                className="py-10 px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-300 rounded-xl"
+                style={{
+                  background:
+                    hoveredRow === i ? "rgba(255,255,255,0.03)" : "transparent",
+                }}
+              >
+                <div className="flex-1">
+                  <h3
+                    className="font-display text-[1.5rem] font-bold text-text-primary transition-all duration-300"
+                    style={{
+                      transform:
+                        hoveredRow === i ? "translateX(12px)" : "translateX(0)",
+                      color:
+                        hoveredRow === i
+                          ? "var(--color-accent-primary)"
+                          : "var(--color-text-primary)",
+                    }}
+                  >
                     {edu.degree}
                   </h3>
-                  
-                  <p className="font-sans text-sm text-text-secondary">
-                    {edu.institution} {edu.location ? `— ${edu.location}` : ""}
+                  <p className="font-sans text-[1rem] text-text-secondary mt-1">
+                    {edu.institution}
                   </p>
-
-                  <div className="flex flex-wrap gap-2 pt-1.5">
-                    {edu.details.map((detail, dIdx) => (
+                </div>
+                <div className="text-right sm:w-[200px]">
+                  <span className="font-mono text-[0.9rem] text-text-muted block">
+                    {edu.period}
+                  </span>
+                </div>
+              </div>
+              {edu.details.length > 0 && (
+                <div className="px-4 pb-4 -mt-2">
+                  <div className="flex flex-wrap gap-2">
+                    {edu.details.map((d, idx) => (
                       <span
-                        key={dIdx}
-                        className="font-mono text-[10px] px-2.5 py-0.5 rounded border border-border-hairline bg-bg-surface-raised text-text-secondary"
+                        key={idx}
+                        className="font-mono text-[0.85rem] text-accent-primary"
                       >
-                        {detail.toLowerCase()}
+                        {d}
+                        {idx < edu.details.length - 1 && (
+                          <span className="text-text-muted mx-2">|</span>
+                        )}
                       </span>
                     ))}
                   </div>
                 </div>
-
-                <div className="flex items-center gap-1.5 font-mono text-[10px] text-status-positive px-2.5 py-1 rounded border border-status-positive/20 bg-status-positive/5 shrink-0 self-start md:self-auto">
-                  <Award className="w-3.5 h-3.5" />
-                  <span>VERIFIED [OK]</span>
-                </div>
-
-              </div>
-
+              )}
             </div>
           ))}
         </div>
-
       </div>
     </section>
-  );
+  )
 }

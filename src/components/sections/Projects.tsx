@@ -1,279 +1,204 @@
-"use client";
+"use client"
 
-import React, { useEffect, useRef, useState } from "react";
-import { portfolioData, Project } from "@/data/portfolio";
-import { ExternalLink, FolderGit2, CheckCircle2, Award, Settings2, ShieldCheck } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef, useState } from "react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { content } from "@/data/content"
 
 export default function Projects() {
-  const pinContainerRef = useRef<HTMLDivElement>(null);
-  const leadCardRef = useRef<HTMLDivElement>(null);
-  const projects = portfolioData.projects;
-  
-  // Separate lead project from others
-  const leadProject = projects[0];
-  const secondaryProjects = projects.slice(1);
-
-  // Spotlight mouse track state for hover effects
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent, id: string) => {
-    const target = e.currentTarget as HTMLElement;
-    const rect = target.getBoundingClientRect();
-    setCoords({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    });
-  };
+  const sectionRef = useRef<HTMLElement>(null)
+  const indexRef = useRef<HTMLSpanElement>(null)
+  const headerRef = useRef<HTMLHeadingElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const [activeProject, setActiveProject] = useState(0)
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger)
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion) return;
-
-    // Scale-up & Perspective Tilt effect on scroll for lead project
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        leadCardRef.current,
-        { scale: 0.9, rotationX: 8, transformOrigin: "top center" },
+        indexRef.current,
+        { y: 24, opacity: 0 },
         {
-          scale: 1,
-          rotationX: 0,
-          ease: "power2.out",
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: "power3.out",
           scrollTrigger: {
-            trigger: pinContainerRef.current,
-            start: "top 80%",
-            end: "bottom 30%",
-            scrub: true,
-          }
+            trigger: indexRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
         }
-      );
-    }, pinContainerRef);
+      )
 
-    return () => ctx.revert();
-  }, []);
+      gsap.fromTo(
+        headerRef.current,
+        { y: 24, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          delay: 0.05,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        }
+      )
+
+      const track = trackRef.current
+      const section = sectionRef.current
+      if (!track || !section) return
+
+      const totalWidth = track.scrollWidth
+
+      ScrollTrigger.create({
+        trigger: section,
+        pin: true,
+        start: "top top",
+        end: () => `+=${totalWidth - window.innerWidth + 200}`,
+        scrub: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const progress = self.progress
+          const maxX = window.innerWidth - totalWidth
+          const x = progress * maxX
+          gsap.set(track, { x })
+          setActiveProject(Math.round(progress * (content.projects.length - 1)))
+        },
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
 
   return (
     <section
       id="projects"
-      className="py-32 relative bg-bg-void border-t border-border-hairline overflow-hidden"
+      ref={sectionRef}
+      className="relative py-[160px] border-t border-border-subtle overflow-hidden"
     >
-      {/* Console grid bg */}
-      <div className="absolute inset-0 console-grid opacity-15 pointer-events-none" />
+      <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-accent-glow blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
-        {/* Section Title */}
-        <div className="flex flex-col gap-2 mb-16">
-          <span className="font-mono text-xs text-signal tracking-widest">// 05 // PROJECT_REPOSITORY.DB</span>
-          <h2 className="font-display text-3xl font-extrabold text-text-primary">
-            SHIPPED PROJECTS & CASE STUDIES
-          </h2>
+      <div className="max-w-[1680px] mx-auto px-[clamp(20px,5vw,80px)] relative mb-16">
+        <div className="flex items-center justify-between">
+          <div>
+            <span
+              ref={indexRef}
+              className="font-mono text-[0.85rem] text-text-muted block mb-4"
+            >
+              03 // FEATURED CASE STUDIES
+            </span>
+            <h2
+              ref={headerRef}
+              className="font-display text-[clamp(2rem,3vw,3rem)] font-bold text-text-primary"
+            >
+              Projects
+            </h2>
+          </div>
+          <span className="font-mono text-[0.85rem] text-accent-secondary">
+            {String(activeProject + 1).padStart(2, "0")} /{" "}
+            {String(content.projects.length).padStart(2, "0")}
+          </span>
         </div>
+      </div>
 
-        {/* 1. Lead Project Showcase (Container-Scroll Pin/Scale) */}
-        <div ref={pinContainerRef} className="mb-24 flex flex-col gap-6">
-          <div className="font-mono text-[10px] text-signal tracking-widest uppercase">// FEATURED_DELIVERY.EXE</div>
-          
+      <div
+        ref={trackRef}
+        className="flex gap-6 px-[clamp(20px,5vw,80px)] will-change-transform"
+        style={{ width: "max-content" }}
+      >
+        {content.projects.map((project) => (
           <div
-            ref={leadCardRef}
-            className="w-full rounded-xl border border-signal/30 bg-bg-surface p-6 sm:p-8 hover:border-signal/60 transition-all duration-300 flex flex-col gap-8 shadow-[0_8px_30px_rgba(255,122,51,0.05)] relative overflow-hidden"
+            key={project.id}
+            className="relative rounded-[24px] border border-border-subtle bg-bg-surface-1 overflow-hidden flex flex-col transition-all duration-500 hover:border-accent-primary/30"
+            style={{
+              width: "clamp(380px, 40vw, 520px)",
+              flexShrink: 0,
+            }}
           >
-            {/* Spotlight overlay */}
-            <div className="absolute top-2 right-2 flex items-center gap-1.5 font-mono text-[10px] text-status-positive px-2 py-0.5 rounded border border-status-positive/20 bg-status-positive/5">
-              <span className="w-1.5 h-1.5 rounded-full bg-status-positive animate-pulse" />
-              <span>LIVE_DEployed</span>
+            <div className="h-[200px] bg-bg-surface-2 relative overflow-hidden">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-20 h-20 rounded-full border border-border-subtle flex items-center justify-center">
+                  <span className="font-mono text-xs text-accent-secondary">
+                    {project.id.slice(0, 2).toUpperCase()}
+                  </span>
+                </div>
+              </div>
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{
+                  background:
+                    "radial-gradient(circle at 50% 50%, rgba(0,255,135,0.08) 0%, transparent 70%)",
+                }}
+              />
             </div>
 
-            {/* Content Split */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              
-              {/* Left col: Title, description, outcomes */}
-              <div className="lg:col-span-7 flex flex-col gap-6">
+            <div className="p-8 flex flex-col gap-5 flex-1">
+              <div className="flex items-start justify-between gap-4">
                 <div>
-                  <span className="font-mono text-xs text-data uppercase tracking-wider block mb-1">
-                    {leadProject.subtitle}
+                  <span className="font-mono text-[0.75rem] text-accent-primary uppercase tracking-[0.05em] block mb-1">
+                    {project.subtitle}
                   </span>
-                  <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-text-primary leading-tight">
-                    {leadProject.title}
+                  <h3 className="font-display text-[clamp(1.5rem,2vw,1.85rem)] font-semibold text-text-primary">
+                    {project.title}
                   </h3>
                 </div>
+                <span className="font-mono text-[0.75rem] text-text-muted whitespace-nowrap px-3 py-1 rounded-full border border-border-subtle">
+                  {project.timeline}
+                </span>
+              </div>
 
-                <div className="space-y-3 font-sans text-sm sm:text-base text-text-secondary leading-relaxed">
-                  {leadProject.description.map((desc, idx) => (
-                    <p key={idx}>{desc}</p>
-                  ))}
+              <div className="flex flex-wrap gap-1.5">
+                {project.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="font-mono text-[0.75rem] px-2.5 py-1 rounded-full border border-border-subtle bg-bg-surface-2/40 text-text-muted"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              <p className="text-[0.95rem] text-text-secondary leading-relaxed">
+                {project.overview}
+              </p>
+
+              <div className="grid grid-cols-2 gap-4 text-[0.85rem] leading-relaxed">
+                <div>
+                  <span className="font-mono text-[0.7rem] text-text-muted uppercase tracking-[0.05em] block mb-1">
+                    Challenge
+                  </span>
+                  <p className="text-text-secondary">{project.challenge}</p>
                 </div>
-
-                <div className="mt-2 p-4 rounded border border-border-hairline bg-bg-surface-raised/40">
-                  <div className="flex items-center gap-2 font-mono text-xs text-signal font-bold mb-1.5">
-                    <Award className="w-4 h-4" />
-                    <span>OPERATIONAL_IMPACT:</span>
-                  </div>
-                  <p className="font-sans text-xs sm:text-sm text-text-primary leading-relaxed">
-                    {leadProject.impact}
-                  </p>
+                <div>
+                  <span className="font-mono text-[0.7rem] text-accent-primary uppercase tracking-[0.05em] block mb-1">
+                    Solution
+                  </span>
+                  <p className="text-text-secondary">{project.solution}</p>
                 </div>
               </div>
 
-              {/* Right col: PM contributions, Tech, Links */}
-              <div className="lg:col-span-5 flex flex-col gap-6 border-t lg:border-t-0 lg:border-l border-border-hairline/50 pt-6 lg:pt-0 lg:pl-8">
-                
-                {/* PM contributions */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2 font-mono text-xs text-data font-bold">
-                    <Settings2 className="w-4 h-4" />
-                    <span>PM_CONTRIBUTIONS:</span>
-                  </div>
-                  <ul className="space-y-2 text-xs sm:text-sm text-text-secondary leading-relaxed">
-                    {leadProject.pmContribution.map((contrib, idx) => (
-                      <li key={idx} className="flex gap-2 items-start">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-signal shrink-0 mt-0.5" />
-                        <span>{contrib}</span>
-                      </li>
-                    ))}
-                  </ul>
+              <div className="mt-auto pt-4 border-t border-border-subtle">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[0.75rem] text-text-muted">
+                    Role:{" "}
+                    <span className="text-text-primary font-semibold">
+                      {project.role}
+                    </span>
+                  </span>
+                  <span className="font-mono text-[0.7rem] text-accent-primary uppercase tracking-[0.05em]">
+                    {project.results}
+                  </span>
                 </div>
-
-                {/* Tech chips */}
-                <div className="space-y-2">
-                  <div className="font-mono text-[10px] text-text-secondary uppercase">MODULES_STACK:</div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {leadProject.tech.map((t) => (
-                      <span
-                        key={t}
-                        className="font-mono text-[10px] px-2.5 py-0.5 rounded border border-border-hairline bg-bg-surface-raised text-data"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Meta details */}
-                <div className="flex justify-between items-center pt-4 border-t border-border-hairline/30 font-mono text-xs text-text-secondary">
-                  <div>
-                    <span>ROLE: </span>
-                    <span className="text-text-primary font-bold">{leadProject.role}</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-4">
-                    {leadProject.githubLink && (
-                      <a href={leadProject.githubLink} className="hover:text-signal transition-colors focus:outline-none" aria-label="GitHub Repository">
-                        <FolderGit2 className="w-4 h-4" />
-                      </a>
-                    )}
-                    {leadProject.liveLink && (
-                      <a href={leadProject.liveLink} className="hover:text-signal transition-colors flex items-center gap-1 focus:outline-none" aria-label="Live Project Link">
-                        <span className="text-[10px] tracking-widest font-semibold uppercase">LAUNCH</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-
               </div>
-
             </div>
           </div>
-        </div>
-
-        {/* 2. Secondary Projects (Bento Grid) */}
-        <div>
-          <div className="font-mono text-[10px] text-signal tracking-widest uppercase mb-6">// ASSOCIATE_PROJECTS.LOG</div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {secondaryProjects.map((project) => {
-              const isHovered = hoveredId === project.id;
-              
-              return (
-                <div
-                  key={project.id}
-                  onMouseMove={(e) => handleMouseMove(e, project.id)}
-                  onMouseEnter={() => setHoveredId(project.id)}
-                  onMouseLeave={() => setHoveredId(null)}
-                  className="relative group rounded-lg border border-border-hairline bg-bg-surface p-6 transition-all duration-300 hover:border-signal/30 hover:bg-bg-surface-raised/40 flex flex-col justify-between gap-6 min-h-[360px] overflow-hidden"
-                >
-                  {/* Spotlight overlay container */}
-                  {isHovered && (
-                    <div
-                      className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-                      style={{
-                        background: `radial-gradient(250px circle at ${coords.x}px ${coords.y}px, rgba(255, 122, 51, 0.05), transparent 80%)`
-                      }}
-                    />
-                  )}
-
-                  {/* Header & Description */}
-                  <div className="space-y-4 relative z-10">
-                    <div>
-                      <span className="font-mono text-[10px] text-data uppercase tracking-wider block mb-0.5">
-                        {project.subtitle}
-                      </span>
-                      <h4 className="font-display text-lg font-bold text-text-primary group-hover:text-signal transition-colors">
-                        {project.title}
-                      </h4>
-                    </div>
-
-                    <div className="space-y-2 text-xs sm:text-sm text-text-secondary leading-relaxed">
-                      {project.description.map((desc, idx) => (
-                        <p key={idx}>{desc}</p>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* PM Role & Tech stack */}
-                  <div className="space-y-4 relative z-10">
-                    {/* PM Bullet Highlight */}
-                    <div className="p-3 rounded border border-border-hairline/60 bg-bg-void/50 text-[11px] leading-relaxed">
-                      <span className="font-mono text-[9px] text-signal font-bold uppercase block mb-1">PM CONTRIBUTION:</span>
-                      <p className="text-text-primary/90">{project.pmContribution[0]}</p>
-                    </div>
-
-                    {/* Tech Chips */}
-                    <div className="flex flex-wrap gap-1">
-                      {project.tech.map((t) => (
-                        <span
-                          key={t}
-                          className="font-mono text-[9px] px-2 py-0.5 rounded border border-border-hairline/50 bg-bg-void/60 text-data"
-                        >
-                          {t.toLowerCase()}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Footer link line */}
-                    <div className="flex justify-between items-center pt-3 border-t border-border-hairline/40 font-mono text-[10px] text-text-secondary">
-                      <div>
-                        <span>ROLE: </span>
-                        <span className="text-text-primary">{project.role}</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        {project.githubLink && (
-                          <a href={project.githubLink} className="hover:text-signal transition-colors focus:outline-none" aria-label="GitHub repository">
-                            <FolderGit2 className="w-3.5 h-3.5" />
-                          </a>
-                        )}
-                        {project.liveLink && (
-                          <a href={project.liveLink} className="hover:text-signal transition-colors flex items-center gap-0.5 focus:outline-none" aria-label="Live project link">
-                            <span>LAUNCH</span>
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
+        ))}
       </div>
     </section>
-  );
+  )
 }

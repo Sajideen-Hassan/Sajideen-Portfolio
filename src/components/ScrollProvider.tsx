@@ -1,59 +1,81 @@
-"use client";
+"use client"
 
-import React, { createContext, useContext, useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
+import { createContext, useContext, useEffect, useRef, type ReactNode } from "react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import Lenis from "lenis"
 
-const ScrollContext = createContext<Lenis | null>(null);
+const ScrollContext = createContext<Lenis | null>(null)
+export const useScroll = () => useContext(ScrollContext)
 
-export const useScroll = () => useContext(ScrollContext);
+export default function ScrollProvider({ children }: { children: ReactNode }) {
+  const lenisRef = useRef<Lenis | null>(null)
 
-export default function ScrollProvider({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null);
+  interface WindowWithLenis {
+    __lenis?: Lenis
+  }
 
   useEffect(() => {
-    // Standard accessibility check for reduced motion
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    
-    if (prefersReducedMotion) {
-      return;
+    gsap.registerPlugin(ScrollTrigger)
+
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    if (prefersReduced) {
+      document.querySelectorAll("[data-reveal]").forEach((el) => {
+        el.setAttribute("data-revealed", "true")
+      })
+      return
     }
 
-    // Register ScrollTrigger with GSAP
-    gsap.registerPlugin(ScrollTrigger);
-
-    const lenisInstance = new Lenis({
-      lerp: 0.1,
+    const lenis = new Lenis({
       duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: "vertical",
+      gestureOrientation: "vertical",
       smoothWheel: true,
-    });
+      touchMultiplier: 2,
+      wheelMultiplier: 1,
+    })
 
-    lenisRef.current = lenisInstance;
+    lenisRef.current = lenis
+    ;(window as unknown as WindowWithLenis).__lenis = lenis
 
-    // Connect Lenis scroll to GSAP's ScrollTrigger update cycle
-    lenisInstance.on("scroll", () => {
-      ScrollTrigger.update();
-    });
+    lenis.on("scroll", () => ScrollTrigger.update())
 
-    // Feed Lenis RAF into the GSAP ticker
-    const tick = (time: number) => {
-      lenisInstance.raf(time * 1000);
-    };
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000)
+    })
+    gsap.ticker.lagSmoothing(0)
 
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
+    ScrollTrigger.scrollerProxy(document.body, {
+      scrollTop(value) {
+        if (arguments.length) {
+          lenis.scrollTo(value as number, { immediate: true })
+        }
+        return lenis.scroll ?? lenis.progress * 100
+      },
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        }
+      },
+      pinType: document.body.style.transform ? "transform" : "fixed",
+    })
+
+    ScrollTrigger.defaults({ scroller: document.body })
+
+    lenis.start()
 
     return () => {
-      gsap.ticker.remove(tick);
-      lenisInstance.destroy();
-      lenisRef.current = null;
-    };
-  }, []);
+      delete (window as unknown as WindowWithLenis).__lenis
+      lenis.destroy()
+      lenisRef.current = null
+      ScrollTrigger.getAll().forEach((t) => t.kill())
+    }
+  }, [])
 
-  return (
-    <ScrollContext.Provider value={lenisRef.current}>
-      {children}
-    </ScrollContext.Provider>
-  );
+  return <ScrollContext.Provider value={null}>{children}</ScrollContext.Provider>
 }
