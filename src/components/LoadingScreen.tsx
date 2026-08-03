@@ -1,148 +1,86 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from "react"
-import gsap from "gsap"
-import { SplitText } from "gsap/SplitText"
-import { content } from "@/data/content"
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
+const steps = [
+  "CALIBRATING_EXECUTION_VECTOR",
+  "SYNCHRONIZING_ROADMAPS",
+  "INITIALIZATION_COMPLETE",
+];
 
 export default function LoadingScreen() {
-  const overlayRef = useRef<HTMLDivElement>(null)
-  const topCurtain = useRef<HTMLDivElement>(null)
-  const bottomCurtain = useRef<HTMLDivElement>(null)
-  const textRef = useRef<HTMLHeadingElement>(null)
-  const barRef = useRef<HTMLDivElement>(null)
-  const counterRef = useRef<HTMLSpanElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [progress, setProgress] = useState(0);
+  const [status, setStatus] = useState(steps[0]);
+  const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
-    gsap.registerPlugin(SplitText)
-
-    let split: SplitText | null = null
-
-    const tl = gsap.timeline({
-      onComplete: () => {
-        if (overlayRef.current) overlayRef.current.style.display = "none"
-      },
-    })
-
-    if (textRef.current) {
-      split = new SplitText(textRef.current, { type: "chars" })
-      gsap.set(split.chars, { y: "120%", opacity: 0 })
-
-      tl.to(split.chars, {
-        y: "0%",
-        opacity: 1,
-        duration: 0.6,
-        stagger: 0.03,
-        ease: "power3.out",
-      }, 0.2)
-    }
-
-    const counter = { val: 0 }
-    tl.to(counter, {
-      val: 100,
-      duration: 1.8,
-      ease: "power2.inOut",
-      onUpdate: () => {
-        if (counterRef.current) {
-          counterRef.current.textContent = `${Math.round(counter.val)}%`
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        const next = prev + Math.random() * 8;
+        if (next >= 100) {
+          clearInterval(interval);
+          setTimeout(() => setIsComplete(true), 450);
+          return 100;
         }
-      },
-    }, 0)
+        return next;
+      });
+    }, 70);
 
-    if (barRef.current) {
-      tl.to(barRef.current, { scaleX: 1, duration: 1.8, ease: "power2.inOut" }, 0)
-    }
-
-    tl.to(containerRef.current, {
-      y: -20,
-      opacity: 0,
-      duration: 0.4,
-      ease: "power2.in",
-    }, "-=0.3")
-
-    tl.to(counterRef.current, { opacity: 0, duration: 0.3 }, "-=0.3")
-
-    tl.to(topCurtain.current, {
-      clipPath: "inset(0% 0% 100% 0%)",
-      duration: 0.9,
-      ease: "power3.inOut",
-    }, "-=0.1")
-
-    tl.to(bottomCurtain.current, {
-      clipPath: "inset(100% 0% 0% 0%)",
-      duration: 0.9,
-      ease: "power3.inOut",
-    }, "-=0.9")
+    const timer = window.setInterval(() => {
+      setStatus((current) => {
+        const index = steps.indexOf(current);
+        return steps[(index + 1) % steps.length];
+      });
+    }, 900);
 
     return () => {
-      split?.revert()
-    }
-  }, [])
+      clearInterval(interval);
+      clearInterval(timer);
+    };
+  }, []);
 
   return (
-    <div
-      ref={overlayRef}
-      className="fixed inset-0 z-[100] flex flex-col bg-bg-base overflow-hidden"
-    >
-      <div
-        ref={topCurtain}
-        className="w-full h-1/2 bg-bg-base"
-        style={{ clipPath: "inset(0% 0% 0% 0%)" }}
-      />
-      <div
-        ref={bottomCurtain}
-        className="w-full h-1/2 bg-bg-base"
-        style={{ clipPath: "inset(0% 0% 0% 0%)" }}
-      />
-
-      <div
-        ref={containerRef}
-        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
-      >
-        <h1
-          ref={textRef}
-          className="font-display text-[clamp(3.5rem,9vw,9.5rem)] font-extrabold text-text-primary tracking-[-0.04em] leading-[0.92]"
+    <AnimatePresence>
+      {!isComplete && (
+        <motion.div
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[#0a0b0e]"
+          exit={{
+            clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)",
+            transition: { duration: 0.85, ease: [0.76, 0, 0.24, 1] },
+          }}
         >
-          {content.personal.name}
-        </h1>
-
-        <div className="flex items-center gap-4 mt-8">
-          <span
-            ref={counterRef}
-            className="font-mono text-[1.5rem] font-medium text-text-primary tabular-nums"
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(204,255,0,0.08),_transparent_70%)]" />
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="relative z-10 flex flex-col items-center text-center"
           >
-            0%
-          </span>
-        </div>
-
-        <div className="w-[240px] h-[1px] bg-border-strong rounded-full overflow-hidden mt-2">
-          <div
-            ref={barRef}
-            className="h-full w-full bg-accent-primary rounded-full origin-left"
-            style={{ transform: "scaleX(0)" }}
-          />
-        </div>
-      </div>
-
-      <div className="absolute top-10 left-10 pointer-events-none">
-        <span className="font-mono text-xs text-text-muted">
-          SYS.INIT // 2026
-        </span>
-      </div>
-      <div className="absolute top-10 right-10 pointer-events-none text-right">
-        <span className="font-mono text-xs text-text-muted block">
-          LATENCY: 12ms
-        </span>
-        <span className="font-mono text-xs text-text-muted block">
-          FRAME_RATE: 60FPS
-        </span>
-      </div>
-      <div className="absolute bottom-10 left-10 pointer-events-none">
-        <span className="font-mono text-xs text-text-muted">
-          ARCHITECTING DIGITAL EXPERIENCE
-        </span>
-      </div>
-    </div>
-  )
+            <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.35em] text-[#ccff00]">
+              SYSTEM CALIBRATION
+            </p>
+            <h1 className="mb-6 font-display text-[clamp(2.6rem,6vw,4.6rem)] font-semibold tracking-[-0.04em] text-text-primary">
+              EXECUTION VECTOR
+            </h1>
+            <p className="mb-10 font-mono text-[11px] uppercase tracking-[0.3em] text-text-secondary">
+              {status}
+            </p>
+            <div className="flex items-center gap-3">
+              <span className="w-[140px] text-right font-mono text-xs text-text-secondary tabular-nums">
+                {Math.round(progress).toString().padStart(3, "0")}%
+              </span>
+              <div className="h-[2px] w-[220px] overflow-hidden rounded-full border border-border-subtle bg-bg-surface">
+                <motion.div
+                  className="h-full rounded-full bg-gradient-to-r from-[#ccff00] to-[#ff9900]"
+                  animate={{ scaleX: progress / 100 }}
+                  style={{ transformOrigin: "left" }}
+                />
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }

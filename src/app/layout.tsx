@@ -1,51 +1,51 @@
-import type { Metadata } from "next"
-import { Syne, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google"
-import "./globals.css"
+import type { Metadata } from "next";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import LenisProvider from "@/components/LenisProvider";
+import "./globals.css";
 
-const syne = Syne({
-  variable: "--font-syne",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  display: "swap",
-})
-
-const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
-})
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 const jetbrains = JetBrains_Mono({
   variable: "--font-jetbrains",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
   display: "swap",
-})
+});
 
 export const metadata: Metadata = {
-  title: "Sajideen Hassan | Project Manager & Technical Product Builder",
+  title: "Sajideen Hassan | Project Coordinator & Technical PM",
   description:
-    "Bridging strategic executive leadership with advanced software architecture. Technical PM, Software Engineer & AI Product Builder.",
+    "Modern portfolio for a senior project coordinator blending agile delivery, cross-functional leadership, and technical fluency.",
   authors: [{ name: "Sajideen Hassan" }],
-  openGraph: {
-    title: "Sajideen Hassan | Project Manager & Technical Product Builder",
-    description:
-      "Bridging strategic executive leadership with advanced software architecture.",
-    type: "website",
-    locale: "en_US",
-  },
-}
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"
-      className={`${syne.variable} ${plusJakarta.variable} ${jetbrains.variable} antialiased`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrains.variable} antialiased dark`}
       style={{ colorScheme: "dark" }}
       suppressHydrationWarning
     >
-      <body>{children}</body>
+      <body className="min-h-screen bg-bg text-text-primary antialiased selection:bg-[#ccff00] selection:text-black">
+        <LenisProvider>{children}</LenisProvider>
+      </body>
     </html>
-  )
+  );
 }

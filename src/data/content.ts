@@ -88,10 +88,10 @@ export const content: Content = {
   personal: {
     name: "Sajideen Hassan",
     initials: "SH",
-    role: "Project Manager & Technical Product Builder",
-    tagline: "Bridging strategic executive leadership with advanced software architecture. I read the codebase, not just the status report.",
+    role: "Technical Project Manager & AI Product Builder",
+    tagline: "I don't simply manage projects—I transform complex technical ideas into successful, market-ready digital products through cross-functional leadership, architectural knowledge, strategic planning, and agile execution.",
     summary:
-      "A project manager with a software engineering background who reads the codebase, not just the status report. I bridge engineering reality with stakeholder expectations, de-risk delivery, and ship products that work.",
+      "Bridging technical engineering and product strategy. I transform complex technical ideas into successful digital products through leadership, technical knowledge, strategic planning, and agile collaboration.",
     location: "Lahore, Pakistan",
     email: "sajideenhassan12@gmail.com",
     phone: "+92 334 863 1680",
@@ -108,7 +108,7 @@ export const content: Content = {
   ],
   about: {
     manifest:
-      "I believe that exceptional project management sits at the intersection of technical precision, organizational clarity, and human-centered leadership.",
+      "Great technical project management isn't about tracking tickets. It is about architecting clarity out of ambiguity.",
     philosophy: [
       "I started in software development, building full-stack applications with React, Node.js, and Python. Along the way I discovered I was better at organizing the work than just doing it.",
       "Now I run projects end-to-end: from discovery and roadmap definition through delivery and retro. I scope features, coordinate teams, manage sprints, and keep stakeholders aligned.",
