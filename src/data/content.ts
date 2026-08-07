@@ -5,6 +5,8 @@ export interface Project {
   tags: string[]
   role: string
   timeline: string
+  domain: string
+  year: number
   overview: string
   challenge: string
   solution: string
@@ -38,8 +40,12 @@ export interface Volunteer {
 export interface Certification {
   title: string
   issuer: string
-  credentialId: string
-  verifyUrl: string
+  period: string
+  platform: string
+  platformColor: string
+  icon: string
+  credentialId?: string
+  verifyUrl?: string
 }
 
 export interface SkillGroup {
@@ -88,7 +94,7 @@ export const content: Content = {
   personal: {
     name: "Sajideen Hassan",
     initials: "SH",
-    role: "Technical Project Manager & AI Product Builder",
+    role: "Project Coordinator & AI Product Builder",
     tagline: "I don't simply manage projects—I transform complex technical ideas into successful, market-ready digital products through cross-functional leadership, architectural knowledge, strategic planning, and agile execution.",
     summary:
       "Bridging technical engineering and product strategy. I transform complex technical ideas into successful digital products through leadership, technical knowledge, strategic planning, and agile collaboration.",
@@ -102,7 +108,7 @@ export const content: Content = {
   },
   metrics: [
     { label: "Years Experience", value: "10+" },
-    { label: "Managed Budgets", value: "$45M+" },
+    { label: "Lines of Code", value: "100K+" },
     { label: "Projects Delivered", value: "50+" },
     { label: "Teams Led", value: "24+" },
   ],
@@ -122,7 +128,7 @@ export const content: Content = {
   experience: [
     {
       id: "techtide-pm",
-      title: "Project Manager & Development Team Lead",
+      title: "Project Coordinator",
       company: "TechTideCo",
       period: "Nov 2025 \u2014 Present",
       responsibilities: [
@@ -134,6 +140,7 @@ export const content: Content = {
         "Reduced delivery cycle time by 30% through improved sprint planning",
         "Managed 3 simultaneous client projects to on-time delivery",
         "Established code review standards that reduced production bugs by 40%",
+        "Coordinated daily stand-ups that kept cross-functional teams aligned and blockers resolved within 24 hours",
       ],
       tags: ["MongoDB", "Express.js", "React.js", "Node.js", "Jira", "Scrum", "Git"],
     },
@@ -150,6 +157,8 @@ export const content: Content = {
       achievements: [
         "Improved cross-team communication with structured daily stand-up format",
         "Delivered integration documentation adopted as team standard",
+        "Reduced integration delays by 20% by tracking REST API milestones proactively",
+        "Supported 4 sprint cycles with accurate status tracking and blocker escalation",
       ],
       tags: ["REST APIs", "Documentation", "Coordination", "Agile"],
     },
@@ -165,6 +174,9 @@ export const content: Content = {
       ],
       achievements: [
         "Streamlined cross-departmental reporting, reducing information latency by 50%",
+        "Maintained discipline across the entire project and kept every task moving on schedule",
+        "Managed food distribution so that every participant and volunteer was properly provided",
+        "Led and supervised sub-volunteering teams, assigning roles and resolving issues on the ground",
       ],
       tags: ["Stakeholder Mgmt", "Reporting", "Coordination"],
     },
@@ -177,58 +189,141 @@ export const content: Content = {
         "Conducted structured research on information systems and digital literacy frameworks",
         "Improved data processing workflows through systematic research methodology",
       ],
-      achievements: ["Increased analytical workflow efficiency by 25%"],
+      achievements: [
+        "Increased analytical workflow efficiency by 25%",
+        "Delivered research on digital literacy frameworks adopted in team resources",
+        "Built structured research methodology now reused across information system projects",
+        "Documented findings in clear reports shared with faculty and peers",
+      ],
       tags: ["Research", "HTML5", "CSS3", "JavaScript"],
     },
   ],
   projects: [
     {
-      id: "ai-learning-platform",
-      title: "AI Document-to-Course Platform",
-      subtitle: "Flagship \u2014 End-to-End PM",
-      tags: ["React/Next.js", "Node.js", "BullMQ", "PostgreSQL", "Gemini API"],
-      role: "Project Manager",
-      timeline: "12 weeks",
-      overview:
-        "Built an AI generation pipeline that transforms uploaded documents into structured courses \u2014 complete with lessons, quizzes, flashcards, and a tutor chat interface.",
-      challenge:
-        "API quota exhaustion under concurrent pipeline stages. Polling-based status was hitting rate limits on high-volume documents. Single-provider dependency posed vendor lock-in risk.",
-      solution:
-        "Introduced a shared rate limiter across all generation stages. Replaced polling with SSE/WebSocket push, reducing API calls by 60%. Evaluated and integrated fallback providers.",
-      results:
-        "Successfully delivered multi-stage pipeline. Eliminated timeout errors on 50+ page documents. Zero hallucinated content across 100+ test documents.",
-    },
-    {
-      id: "inventory-mgmt",
-      title: "Inventory Management System",
-      subtitle: "Full-Stack Enterprise",
-      tags: ["MongoDB", "Express.js", "React.js", "Node.js", "Chart.js", "Stripe"],
-      role: "Lead Developer & Coordinator",
-      timeline: "6 weeks",
-      overview:
-        "Full-featured inventory and sales tracking platform for high-throughput retail operations with barcode scanning and analytics dashboards.",
-      challenge:
-        "Barcode scanner compatibility across different hardware models. Real-time sync across multiple POS terminals.",
-      solution:
-        "Built a hardware-agnostic input handler. Implemented WebSocket-based state broadcasting for real-time multi-terminal sync.",
-      results:
-        "Zero critical bugs in first month. Inventory discrepancy rate dropped 34% in first quarter.",
-    },
-    {
-      id: "techtide-corp",
-      title: "TechTide Corporate Portal",
-      subtitle: "CMS & Services Platform",
-      tags: ["MongoDB", "Express.js", "React.js", "Node.js", "Tailwind CSS"],
-      role: "Technical Lead / PM",
+      id: "ai-skin-disease-identifier",
+      title: "AI Skin Disease Identifier",
+      subtitle: "AI Healthcare Application",
+      tags: ["Python", "TensorFlow/Keras", "OpenCV", "Flask/FastAPI", "React", "MongoDB"],
+      role: "AI Engineer & Full-Stack Developer",
       timeline: "8 weeks",
+      domain: "ai",
+      year: 2024,
       overview:
-        "Full-scale corporate portal with dynamic services showcase, blog engine, contact workflows, and a secure CMS dashboard.",
+        "An AI-powered healthcare application that helps users identify common skin conditions through image analysis. Trained on a diverse medical image dataset, the system delivers over 89% prediction accuracy with possible diagnoses, precautionary measures, treatment guidance, and tips to prevent the condition from spreading. It also recommends experienced dermatologists for professional consultation.",
       challenge:
-        "Evolving client requirements mid-build. SEO requirements added late in development.",
+        "Achieving high prediction accuracy across diverse skin conditions on color-graded medical images with limited labeled data and avoiding false-confidence predictions.",
       solution:
-        "Implemented formal change request process with scope re-baseline. Retrofitted SSR metadata and auto-generated sitemaps.",
+        "Trained a TensorFlow/Keras CNN over an augmented medical dataset, applied OpenCV preprocessing to normalize lighting and noise, and exposed predictions through a Flask/FastAPI service with a React-based upload and results interface.",
       results:
-        "Launched on schedule. Client onboarded 3 blog authors within first week of CMS handover.",
+        "Delivered over 89% prediction accuracy, giving users possible diagnoses, treatment guidance, and prevention tips alongside recommended dermatologists.",
+    },
+    {
+      id: "raynova-tech",
+      title: "Raynova Tech \u2013 Company Website",
+      subtitle: "Company Website & Admin Dashboard",
+      tags: ["React", "Node.js", "Express.js", "MongoDB", "TursoDB", "Tailwind CSS", "JWT"],
+      role: "Full-Stack Developer",
+      timeline: "10 weeks",
+      domain: "web",
+      year: 2024,
+      overview:
+        "Designed and developed the official Raynova Tech website with a custom administrative dashboard to streamline quotation requests, client inquiries, and business operations. Integrated an AI-powered chatbot to improve customer engagement and automate responses. Initially built on MongoDB, the platform was later migrated to TursoDB for improved performance and modern edge database capabilities.",
+      challenge:
+        "Migrating from MongoDB to TursoDB without service disruption while adding a custom dashboard and AI chatbot to handle quotations and inquiries at scale.",
+      solution:
+        "Migrated the data layer to TursoDB for edge performance and scalability, wrapped REST APIs in JWT authentication, and deployed an AI chatbot to automate client engagement on the React front end.",
+      results:
+        "Delivered a performant company platform with automated quotation handling, AI-driven customer engagement, and an admin dashboard for smooth business operations.",
+    },
+    {
+      id: "ai-furniture-chatbot",
+      title: "AI Furniture Support Chatbot",
+      subtitle: "ElevenLabs Conversational AI",
+      tags: ["ElevenLabs AI", "React", "Node.js", "REST APIs", "JavaScript"],
+      role: "AI Integration Developer",
+      timeline: "6 weeks",
+      domain: "ai",
+      year: 2024,
+      overview:
+        "Built an intelligent customer support chatbot using ElevenLabs Conversational AI for an international furniture business. The chatbot answers product-related questions, guides customers through furniture collections, provides recommendations based on user preferences, and handles common support requests with natural voice interactions, significantly cutting response time.",
+      challenge:
+        "Training a voice-enabled chatbot to understand furniture-specific intent, product queries, and recommendations with natural, low-latency voice interactions.",
+      solution:
+        "Configured an ElevenLabs conversational flow, wired intent-driven recommendation logic through React and a Node/Express REST API, and deployed it to the sustain business site.",
+      results:
+        "Reduced customer response time and improved the experience by handling product questions, collection guidance, and recommendations through natural voice.",
+    },
+    {
+      id: "brotchun-website",
+      title: "Brotchun Website",
+      subtitle: "Animated Editorial Website",
+      tags: ["MERN", "GSAP", "Framer Motion", "React", "Tailwind CSS"],
+      role: "Frontend Engineer",
+      timeline: "5 weeks",
+      domain: "creative",
+      year: 2023,
+      overview:
+        "Developed a modern company website focused on animations, storytelling, and user experience. Implemented smooth page transitions, interactive scroll effects, and responsive layouts to create an immersive browsing experience while keeping fast performance and clean design.",
+      challenge:
+        "Balancing heavy animation, scroll effects, and page transitions with fast performance on lower-end devices.",
+      solution:
+        "Used GSAP and Framer Motion with lazy-loaded routes and GPU-friendly transforms to create cinematic transitions and scroll storytelling without sacrificing performance.",
+      results:
+        "Shipped an immersive, animation-driven company website with smooth transitions, interactive scroll effects, and responsive layouts.",
+    },
+    {
+      id: "techtide-platform",
+      title: "TechTide Platform",
+      subtitle: "Website & Developer Dashboard",
+      tags: ["React.js", "Firebase", "JavaScript", "Material UI", "Firestore"],
+      role: "Software Engineer",
+      timeline: "7 weeks",
+      domain: "web",
+      year: 2023,
+      overview:
+        "Contributed to the enhancement of TechTide's official website and internal developer dashboard. Implemented new features, optimized existing modules, fixed production issues, and improved task management workflows for developers and administrators, focusing on usability, performance, and efficient collaboration.",
+      challenge:
+        "Improving the developer dashboard with solid, and maintainable structures, a consistent task management workflow, reducing production issues visible to users.",
+      solution:
+        "Refactored React modules with Material UI, optimized Firestore queries and real-time subscriptions, and shipped usability fixes for team collaboration workflows.",
+      results:
+        "Improved dashboard usability, performance, and task management for developers and administrators across the platform.",
+    },
+    {
+      id: "n8n-workflow-marketplace",
+      title: "n8n Workflow Marketplace",
+      subtitle: "Digital Marketplace",
+      tags: ["MERN", "Stripe API", "JWT", "MongoDB", "React", "Express.js"],
+      role: "Full-Stack Developer",
+      timeline: "9 weeks",
+      domain: "commerce",
+      year: 2024,
+      overview:
+        "Developed a full-stack platform where creators upload, manage, and sell n8n automation workflows. Each workflow includes detailed documentation, implementation guides, and workflow diagrams for buyers to review. Integrated Stripe for secure payments, after which purchased workflows are automatically unlocked in a user's personalized dashboard for download.",
+      challenge:
+        "Implementing secure purchases, and JWT-secured multi-role access so creators can sell workflows and buyers unlock them after Stripe payment.",
+      solution:
+        "Built a MERN marketplace with Stripe payment webhooks and JWT authorization, auto-unlocking purchased workflows in a user's dashboard with documentation and diagrams.",
+      results:
+        "Launched a functioning creator economy with secure Stripe payments and instant, personalized access to purchased workflows.",
+    },
+    {
+      id: "smart-inventory-system",
+      title: "Smart Inventory Management System",
+      subtitle: "Barcode-Based Full-Stack",
+      tags: ["MERN", "Python", "OpenCV", "Barcode Scanner", "React", "MongoDB"],
+      role: "Full-Stack Developer",
+      timeline: "6 weeks",
+      domain: "infra",
+      year: 2024,
+      overview:
+        "Built a complete inventory management solution that automates stock tracking using barcode technology. Products are added to inventory by scanning barcodes, while sales automatically reduce stock quantities in real time through the billing counter. The system provides accurate inventory monitoring, minimizes manual errors, minimizes and generates reports for stock efficiency.",
+      challenge:
+        "Automating stock entry with barcode scanning and keeping inventory counts in real time as sales reduce stock at the billing counter.",
+      solution:
+        "Integrated an OpenCV barcode scanner to add stock and built a real-time MERN billing flow where sales automatically decrement inventory and generate reports.",
+      results:
+        "Delivered accurate, real-time inventory tracking that minimizes manual errors and reports stock levels with only barcode-driven workflows.",
     },
   ],
   skills: [
@@ -359,22 +454,52 @@ export const content: Content = {
   ],
   certifications: [
     {
-      title: "Google Project Management Professional",
-      issuer: "Project Management Institute",
-      credentialId: "PMP-889102",
-      verifyUrl: "#",
+      title: "Introduction to Microsoft Excel",
+      issuer: "Coursera",
+      period: "Completed",
+      platform: "Coursera",
+      platformColor: "#0056D2",
+      icon: "Table",
     },
     {
-      title: "AWS Certified Solutions Architect \u2014 Associate",
+      title: "Business Analysis & Process Management",
+      issuer: "Coursera",
+      period: "Completed",
+      platform: "Coursera",
+      platformColor: "#0056D2",
+      icon: "Diagram",
+    },
+    {
+      title: "CHATGPT Series: Prompt Engineering Masterclass",
+      issuer: "Development Island",
+      period: "Completed",
+      platform: "Development Island",
+      platformColor: "#10B981",
+      icon: "Bot",
+    },
+    {
+      title: "Complete Web Development",
+      issuer: "Udemy",
+      period: "Completed",
+      platform: "Udemy",
+      platformColor: "#EC5252",
+      icon: "Code",
+    },
+    {
+      title: "MERN Stack Development",
+      issuer: "NAVTTC",
+      period: "Completed",
+      platform: "NAVTTC",
+      platformColor: "#6366F1",
+      icon: "Layers",
+    },
+    {
+      title: "Prompt Engineering by AWS",
       issuer: "Amazon Web Services",
-      credentialId: "AWS-490123",
-      verifyUrl: "#",
-    },
-    {
-      title: "Certified Scrum Master (CSM)",
-      issuer: "Scrum Alliance",
-      credentialId: "CSM-982301",
-      verifyUrl: "#",
+      period: "Completed",
+      platform: "AWS",
+      platformColor: "#FF9900",
+      icon: "Cloud",
     },
   ],
   contact: {

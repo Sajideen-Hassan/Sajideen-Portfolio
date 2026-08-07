@@ -5,8 +5,7 @@ import Experience from "@/components/sections/Experience";
 import ProjectsSection from "@/components/sections/Projects";
 import Skills from "@/components/sections/Skills";
 import Education from "@/components/sections/Education";
-import Volunteer from "@/components/sections/Volunteer";
-import Certifications from "@/components/sections/Certifications";
+import VolunteerCertificates from "@/components/sections/VolunteerCertificates";
 import TerminalContact from "@/components/sections/TerminalContact";
 import ExecutionVector from "@/components/ExecutionVector";
 
@@ -22,8 +21,7 @@ export default function Home() {
         <ProjectsSection />
         <Skills />
         <Education />
-        <Volunteer />
-        <Certifications />
+        <VolunteerCertificates />
         <TerminalContact />
       </main>
     </>

@@ -75,4 +75,34 @@
     background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
     background-size: 24px 24px;
   }
+
+  .marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll var(--marquee-speed, 36s) linear infinite;
+  }
+
+  .marquee-reverse {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll var(--marquee-speed, 36s) linear infinite reverse;
+  }
+
+  .hero-ring-spin {
+    animation: hero-ring-spin 14s linear infinite;
+  }
+
+  .hero-conic-spin {
+    animation: hero-conic-spin 22s linear infinite;
+  }
+
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes hero-ring-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
 }

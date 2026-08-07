@@ -5,6 +5,7 @@ type SectionHeaderProps = {
   title: string;
   accent?: string;
   description?: string;
+  className?: string;
 };
 
 export default function SectionHeader({
@@ -12,9 +13,10 @@ export default function SectionHeader({
   title,
   accent,
   description,
+  className,
 }: SectionHeaderProps) {
   return (
-    <div className="mb-8">
+    <div className={className ?? "mb-8"}>
       <motion.p
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
