@@ -55,7 +55,7 @@ export default function Education() {
             </h2>
           </div>
           <p className="max-w-xs text-sm leading-6 text-text-secondary">
-            Three chapters on the way to a systems mindset.
+            Where I studied and what I focused on.
           </p>
         </div>
 

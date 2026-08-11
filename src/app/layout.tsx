@@ -25,9 +25,9 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sajideen Hassan | Project Coordinator & Technical PM",
+  title: "Sajideen Hassan | Associate Software Engineer",
   description:
-    "Modern portfolio for a senior project coordinator blending agile delivery, cross-functional leadership, and technical fluency.",
+    "Portfolio of Sajideen Hassan, an associate software engineer. Builds web applications with MERN, PERN, and Python, and helps teams turn client requirements into delivered software.",
   authors: [{ name: "Sajideen Hassan" }],
 };
 

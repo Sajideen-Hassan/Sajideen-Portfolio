@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { content } from "@/data/content";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -83,6 +83,18 @@ function Comet() {
   );
 }
 
+function CurrentBadge() {
+  return (
+    <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#ccff00]/40 bg-[#ccff00]/10 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-[#ccff00]">
+      <span className="relative flex h-1.5 w-1.5">
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#ccff00] opacity-60" />
+        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#ccff00]" />
+      </span>
+      Current
+    </span>
+  );
+}
+
 function ExperienceCard({ exp, index }: { exp: (typeof content.experience)[number]; index: number }) {
   const [open, setOpen] = useState(false);
   const num = String(index + 1).padStart(2, "0");
@@ -100,15 +112,12 @@ function ExperienceCard({ exp, index }: { exp: (typeof content.experience)[numbe
         <span className="bg-gradient-to-b from-[#ccff00] via-[#ccff00]/60 to-[#ccff00]/0 bg-clip-text font-display text-6xl font-bold leading-none text-transparent xl:text-7xl">
           {num}
         </span>
-        {isCurrent && (
-          <span className="mt-3 inline-flex w-fit items-center gap-2 rounded-full border border-[#ccff00]/40 bg-[#ccff00]/10 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-[#ccff00]">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#ccff00] opacity-60" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#ccff00]" />
-            </span>
-            Current
-          </span>
-        )}
+        {isCurrent && <CurrentBadge />}
+      </div>
+
+      <div className="mb-4 flex items-center justify-between lg:hidden">
+        <span className="font-display text-3xl font-bold text-[#ccff00]/70">{num}</span>
+        {isCurrent && <CurrentBadge />}
       </div>
 
       <SpotlightCard>
@@ -209,14 +218,14 @@ export default function Experience() {
         <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
           <SectionHeader
             className="mb-0"
-            eyebrow="03 // Journey // Career milestones"
-            title="The path to"
-            accent="on-time delivery."
+            eyebrow="02 // Experience // Roles & outcomes"
+            title="Building the product,"
+            accent="coordinating the work."
           />
           <div className="flex items-center justify-between gap-6 lg:flex-col lg:items-end">
             <span className="h-px w-10 bg-[#ccff00]/50 lg:hidden" />
             <p className="max-w-xs font-mono text-[11px] leading-6 tracking-[0.14em] text-text-muted">
-              Click any chapter to expand the outcomes.
+              Click any role to expand the details.
             </p>
           </div>
         </div>

@@ -60,6 +60,10 @@
     outline: 1px solid rgba(204, 255, 0, 0.85);
     outline-offset: 2px;
   }
+
+  section[id] {
+    scroll-margin-top: 4.5rem;
+  }
 }
 
 @layer utilities {
@@ -74,6 +78,45 @@
   .terminal-grid {
     background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
     background-size: 24px 24px;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sheen {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 45%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: translateX(-140%) skewX(-20deg);
+    pointer-events: none;
+  }
+  .group:hover .sheen {
+    animation: sheen-sweep 1.2s ease;
+  }
+
+  .seal-ring {
+    animation: seal-spin 18s linear infinite;
+  }
+  .group:hover .seal-ring {
+    animation-duration: 5s;
+  }
+
+  @keyframes sheen-sweep {
+    0% { transform: translateX(-140%) skewX(-20deg); }
+    100% { transform: translateX(280%) skewX(-20deg); }
+  }
+
+  @keyframes seal-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   .marquee {

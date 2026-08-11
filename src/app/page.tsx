@@ -1,4 +1,5 @@
 import LoadingScreen from "@/components/LoadingScreen";
+import StickyNav from "@/components/layout/StickyNav";
 import HeroSection from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Experience from "@/components/sections/Experience";
@@ -15,6 +16,7 @@ export default function Home() {
       <LoadingScreen />
       <ExecutionVector />
       <main className="relative z-10 flex w-full flex-col bg-bg">
+        <StickyNav />
         <HeroSection />
         <About />
         <Experience />

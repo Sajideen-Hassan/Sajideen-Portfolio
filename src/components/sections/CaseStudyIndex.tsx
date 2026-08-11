@@ -39,7 +39,7 @@ export default function CaseStudyIndex() {
               viewport={{ once: true }}
               className="mb-5 font-mono text-[11px] uppercase tracking-[0.3em] text-[#ccff00]"
             >
-              03 // Journey // Career milestones
+              03 // Projects // Selected work
             </motion.p>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -57,8 +57,8 @@ export default function CaseStudyIndex() {
               transition={{ delay: 0.12 }}
               className="mt-6 max-w-xl text-base leading-7 text-text-secondary"
             >
-              The path to on-time delivery — every build unpacked across purpose,
-              architecture, and outcomes. Click a chapter to open the file.
+              Seven projects shipped with different stacks and goals. Click any
+              one to read what it was, what I built, and how it turned out.
             </motion.p>
           </div>
 
@@ -73,7 +73,7 @@ export default function CaseStudyIndex() {
               {String(projects.length).padStart(2, "0")}
             </span>
             <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-text-muted">
-              cases · 2023—2024
+              cases · 2023-2024
             </span>
           </motion.div>
         </div>
@@ -255,7 +255,7 @@ export default function CaseStudyIndex() {
           className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.24em] text-text-muted"
         >
           <ArrowDownRight className="h-4 w-4 text-[#ccff00]" />
-          Every case shipped end-to-end — select a chapter to read the file.
+          Each project below was built and shipped. Click any row to read the details.
         </motion.p>
       </div>
     </div>

@@ -3,35 +3,28 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 import { content } from "@/data/content";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const VOLT = "#ccff00";
 
-const NAV = [
-  { index: "01", label: "About", href: "about" },
-  { index: "02", label: "Experience", href: "experience" },
-  { index: "03", label: "Work", href: "projects" },
-  { index: "04", label: "Connect", href: "terminal" },
-];
-
 const MARQUEE = [
-  "Coordinating Teams",
-  "Building Products",
-  "Delivering Results",
+  "ASE",
+  "Team Collaboration",
+  "Full Stack Development",
   "MERN",
   "PERN",
   "Python",
-  "AI Solutions",
-  "Agile Workflows",
-  "Quality-Driven Development",
+  "Client Collaboration",
+  "AI Integration",
+  "Agile Workflow",
+  "On-Time Delivery",
 ];
 
 const SOCIALS = [
   { href: content.personal.linkedin, Icon: Linkedin, label: "LinkedIn" },
   { href: content.personal.github, Icon: Github, label: "GitHub" },
-  { href: content.personal.twitter, Icon: Twitter, label: "X" },
   { href: `mailto:${content.personal.email}`, Icon: Mail, label: "Email" },
 ];
 
@@ -119,9 +112,9 @@ function OrbitBurst() {
 }
 
 const HERO_CHIPS = [
-  { value: "20+", label: "Projects Delivered", x: -26, y: 12, align: "left" as const },
-  { value: "100K+", label: "Lines of Code", x: 100, y: 46, align: "right" as const },
-  { value: "20+", label: "Happy Customers", x: 100, y: 84, align: "right" as const },
+  { value: "1+", label: "Year of Experience", x: -26, y: 12, align: "left" as const },
+  { value: "MERN", label: "PERN · Python", x: 100, y: 46, align: "right" as const },
+  { value: "30+", label: "Successful Projects Delivered", x: 100, y: 84, align: "right" as const },
 ];
 
 function PortraitLockup() {
@@ -225,7 +218,7 @@ function Headline() {
         transition={{ duration: 0.7, delay: 0.5, ease: EASE }}
         className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2"
       >
-        {["Project Coordinator", "Full Stack Developer", "AI"].map((word, i) => (
+        {["ASE", "Full Stack Developer", "AI Integration"].map((word, i) => (
           <span key={word} className="flex items-center gap-5">
             <span className="font-mono text-xs uppercase tracking-[0.22em] text-text-secondary">
               {word}
@@ -234,6 +227,15 @@ function Headline() {
           </span>
         ))}
       </motion.div>
+
+      <motion.p
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.62, ease: EASE }}
+        className="mt-7 max-w-xl text-base leading-7 text-text-secondary sm:text-lg sm:leading-8"
+      >
+        I build web apps, work with clients, and help teams ship.
+      </motion.p>
     </div>
   );
 }
@@ -306,60 +308,7 @@ export default function HeroSection() {
 
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[1480px] flex-1 flex-col px-6 sm:px-10 lg:px-14">
-        <header className="flex items-center justify-between pt-6">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="flex items-center gap-3"
-          >
-            <span className="flex h-8 w-8 items-center justify-center border border-[#ccff00]/30 font-display text-xs font-bold text-[#ccff00]">
-              {content.personal.initials}
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-text-secondary">
-              {content.personal.name}
-            </span>
-          </motion.div>
-
-          <motion.nav
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="hidden items-center gap-8 md:flex"
-          >
-            {NAV.map((item) => (
-              <button
-                key={item.href}
-                onClick={() => scrollTo(item.href)}
-                className="group cursor-pointer text-left"
-                aria-label={item.label}
-              >
-                <span className="block font-mono text-[9px] tracking-[0.2em] text-text-muted transition-colors duration-300 group-hover:text-[#ccff00]">
-                  {item.index}
-                </span>
-                <span className="block font-display text-xs font-medium uppercase tracking-[0.18em] text-text-primary transition-colors duration-300 group-hover:text-[#ccff00]">
-                  {item.label}
-                </span>
-              </button>
-            ))}
-          </motion.nav>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex items-center gap-2.5"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#ccff00] opacity-50" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#ccff00]" />
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-text-secondary">
-              Open for work
-            </span>
-          </motion.div>
-        </header>
+      <div className="relative z-10 mx-auto flex w-full max-w-[1480px] flex-1 flex-col px-6 pt-24 sm:px-10 lg:px-14">
 
         <div className="grid flex-1 items-center gap-12 py-10 lg:grid-cols-[1.2fr_1fr] lg:gap-8 lg:py-12">
           <div className="flex flex-col">
@@ -371,7 +320,7 @@ export default function HeroSection() {
             >
               <span className="h-px w-10 shrink-0 bg-[#ccff00]/60" />
               <p className="font-mono text-sm font-medium uppercase tracking-[0.35em] text-text-secondary">
-                Intro
+                Associate Software Engineer
               </p>
             </motion.div>
 
@@ -395,7 +344,7 @@ export default function HeroSection() {
                 onClick={() => scrollTo("about")}
                 className="group inline-flex cursor-pointer items-center gap-3 border border-white/15 px-7 py-4 font-display text-sm font-semibold text-text-primary transition-colors duration-300 hover:border-[#ccff00]/40"
               >
-                The practice
+                About me
                 <span className="text-[#ccff00] transition-transform duration-300 group-hover:translate-x-1">
                   &rarr;
                 </span>
@@ -403,7 +352,7 @@ export default function HeroSection() {
 
               <a
                 href={content.personal.resumeUrl}
-                download
+                download="sajideenhassan-cv(Ase).pdf"
                 className="cursor-pointer font-mono text-[11px] uppercase tracking-[0.25em] text-text-secondary underline underline-offset-8 transition-colors duration-300 hover:text-[#ccff00]"
               >
                 Download CV

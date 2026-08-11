@@ -44,6 +44,7 @@ export interface Certification {
   platform: string
   platformColor: string
   icon: string
+  focus: string
   credentialId?: string
   verifyUrl?: string
 }
@@ -94,73 +95,74 @@ export const content: Content = {
   personal: {
     name: "Sajideen Hassan",
     initials: "SH",
-    role: "Project Coordinator & AI Product Builder",
-    tagline: "I don't simply manage projects—I transform complex technical ideas into successful, market-ready digital products through cross-functional leadership, architectural knowledge, strategic planning, and agile execution.",
+    role: "Associate Software Engineer",
+    tagline:
+      "I build web applications with React, Node.js, and Python, and I also coordinate the work. I talk to clients, break requirements into clear tasks, and help development teams ship on time.",
     summary:
-      "Bridging technical engineering and product strategy. I transform complex technical ideas into successful digital products through leadership, technical knowledge, strategic planning, and agile collaboration.",
+      "Associate Software Engineer. I build full-stack web applications with MERN, PERN, and Python, and I help coordinate requirements, developers, and timelines so projects actually get delivered.",
     location: "Lahore, Pakistan",
     email: "sajideenhassan12@gmail.com",
     phone: "+92 334 863 1680",
-    linkedin: "https://linkedin.com/in/sajideen-hassan",
-    github: "https://github.com/sajideenhassan12",
+    linkedin: "https://www.linkedin.com/in/sajideen-hassan",
+    github: "https://github.com/Sajideen-Hassan",
     twitter: "https://x.com/sajideenhassan",
     resumeUrl: "/Sajideen-CV.pdf",
   },
   metrics: [
-    { label: "Years Experience", value: "10+" },
-    { label: "Lines of Code", value: "100K+" },
-    { label: "Projects Delivered", value: "50+" },
-    { label: "Teams Led", value: "24+" },
+    { label: "Years Experience", value: "1+" },
+    { label: "Projects Delivered", value: "30+" },
+    { label: "Core Stack", value: "MERN" },
+    { label: "Coordination", value: "Clients" },
   ],
   about: {
     manifest:
-      "Great technical project management isn't about tracking tickets. It is about architecting clarity out of ambiguity.",
+      "I'm a developer who also coordinates. I write code, I talk to clients, and I help keep the work moving so the team can actually ship.",
     philosophy: [
-      "I started in software development, building full-stack applications with React, Node.js, and Python. Along the way I discovered I was better at organizing the work than just doing it.",
-      "Now I run projects end-to-end: from discovery and roadmap definition through delivery and retro. I scope features, coordinate teams, manage sprints, and keep stakeholders aligned.",
-      "My engineering background means I can spot scope creep before it happens, push back on unrealistic timelines with actual data, and communicate with developers in their own language.",
-      "Based in Lahore, working with remote and on-site teams across time zones. I believe great project management is invisible \u2014 when it works, the team just ships.",
+      "I started out building full-stack applications with React, Node.js, and Python across the MERN and PERN stacks, plus a fair amount of AI and API integration along the way.",
+      "Over the last year or so I've also been working directly with clients, both local and international. That taught me something important: most projects don't fail on the code. They fail on unclear requirements and unclear communication.",
+      "So I work on both sides now. I build and maintain features, fix bugs, and handle frontend and backend work. And when it's needed, I gather requirements, break them into tasks, coordinate the developers, and track progress until the work is done.",
+      "The result is that I can talk to a client, understand what they actually need, translate it into work the developers can pick up, and then contribute to that work myself. Based in Lahore, working remote-first with teams across time zones.",
     ],
     approach:
-      "Every engagement begins with three questions: What does success look like? What are we optimizing for? And how do we measure progress before the finish line?",
-    corePillars: ["Systems Thinking", "Agile Execution", "AI Integration", "Team Empowerment"],
+      "For any piece of work I start with three questions: what are we building, who is it for, and what does done look like? Once those are answered, the rest is just breaking it into tasks and getting it built.",
+    corePillars: ["Clean Code", "Clear Communication", "Client Collaboration", "On-Time Delivery"],
   },
   experience: [
     {
       id: "techtide-pm",
-      title: "Project Coordinator",
+      title: "Associate Software Engineer",
       company: "TechTideCo",
       period: "Nov 2025 \u2014 Present",
       responsibilities: [
-        "Coordinate cross-functional delivery of scalable web applications, ensuring alignment between client requirements and engineering output",
-        "Lead a development team of 5 engineers building full-stack MERN applications",
-        "Manage sprint planning, backlog grooming, and Agile workflows (Scrum/Kanban)",
+        "Build and maintain full-stack MERN features from database models and REST APIs to the React interface",
+        "Work directly with clients to gather requirements and confirm what needs to be built before development starts",
+        "Coordinate frontend and backend developers, track progress, and clear blockers so work keeps moving",
+        "Handle sprint planning and daily stand-ups while contributing code to the same sprints",
       ],
       achievements: [
-        "Reduced delivery cycle time by 30% through improved sprint planning",
-        "Managed 3 simultaneous client projects to on-time delivery",
-        "Established code review standards that reduced production bugs by 40%",
-        "Coordinated daily stand-ups that kept cross-functional teams aligned and blockers resolved within 24 hours",
+        "Delivered full-stack features end to end, from requirement discussions to deployment",
+        "Helped the team stay aligned by writing clear requirements and keeping tasks tracked",
+        "Fixed production bugs and improved existing features based on client feedback",
+        "Coordinated handoffs between frontend and backend developers to cut down integration issues",
       ],
-      tags: ["MongoDB", "Express.js", "React.js", "Node.js", "Jira", "Scrum", "Git"],
+      tags: ["MERN", "JavaScript", "REST APIs", "MongoDB", "Client Communication", "Scrum", "Git"],
     },
     {
       id: "techtide-intern",
-      title: "Project Coordinator Intern",
+      title: "Associate Software Engineer (Intern)",
       company: "TechTideCo",
       period: "Aug 2025 \u2014 Nov 2025",
       responsibilities: [
-        "Tracked and documented integration tasks for REST APIs and database milestones",
-        "Coordinated communication between team members to resolve high-priority bottlenecks",
-        "Maintained structured status updates across UI/UX, engineering, and QA phases",
+        "Tracked and documented REST API and database integration tasks across the team",
+        "Contributed to development tasks alongside coordinating them, writing and reviewing code with the engineers",
+        "Kept structured status updates flowing between UI, backend, and QA",
       ],
       achievements: [
-        "Improved cross-team communication with structured daily stand-up format",
-        "Delivered integration documentation adopted as team standard",
-        "Reduced integration delays by 20% by tracking REST API milestones proactively",
-        "Supported 4 sprint cycles with accurate status tracking and blocker escalation",
+        "Set up a daily stand-up format the team still uses",
+        "Documented integration work so handoffs between developers got faster",
+        "Helped clear blockers faster by keeping one clear list of what was being worked on",
       ],
-      tags: ["REST APIs", "Documentation", "Coordination", "Agile"],
+      tags: ["REST APIs", "Documentation", "Jira", "Coordination"],
     },
     {
       id: "ispr",
@@ -168,17 +170,16 @@ export const content: Content = {
       company: "ISPR Internship",
       period: "Jul 2025 \u2014 Aug 2025",
       responsibilities: [
-        "Managed end-to-end communication workflows across departments",
-        "Coordinated public relations activities under tight campaign deadlines",
-        "Acted as main contact for operational status updates and stakeholder reviews",
+        "Coordinated communication and reporting across departments during a tight campaign",
+        "Led sub-volunteer teams, assigning roles and solving problems on the ground",
+        "Acted as the main contact for operational status updates and stakeholder reviews",
       ],
       achievements: [
-        "Streamlined cross-departmental reporting, reducing information latency by 50%",
-        "Maintained discipline across the entire project and kept every task moving on schedule",
-        "Managed food distribution so that every participant and volunteer was properly provided",
-        "Led and supervised sub-volunteering teams, assigning roles and resolving issues on the ground",
+        "Kept reporting on schedule by coordinating across departments",
+        "Supervised volunteer teams so every task had an owner and a deadline",
+        "Kept the whole project moving on schedule through day-to-day discipline",
       ],
-      tags: ["Stakeholder Mgmt", "Reporting", "Coordination"],
+      tags: ["Coordination", "Stakeholder Comms", "Reporting"],
     },
     {
       id: "itclub",
@@ -186,16 +187,14 @@ export const content: Content = {
       company: "IT Club",
       period: "Jan 2025 \u2014 Mar 2025",
       responsibilities: [
-        "Conducted structured research on information systems and digital literacy frameworks",
-        "Improved data processing workflows through systematic research methodology",
+        "Built and maintained web pages and interfaces with HTML, CSS, and JavaScript",
+        "Researched information systems and documented findings for the team",
       ],
       achievements: [
-        "Increased analytical workflow efficiency by 25%",
-        "Delivered research on digital literacy frameworks adopted in team resources",
-        "Built structured research methodology now reused across information system projects",
-        "Documented findings in clear reports shared with faculty and peers",
+        "Improved internal data-processing workflows through structured research",
+        "Delivered reports on digital literacy shared with faculty and peers",
       ],
-      tags: ["Research", "HTML5", "CSS3", "JavaScript"],
+      tags: ["HTML", "CSS", "JavaScript", "Research"],
     },
   ],
   projects: [
@@ -209,13 +208,13 @@ export const content: Content = {
       domain: "ai",
       year: 2024,
       overview:
-        "An AI-powered healthcare application that helps users identify common skin conditions through image analysis. Trained on a diverse medical image dataset, the system delivers over 89% prediction accuracy with possible diagnoses, precautionary measures, treatment guidance, and tips to prevent the condition from spreading. It also recommends experienced dermatologists for professional consultation.",
+        "An AI healthcare app that identifies common skin conditions from an uploaded photo. I trained a CNN model on a medical image dataset and built the API that serves predictions. The React interface turns the model output into something a user can actually act on: the possible diagnosis, precautionary steps, and treatment guidance, plus a list of dermatologists to consult.",
       challenge:
-        "Achieving high prediction accuracy across diverse skin conditions on color-graded medical images with limited labeled data and avoiding false-confidence predictions.",
+        "Getting consistent, reliable predictions from medical images with limited labeled data, and making sure the app never sounds more confident than the model actually is.",
       solution:
-        "Trained a TensorFlow/Keras CNN over an augmented medical dataset, applied OpenCV preprocessing to normalize lighting and noise, and exposed predictions through a Flask/FastAPI service with a React-based upload and results interface.",
+        "I trained a TensorFlow/Keras CNN on an augmented dataset, used OpenCV to normalize lighting and noise, and served predictions through a Flask/FastAPI backend with a React upload interface.",
       results:
-        "Delivered over 89% prediction accuracy, giving users possible diagnoses, treatment guidance, and prevention tips alongside recommended dermatologists.",
+        "The model reaches over 89% accuracy, and the app turns that into something usable: possible diagnoses, treatment guidance, and prevention tips alongside dermatologist recommendations.",
     },
     {
       id: "raynova-tech",
@@ -227,13 +226,13 @@ export const content: Content = {
       domain: "web",
       year: 2024,
       overview:
-        "Designed and developed the official Raynova Tech website with a custom administrative dashboard to streamline quotation requests, client inquiries, and business operations. Integrated an AI-powered chatbot to improve customer engagement and automate responses. Initially built on MongoDB, the platform was later migrated to TursoDB for improved performance and modern edge database capabilities.",
+        "The official Raynova Tech website plus an admin dashboard for the business. I built the public pages and the dashboard, wired up quotation requests and client inquiries, and added an AI chatbot to answer visitors automatically. The platform started on MongoDB and was later moved to TursoDB for faster reads.",
       challenge:
-        "Migrating from MongoDB to TursoDB without service disruption while adding a custom dashboard and AI chatbot to handle quotations and inquiries at scale.",
+        "Switching the database from MongoDB to TursoDB without breaking the live site, while the dashboard, quotation flow, and chatbot were all new features.",
       solution:
-        "Migrated the data layer to TursoDB for edge performance and scalability, wrapped REST APIs in JWT authentication, and deployed an AI chatbot to automate client engagement on the React front end.",
+        "I handled the database migration carefully behind the API, wrapped the endpoints in JWT auth for the dashboard, and built the chatbot to engage visitors on the React front end.",
       results:
-        "Delivered a performant company platform with automated quotation handling, AI-driven customer engagement, and an admin dashboard for smooth business operations.",
+        "Raynova got a working business site with automated quotation handling, a chatbot for visitors, and an admin dashboard the team uses day to day.",
     },
     {
       id: "ai-furniture-chatbot",
@@ -245,13 +244,13 @@ export const content: Content = {
       domain: "ai",
       year: 2024,
       overview:
-        "Built an intelligent customer support chatbot using ElevenLabs Conversational AI for an international furniture business. The chatbot answers product-related questions, guides customers through furniture collections, provides recommendations based on user preferences, and handles common support requests with natural voice interactions, significantly cutting response time.",
+        "A voice-enabled support chatbot for an international furniture business. Built on ElevenLabs Conversational AI, it answers product questions, walks customers through the collections, and makes recommendations based on what they're looking for, handling common support requests without a human in the loop.",
       challenge:
-        "Training a voice-enabled chatbot to understand furniture-specific intent, product queries, and recommendations with natural, low-latency voice interactions.",
+        "Teaching a voice assistant to understand furniture-specific questions, and keeping the conversation natural and fast enough to actually be useful.",
       solution:
-        "Configured an ElevenLabs conversational flow, wired intent-driven recommendation logic through React and a Node/Express REST API, and deployed it to the sustain business site.",
+        "I configured the ElevenLabs conversation flow, connected it to a React front end through a small Node/Express API, and wired intent-driven recommendation logic into the responses.",
       results:
-        "Reduced customer response time and improved the experience by handling product questions, collection guidance, and recommendations through natural voice.",
+        "Customers get answers in seconds instead of waiting, and the business cut response time on routine questions without adding support staff.",
     },
     {
       id: "brotchun-website",
@@ -263,13 +262,13 @@ export const content: Content = {
       domain: "creative",
       year: 2023,
       overview:
-        "Developed a modern company website focused on animations, storytelling, and user experience. Implemented smooth page transitions, interactive scroll effects, and responsive layouts to create an immersive browsing experience while keeping fast performance and clean design.",
+        "A company website built around animation and storytelling. I implemented page transitions, scroll effects, and interactive layouts that make the content feel alive, while keeping the site fast and clean on a range of devices.",
       challenge:
-        "Balancing heavy animation, scroll effects, and page transitions with fast performance on lower-end devices.",
+        "Making heavy animation and story-driven scrolling feel smooth on lower-end devices rather than slow and janky.",
       solution:
-        "Used GSAP and Framer Motion with lazy-loaded routes and GPU-friendly transforms to create cinematic transitions and scroll storytelling without sacrificing performance.",
+        "I used GSAP and Framer Motion with lazy-loaded routes and GPU-friendly transforms, so the cinematic moments play out without tanking performance.",
       results:
-        "Shipped an immersive, animation-driven company website with smooth transitions, interactive scroll effects, and responsive layouts.",
+        "An immersive, animation-driven site that stays responsive on desktop and phone.",
     },
     {
       id: "techtide-platform",
@@ -281,13 +280,13 @@ export const content: Content = {
       domain: "web",
       year: 2023,
       overview:
-        "Contributed to the enhancement of TechTide's official website and internal developer dashboard. Implemented new features, optimized existing modules, fixed production issues, and improved task management workflows for developers and administrators, focusing on usability, performance, and efficient collaboration.",
+        "Work on TechTide's public website and internal developer dashboard. I added features, cleaned up existing modules, fixed production bugs, and improved the task management flow that developers and admins use every day.",
       challenge:
-        "Improving the developer dashboard with solid, and maintainable structures, a consistent task management workflow, reducing production issues visible to users.",
+        "Making a dashboard that had been growing for a while more consistent, both in how it looks and in how tasks actually move through it.",
       solution:
-        "Refactored React modules with Material UI, optimized Firestore queries and real-time subscriptions, and shipped usability fixes for team collaboration workflows.",
+        "I refactored parts of the React code with Material UI, optimized Firestore queries, and shipped usability fixes to the task workflow.",
       results:
-        "Improved dashboard usability, performance, and task management for developers and administrators across the platform.",
+        "A cleaner, faster dashboard that developers actually prefer working in.",
     },
     {
       id: "n8n-workflow-marketplace",
@@ -299,13 +298,13 @@ export const content: Content = {
       domain: "commerce",
       year: 2024,
       overview:
-        "Developed a full-stack platform where creators upload, manage, and sell n8n automation workflows. Each workflow includes detailed documentation, implementation guides, and workflow diagrams for buyers to review. Integrated Stripe for secure payments, after which purchased workflows are automatically unlocked in a user's personalized dashboard for download.",
+        "A marketplace where creators sell n8n automation workflows. Buyers can read the documentation, implementation guides, and workflow diagrams before buying, and after payment the workflow is unlocked in their dashboard for download.",
       challenge:
-        "Implementing secure purchases, and JWT-secured multi-role access so creators can sell workflows and buyers unlock them after Stripe payment.",
+        "Making purchases secure and access control airtight, so only buyers can download what they paid for.",
       solution:
-        "Built a MERN marketplace with Stripe payment webhooks and JWT authorization, auto-unlocking purchased workflows in a user's dashboard with documentation and diagrams.",
+        "I built it on the MERN stack with Stripe payment webhooks and JWT-based roles, so a success payment unlocks the workflow in the buyer's dashboard automatically.",
       results:
-        "Launched a functioning creator economy with secure Stripe payments and instant, personalized access to purchased workflows.",
+        "A working creator economy with secure payments, instant access, and clear documentation for every workflow sold.",
     },
     {
       id: "smart-inventory-system",
@@ -317,83 +316,80 @@ export const content: Content = {
       domain: "infra",
       year: 2024,
       overview:
-        "Built a complete inventory management solution that automates stock tracking using barcode technology. Products are added to inventory by scanning barcodes, while sales automatically reduce stock quantities in real time through the billing counter. The system provides accurate inventory monitoring, minimizes manual errors, minimizes and generates reports for stock efficiency.",
+        "An inventory system that runs on barcode scanning. Staff scan a product to add it to stock, and sales automatically deduct the quantity at the billing counter in real time, so there is no manual counting, fewer entry errors, and clear reports on stock levels when needed.",
       challenge:
-        "Automating stock entry with barcode scanning and keeping inventory counts in real time as sales reduce stock at the billing counter.",
+        "Keeping stock counts accurate in real time, when every scan and every sale changes them.",
       solution:
-        "Integrated an OpenCV barcode scanner to add stock and built a real-time MERN billing flow where sales automatically decrement inventory and generate reports.",
+        "I integrated an OpenCV-based barcode scanner and built the MERN billing flow so each sale immediately decrements inventory and updates the reports.",
       results:
-        "Delivered accurate, real-time inventory tracking that minimizes manual errors and reports stock levels with only barcode-driven workflows.",
+        "Accurate, up-to-date stock tracking with less manual work and fewer errors at the counter.",
     },
   ],
   skills: [
     {
-      category: "Project Management",
+      category: "Development",
       items: [
-        "Sprint Planning",
-        "Agile/Scrum",
-        "Stakeholder Comms",
-        "Risk Management",
-        "Scope Definition",
-        "Backlog Grooming",
-        "Resource Allocation",
-        "Kanban",
-      ],
-    },
-    {
-      category: "AI & Machine Learning",
-      items: [
-        "LLM Pipeline Design",
-        "RAG Architecture",
-        "Vector DBs",
-        "Gemini API",
-        "Prompt Engineering",
-        "AI Agent Workflows",
-      ],
-    },
-    {
-      category: "Cloud & Architecture",
-      items: [
-        "AWS / GCP",
-        "Docker",
-        "CI/CD Automation",
-        "Microservices",
-        "System Design",
-        "Supabase",
-      ],
-    },
-    {
-      category: "Backend & APIs",
-      items: [
-        "Node.js",
-        "Python",
-        "GraphQL",
-        "REST APIs",
-        "PostgreSQL",
-        "Redis",
-        "BullMQ",
-      ],
-    },
-    {
-      category: "Frontend Engineering",
-      items: [
-        "React",
-        "Next.js",
+        "React.js",
+        "JavaScript",
         "TypeScript",
-        "GSAP",
-        "Tailwind CSS",
-        "Three.js",
+        "Node.js",
+        "Express.js",
+        "Python",
+        "HTML",
+        "CSS",
       ],
     },
     {
-      category: "Collaboration & Tools",
+      category: "Databases",
       items: [
-        "Jira Enterprise",
-        "Confluence",
-        "Figma",
-        "Miro",
-        "Notion",
-        "Slack API",
+        "MongoDB",
+        "PostgreSQL",
+        "Supabase",
+        "Turso",
+        "Firebase / Firestore",
+      ],
+    },
+    {
+      category: "APIs & Integration",
+      items: [
+        "REST APIs",
+        "JWT",
+        "Stripe API",
+        "AI APIs",
+        "Third-party API Integration",
+      ],
+    },
+    {
+      category: "AI & Automation",
+      items: [
+        "AI Integration",
+        "Generative AI APIs",
+        "ElevenLabs",
+        "n8n",
+        "Prompt Engineering",
+      ],
+    },
+    {
+      category: "Development Tools",
+      items: [
+        "Git",
+        "GitHub",
+        "Docker",
+        "Postman",
+        "VS Code",
+      ],
+    },
+    {
+      category: "Coordination & Delivery",
+      items: [
+        "Client Communication",
+        "Requirement Gathering",
+        "Task Coordination",
+        "Agile / Scrum",
+        "Sprint Planning",
+        "Progress Tracking",
+        "Documentation",
+        "Risk & Issue Tracking",
       ],
     },
   ],
@@ -423,17 +419,17 @@ export const content: Content = {
   ],
   volunteer: [
     {
-      title: "Lead Mentor & Agile Program Coordinator",
+      title: "Lead Mentor",
       organization: "Tech Community Mentorship",
       period: "2022 \u2014 Present",
       impact: [
         "Coordinated nationwide hackathons involving 500+ student developers",
-        "Mentored 30+ junior engineers & aspiring PMs in modern project management frameworks",
-        "Organized tech workshops focused on ethical AI development and software architecture",
+        "Mentored 30+ junior developers on web development and working in a team",
+        "Organized tech workshops focused on AI development and software architecture",
       ],
     },
     {
-      title: "IT Workshop Coordinator",
+      title: "IT Workshop Lead",
       organization: "University Tech Society",
       period: "2024 \u2014 2025",
       impact: [
@@ -460,6 +456,7 @@ export const content: Content = {
       platform: "Coursera",
       platformColor: "#0056D2",
       icon: "Table",
+      focus: "Built practical spreadsheets with formulas, pivot tables, data cleaning, and reporting workflows to turn raw data into reports I can actually use.",
     },
     {
       title: "Business Analysis & Process Management",
@@ -468,6 +465,7 @@ export const content: Content = {
       platform: "Coursera",
       platformColor: "#0056D2",
       icon: "Diagram",
+      focus: "Practiced requirements gathering, stakeholder mapping, process modeling, and change management to scope and streamline business workflows.",
     },
     {
       title: "CHATGPT Series: Prompt Engineering Masterclass",
@@ -476,6 +474,7 @@ export const content: Content = {
       platform: "Development Island",
       platformColor: "#10B981",
       icon: "Bot",
+      focus: "Learned structured prompt design, context framing, and evaluation loops to get consistent, useful results from LLMs for real product features.",
     },
     {
       title: "Complete Web Development",
@@ -484,6 +483,7 @@ export const content: Content = {
       platform: "Udemy",
       platformColor: "#EC5252",
       icon: "Code",
+      focus: "Covered HTML, CSS, and JavaScript end-to-end, including responsive layouts, the DOM, and shipping real front-end interfaces.",
     },
     {
       title: "MERN Stack Development",
@@ -492,6 +492,7 @@ export const content: Content = {
       platform: "NAVTTC",
       platformColor: "#6366F1",
       icon: "Layers",
+      focus: "Built full-stack applications on MongoDB, Express, React, and Node.js, from database design to REST APIs and interactive UIs.",
     },
     {
       title: "Prompt Engineering by AWS",
@@ -500,11 +501,12 @@ export const content: Content = {
       platform: "AWS",
       platformColor: "#FF9900",
       icon: "Cloud",
+      focus: "Studied production-grade prompt engineering on AWS, including foundational model behaviour, context windows, and evaluation for reliable AI systems.",
     },
   ],
   contact: {
-    heading: "Have a project in mind or need strategic PM leadership?",
+    heading: "Have a project to build, or need someone to help coordinate it?",
     description:
-      "Available for Project Coordinator, Project Manager, and Associate Software Engineer roles. Remote or on-site in Lahore.",
+      "Available for Associate Software Engineer roles. I work remotely or on-site in Lahore.",
   },
 }

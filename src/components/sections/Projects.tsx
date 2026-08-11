@@ -90,9 +90,9 @@ export default function ProjectsSection() {
       {prefersReduced ? (
         <div className="mx-auto max-w-7xl px-6 pb-28 pt-24 md:px-16 md:pt-32">
           <SectionHeader
-            eyebrow="03 // Journey // Career milestones"
-            title="The path to"
-            accent="on-time delivery."
+            eyebrow="03 // Projects // Selected work"
+            title="Selected"
+            accent="work."
           />
           <CaseStudyCarousel />
         </div>

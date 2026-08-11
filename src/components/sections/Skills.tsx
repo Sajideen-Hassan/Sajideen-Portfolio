@@ -9,12 +9,12 @@ import SectionHeader from "@/components/ui/SectionHeader";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const CATEGORY_META = [
-  { index: "01", accent: "#ccff00", hint: "plan · exec · align" },
-  { index: "02", accent: "#7da2ff", hint: "models · retrieval" },
-  { index: "03", accent: "#38bdf8", hint: "AWS · GCP · docker" },
-  { index: "04", accent: "#4ade80", hint: "node · python · sql" },
-  { index: "05", accent: "#c084fc", hint: "react · motion · 3d" },
-  { index: "06", accent: "#ffb84d", hint: "atlassian · design" },
+  { index: "01", accent: "#ccff00", hint: "react · node · python" },
+  { index: "02", accent: "#7da2ff", hint: "mongo · postgres · firebase" },
+  { index: "03", accent: "#38bdf8", hint: "rest · jwt · third-party" },
+  { index: "04", accent: "#4ade80", hint: "llms · agents · no-code" },
+  { index: "05", accent: "#c084fc", hint: "git · docker · postman" },
+  { index: "06", accent: "#ffb84d", hint: "clients · agile · tracking" },
 ];
 
 export default function Skills() {
@@ -55,10 +55,10 @@ export default function Skills() {
 
       <div className="mx-auto max-w-7xl px-6 py-24 md:px-16 md:py-32">
         <SectionHeader
-          eyebrow="04 // Capabilities // Delivery stack"
+          eyebrow="04 // Capabilities // Dev stack & tools"
           title="Core capabilities"
-          accent="across delivery, tooling, and leadership"
-          description="Six operating layers. Select a layer to unpack the toolkit, or filter by name."
+          accent="across development and coordination"
+          description="Six areas, each with the tools I actually use day to day. Select a group to see the toolkit, or filter by name."
         />
 
         {/* Search */}
@@ -70,7 +70,7 @@ export default function Skills() {
               setQuery(e.target.value);
               setActive(0);
             }}
-            placeholder="Filter capabilities — e.g. Node.js, RAG, Figma, Scrum…"
+            placeholder="Filter skills, e.g. React, MongoDB, Docker, Scrum…"
             className="w-full bg-transparent font-mono text-sm text-text-primary outline-none placeholder:text-text-muted"
           />
         </div>
