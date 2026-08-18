@@ -22,22 +22,13 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
 
 type Cert = typeof content.certifications[0];
 
-const PLATFORM_METADATA: Record<string, { color: string; category: string; maturity: "core" | "specialized" | "emerging" }> = {
-  Coursera: { color: "#0056D2", category: "CS Fundamentals", maturity: "core" },
-  "Development Island": { color: "#10B981", category: "AI Engineering", maturity: "emerging" },
-  Udemy: { color: "#EC5252", category: "Full-Stack Engineering", maturity: "core" },
-  NAVTTC: { color: "#6366F1", category: "Modern Web Architecture", maturity: "core" },
-  AWS: { color: "#FF9900", category: "Cloud Architecture", maturity: "specialized" },
+const PLATFORM_METADATA: Record<string, { category: string }> = {
+  Coursera: { category: "CS Fundamentals" },
+  "Development Island": { category: "AI Engineering" },
+  Udemy: { category: "Full-Stack Engineering" },
+  NAVTTC: { category: "Modern Web Architecture" },
+  AWS: { category: "Cloud Architecture" },
 };
-
-function getMaturityBadge(maturity: "core" | "specialized" | "emerging") {
-  const configs = {
-    core: { label: "CORE", color: "#ccff00", bg: "rgba(204, 255, 0, 0.1)" },
-    specialized: { label: "SPECIALIZED", color: "#FF9900", bg: "rgba(255, 153, 0, 0.1)" },
-    emerging: { label: "EMERGING", color: "#10B981", bg: "rgba(16, 185, 129, 0.1)" },
-  };
-  return configs[maturity];
-}
 
 function useCountUp(target: number, start: boolean, duration = 1.4) {
   const [value, setValue] = useState(0);

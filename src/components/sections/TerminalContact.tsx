@@ -63,8 +63,9 @@ export default function TerminalContact() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setNow(formatTime());
-    const id = setInterval(() => setNow(formatTime()), 1000);
+    const update = () => setNow(formatTime());
+    update();
+    const id = setInterval(update, 1000);
     return () => clearInterval(id);
   }, []);
 

@@ -36,7 +36,7 @@ export default function ExecutionVector() {
       setProgress(Math.min(1, Math.max(0, current)));
 
       const currentId = Object.entries(sectionAnchors).reduce(
-        (closest, [id, anchor]) => {
+        (closest, [id]) => {
           const element = document.getElementById(id);
           if (!element) return closest;
 

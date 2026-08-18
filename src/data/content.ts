@@ -18,7 +18,6 @@ export interface Experience {
   title: string
   company: string
   period: string
-  responsibilities: string[]
   achievements: string[]
   tags: string[]
 }
@@ -27,14 +26,6 @@ export interface Education {
   degree: string
   institution: string
   period: string
-  details: string[]
-}
-
-export interface Volunteer {
-  title: string
-  organization: string
-  period: string
-  impact: string[]
 }
 
 export interface Certification {
@@ -45,7 +36,6 @@ export interface Certification {
   platformColor: string
   icon: string
   focus: string
-  credentialId?: string
   verifyUrl?: string
 }
 
@@ -59,34 +49,18 @@ export interface Content {
     name: string
     initials: string
     role: string
-    tagline: string
-    summary: string
     location: string
     email: string
-    phone: string
     linkedin: string
     github: string
-    twitter: string
     resumeUrl: string
-  }
-  metrics: {
-    label: string
-    value: string
-  }[]
-  about: {
-    manifest: string
-    philosophy: string[]
-    approach: string
-    corePillars: string[]
   }
   experience: Experience[]
   projects: Project[]
   skills: SkillGroup[]
   education: Education[]
-  volunteer: Volunteer[]
   certifications: Certification[]
   contact: {
-    heading: string
     description: string
   }
 }
@@ -96,36 +70,11 @@ export const content: Content = {
     name: "Sajideen Hassan",
     initials: "SH",
     role: "Associate Software Engineer",
-    tagline:
-      "I build web applications with React, Node.js, and Python, and I also coordinate the work. I talk to clients, break requirements into clear tasks, and help development teams ship on time.",
-    summary:
-      "Associate Software Engineer. I build full-stack web applications with MERN, PERN, and Python, and I help coordinate requirements, developers, and timelines so projects actually get delivered.",
     location: "Lahore, Pakistan",
     email: "sajideenhassan12@gmail.com",
-    phone: "+92 334 863 1680",
     linkedin: "https://www.linkedin.com/in/sajideen-hassan",
     github: "https://github.com/Sajideen-Hassan",
-    twitter: "https://x.com/sajideenhassan",
     resumeUrl: "/Sajideen-CV.pdf",
-  },
-  metrics: [
-    { label: "Years Experience", value: "1+" },
-    { label: "Projects Delivered", value: "30+" },
-    { label: "Core Stack", value: "MERN" },
-    { label: "Coordination", value: "Clients" },
-  ],
-  about: {
-    manifest:
-      "I'm a developer who also coordinates. I write code, I talk to clients, and I help keep the work moving so the team can actually ship.",
-    philosophy: [
-      "I started out building full-stack applications with React, Node.js, and Python across the MERN and PERN stacks, plus a fair amount of AI and API integration along the way.",
-      "Over the last year or so I've also been working directly with clients, both local and international. That taught me something important: most projects don't fail on the code. They fail on unclear requirements and unclear communication.",
-      "So I work on both sides now. I build and maintain features, fix bugs, and handle frontend and backend work. And when it's needed, I gather requirements, break them into tasks, coordinate the developers, and track progress until the work is done.",
-      "The result is that I can talk to a client, understand what they actually need, translate it into work the developers can pick up, and then contribute to that work myself. Based in Lahore, working remote-first with teams across time zones.",
-    ],
-    approach:
-      "For any piece of work I start with three questions: what are we building, who is it for, and what does done look like? Once those are answered, the rest is just breaking it into tasks and getting it built.",
-    corePillars: ["Clean Code", "Clear Communication", "Client Collaboration", "On-Time Delivery"],
   },
   experience: [
     {
@@ -133,12 +82,6 @@ export const content: Content = {
       title: "Associate Software Engineer",
       company: "TechTideCo",
       period: "Nov 2025 \u2014 Present",
-      responsibilities: [
-        "Build and maintain full-stack MERN features from database models and REST APIs to the React interface",
-        "Work directly with clients to gather requirements and confirm what needs to be built before development starts",
-        "Coordinate frontend and backend developers, track progress, and clear blockers so work keeps moving",
-        "Handle sprint planning and daily stand-ups while contributing code to the same sprints",
-      ],
       achievements: [
         "Delivered full-stack features end to end, from requirement discussions to deployment",
         "Helped the team stay aligned by writing clear requirements and keeping tasks tracked",
@@ -152,11 +95,6 @@ export const content: Content = {
       title: "Associate Software Engineer (Intern)",
       company: "TechTideCo",
       period: "Aug 2025 \u2014 Nov 2025",
-      responsibilities: [
-        "Tracked and documented REST API and database integration tasks across the team",
-        "Contributed to development tasks alongside coordinating them, writing and reviewing code with the engineers",
-        "Kept structured status updates flowing between UI, backend, and QA",
-      ],
       achievements: [
         "Set up a daily stand-up format the team still uses",
         "Documented integration work so handoffs between developers got faster",
@@ -169,11 +107,6 @@ export const content: Content = {
       title: "Management Lead",
       company: "ISPR Internship",
       period: "Jul 2025 \u2014 Aug 2025",
-      responsibilities: [
-        "Coordinated communication and reporting across departments during a tight campaign",
-        "Led sub-volunteer teams, assigning roles and solving problems on the ground",
-        "Acted as the main contact for operational status updates and stakeholder reviews",
-      ],
       achievements: [
         "Kept reporting on schedule by coordinating across departments",
         "Supervised volunteer teams so every task had an owner and a deadline",
@@ -186,10 +119,6 @@ export const content: Content = {
       title: "Web Developer Intern",
       company: "IT Club",
       period: "Jan 2025 \u2014 Mar 2025",
-      responsibilities: [
-        "Built and maintained web pages and interfaces with HTML, CSS, and JavaScript",
-        "Researched information systems and documented findings for the team",
-      ],
       achievements: [
         "Improved internal data-processing workflows through structured research",
         "Delivered reports on digital literacy shared with faculty and peers",
@@ -398,54 +327,16 @@ export const content: Content = {
       degree: "Bachelor of Science in Computer Science",
       institution: "Lahore Garrison University",
       period: "2021 \u2014 2025",
-      details: [
-        "Software Engineering & Distributed Systems",
-        "Honors: Magna Cum Laude",
-        "Focus: AI Systems Architecture & Algorithms",
-      ],
     },
     {
       degree: "ICS Physics",
       institution: "Garrison College For Boys, Lahore",
       period: "2019 \u2014 2021",
-      details: ["Division: 1st"],
     },
     {
       degree: "Matriculation (Computer Science)",
       institution: "Army Public School & Colleges System",
       period: "2019",
-      details: ["Subject: Computer Science"],
-    },
-  ],
-  volunteer: [
-    {
-      title: "Lead Mentor",
-      organization: "Tech Community Mentorship",
-      period: "2022 \u2014 Present",
-      impact: [
-        "Coordinated nationwide hackathons involving 500+ student developers",
-        "Mentored 30+ junior developers on web development and working in a team",
-        "Organized tech workshops focused on AI development and software architecture",
-      ],
-    },
-    {
-      title: "IT Workshop Lead",
-      organization: "University Tech Society",
-      period: "2024 \u2014 2025",
-      impact: [
-        "Organized 4 technical workshops with 80+ student attendees",
-        "Coordinated with industry speakers for guest lecture series",
-        "Led a team of 6 volunteers for event logistics",
-      ],
-    },
-    {
-      title: "Code Camp Mentor",
-      organization: "Lahore Coding Initiative",
-      period: "2024",
-      impact: [
-        "Mentored 15 students in web development fundamentals",
-        "Designed 8-week curriculum covering HTML, CSS, and JavaScript",
-      ],
     },
   ],
   certifications: [
@@ -505,7 +396,6 @@ export const content: Content = {
     },
   ],
   contact: {
-    heading: "Have a project to build, or need someone to help coordinate it?",
     description:
       "Available for Associate Software Engineer roles. I work remotely or on-site in Lahore.",
   },

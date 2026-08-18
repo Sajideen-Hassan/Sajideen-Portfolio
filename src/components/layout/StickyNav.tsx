@@ -13,7 +13,6 @@ const sections = [
   { id: "skills", label: "Skills" },
   { id: "education", label: "Education" },
   { id: "certifications", label: "Credentials" },
-  { id: "contact", label: "Connect" },
 ];
 
 export default function StickyNav() {
@@ -163,6 +162,14 @@ export default function StickyNav() {
                   <ArrowUpRight className="h-4 w-4 opacity-60" />
                 </button>
               ))}
+
+              <button
+                onClick={() => scrollTo("contact")}
+                className="mt-4 flex cursor-pointer items-center justify-center gap-2 bg-[#ccff00] px-4 py-3 font-display text-sm font-semibold uppercase tracking-[0.15em] text-black transition-colors hover:bg-[#d6ff33]"
+              >
+                Connect
+                <ArrowUpRight className="h-4 w-4" />
+              </button>
             </div>
           </motion.nav>
         )}

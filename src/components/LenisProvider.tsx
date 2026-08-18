@@ -19,7 +19,7 @@ export default function LenisProvider({
         touchMultiplier: 1.5,
       }}
     >
-      {children as any}
+      {children as unknown as React.ComponentProps<typeof ReactLenis>["children"]}
     </ReactLenis>
   );
 }

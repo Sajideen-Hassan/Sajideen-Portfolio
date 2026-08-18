@@ -5,13 +5,8 @@
   --color-bg-surface: #12141a;
   --color-bg-elevated: #1a1d26;
   --color-border-subtle: rgba(255, 255, 255, 0.07);
-  --color-border-highlight: rgba(204, 255, 0, 0.35);
-  --color-accent-volt: #ccff00;
-  --color-accent-amber: #ff9900;
-  --color-accent-slate: #334155;
   --color-accent-cyan: #ccff00;
   --color-accent-emerald: #ff9900;
-  --color-accent-indigo: #6b7280;
   --color-accent-terminal: #ccff00;
   --color-text-primary: #f8fafc;
   --color-text-secondary: #94a3b8;
@@ -71,35 +66,9 @@
     @apply border border-border-subtle/70 bg-bg-surface/80 backdrop-blur-md;
   }
 
-  .ambient-glow {
-    background: radial-gradient(circle, rgba(204, 255, 0, 0.15) 0%, transparent 70%);
-  }
-
   .terminal-grid {
     background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
     background-size: 24px 24px;
-  }
-
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .sheen {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 45%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-    transform: translateX(-140%) skewX(-20deg);
-    pointer-events: none;
-  }
-  .group:hover .sheen {
-    animation: sheen-sweep 1.2s ease;
   }
 
   .seal-ring {
@@ -107,11 +76,6 @@
   }
   .group:hover .seal-ring {
     animation-duration: 5s;
-  }
-
-  @keyframes sheen-sweep {
-    0% { transform: translateX(-140%) skewX(-20deg); }
-    100% { transform: translateX(280%) skewX(-20deg); }
   }
 
   @keyframes seal-spin {
@@ -123,12 +87,6 @@
     display: flex;
     width: max-content;
     animation: marquee-scroll var(--marquee-speed, 36s) linear infinite;
-  }
-
-  .marquee-reverse {
-    display: flex;
-    width: max-content;
-    animation: marquee-scroll var(--marquee-speed, 36s) linear infinite reverse;
   }
 
   .hero-ring-spin {

@@ -64,14 +64,14 @@ function ScrollWordReveal() {
   const reducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"],
+    offset: ["start 0.85", "end start"],
   });
   const words = ABOUT_STATEMENT.split(" ");
 
   return (
     <div
       ref={sectionRef}
-      className="relative w-full overflow-x-clip py-24 md:py-36"
+      className="relative w-full overflow-x-clip px-6 py-24 md:px-16 md:py-36"
       aria-labelledby="about-statement-heading"
     >
       <div className="mx-auto grid w-full max-w-5xl grid-cols-1 items-start gap-10 sm:grid-cols-[1px_minmax(0,1fr)] sm:gap-14">
@@ -82,7 +82,7 @@ function ScrollWordReveal() {
           />
         </div>
 
-        <div className="max-w-4xl">
+        <div className="w-full">
           <p className="mb-8 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-text-muted sm:mb-10">
             <span className="h-px w-8 bg-[#ccff00]/60" aria-hidden="true" />
             Scroll to reveal
@@ -90,7 +90,7 @@ function ScrollWordReveal() {
 
           <p
             id="about-statement-heading"
-            className="font-display text-[clamp(1.35rem,2.8vw,2.5rem)] font-medium leading-[1.16] tracking-[-0.02em] text-[#cbd5e1]"
+            className="text-left font-display text-[clamp(1.35rem,2.8vw,2.5rem)] font-medium leading-[1.16] tracking-[-0.02em] text-[#cbd5e1]"
             aria-label={ABOUT_STATEMENT}
           >
             {words.map((word, index) => (
